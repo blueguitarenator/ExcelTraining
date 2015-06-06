@@ -1,0 +1,8 @@
+﻿@using Excel.Entities
+@using Excel.Web.Helpers
+@{
+    var items = typeof(AthleteTypes).GetItems((int?)Model);
+
+}
+
+@Html.DropDownList("", items)
