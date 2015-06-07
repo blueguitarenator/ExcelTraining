@@ -29,5 +29,8 @@ namespace Excel.Entities
         [Required]
         [StringLength(255)]
         public string Zip { get; set; }
+
+        public virtual ICollection<Session> Sessions { get; set; }
+
     }
 }

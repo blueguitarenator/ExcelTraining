@@ -178,6 +178,7 @@
     <Compile Include="Controllers\AthletesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\SessionsController.cs" />
     <Compile Include="DataContexts\ExcelDb.cs" />
     <Compile Include="DataContexts\ExcelMigrations\201506062020499_InitialCreate.cs" />
     <Compile Include="DataContexts\ExcelMigrations\201506062020499_InitialCreate.Designer.cs">
@@ -190,6 +191,10 @@
     <Compile Include="DataContexts\ExcelMigrations\201506062138571_AddAthleteType.cs" />
     <Compile Include="DataContexts\ExcelMigrations\201506062138571_AddAthleteType.Designer.cs">
       <DependentUpon>201506062138571_AddAthleteType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\ExcelMigrations\201506070544430_SessionData.cs" />
+    <Compile Include="DataContexts\ExcelMigrations\201506070544430_SessionData.Designer.cs">
+      <DependentUpon>201506070544430_SessionData.cs</DependentUpon>
     </Compile>
     <Compile Include="DataContexts\ExcelMigrations\Configuration.cs" />
     <Compile Include="DataContexts\IdentityDb.cs" />
@@ -214,10 +219,6 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\aspnet-Excel.Web-20150606020458.mdf" />
-    <Content Include="App_Data\aspnet-Excel.Web-20150606020458_log.ldf">
-      <DependentUpon>aspnet-Excel.Web-20150606020458.mdf</DependentUpon>
-    </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
@@ -279,8 +280,15 @@
     <Content Include="Views\Athletes\Details.cshtml" />
     <Content Include="Views\Athletes\Edit.cshtml" />
     <Content Include="Views\Athletes\Index.cshtml" />
+    <Content Include="Views\Sessions\Create.cshtml" />
+    <Content Include="Views\Sessions\Delete.cshtml" />
+    <Content Include="Views\Sessions\Details.cshtml" />
+    <Content Include="Views\Sessions\Edit.cshtml" />
+    <Content Include="Views\Sessions\Index.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -303,6 +311,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\ExcelMigrations\201506062138571_AddAthleteType.resx">
       <DependentUpon>201506062138571_AddAthleteType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\ExcelMigrations\201506070544430_SessionData.resx">
+      <DependentUpon>201506070544430_SessionData.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201506062022287_InitialCreate.resx">
       <DependentUpon>201506062022287_InitialCreate.cs</DependentUpon>
