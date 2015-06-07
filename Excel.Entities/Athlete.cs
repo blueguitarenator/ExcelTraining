@@ -33,13 +33,17 @@ namespace Excel.Entities
         public AthleteTypes AthleteType { get; set; }
 
         public virtual ICollection<Session> Sessions { get; set; }
+
     }
 }
 // update-database -ConfigurationTypeName Excel.Web.DataContexts.ExcelMigrations.Configuration
 // add-migration -ConfigurationTypeName Excel.Web.DataContexts.ExcelMigrations.Configuration "SessionData"
 // Update-Database -ConfigurationTypeName Excel.Web.DataContexts.ExcelMigrations.Configuration -TargetMigration "201506062138571_AddAthleteType"
 // get-migrations -ConfigurationTypeName Excel.Web.DataContexts.ExcelMigrations.Configuration
+
 // scorched earth
 // sqllocaldb.exe stop v11.0
 // sqllocaldb.exe delete v11.0
 // then update identity and excel
+
+// add-migration -ConfigurationTypeName Excel.Web.DataContexts.IdentityMigrations.Configuration "AddAthleteToIdentity"

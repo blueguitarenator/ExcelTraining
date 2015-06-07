@@ -8,6 +8,9 @@ using System.Web;
 using System.Web.Mvc;
 using Excel.Entities;
 using Excel.Web.DataContexts;
+using Excel.Web.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity;
 
 namespace Excel.Web.Controllers
 {
@@ -34,6 +37,7 @@ namespace Excel.Web.Controllers
             {
                 return HttpNotFound();
             }
+
             return View(athlete);
         }
 
@@ -55,6 +59,7 @@ namespace Excel.Web.Controllers
             {
                 db.Athletes.Add(athlete);
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
 

@@ -206,6 +206,10 @@
     <Compile Include="DataContexts\IdentityMigrations\201506062132376_DefaultSchema.Designer.cs">
       <DependentUpon>201506062132376_DefaultSchema.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201506071758381_AddAthleteToIdentity.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201506071758381_AddAthleteToIdentity.Designer.cs">
+      <DependentUpon>201506071758381_AddAthleteToIdentity.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="Global.asax.cs">
@@ -320,6 +324,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201506062132376_DefaultSchema.resx">
       <DependentUpon>201506062132376_DefaultSchema.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201506071758381_AddAthleteToIdentity.resx">
+      <DependentUpon>201506071758381_AddAthleteToIdentity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
