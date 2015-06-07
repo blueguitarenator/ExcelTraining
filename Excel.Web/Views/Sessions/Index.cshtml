@@ -5,7 +5,21 @@
 }
 
 <h2>Index</h2>
+@ViewBag.TodaysDate
+<br />
+@ViewBag.Number
+<p>
+@foreach (var item in ViewBag.SixAmAthlete1)
+{
+    @item.LastName;
+}
 
+
+
+
+
+
+</p>
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>

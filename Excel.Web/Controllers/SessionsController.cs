@@ -18,6 +18,20 @@ namespace Excel.Web.Controllers
         // GET: Sessions
         public ActionResult Index()
         {
+            DateTime saveNow = DateTime.Now;
+            ViewBag.TodaysDate = saveNow.ToShortDateString();
+            int year = saveNow.Year;
+            int month = saveNow.Month;
+            int day = saveNow.Day;
+
+            var sessions = db.Sessions.Include(c => c.Athletes).Where(s => s.Hour == 6);
+
+            ViewBag.Number = sessions.Single().Athletes.Count;
+            ViewBag.SixAmAthlete1 = sessions.Single().Athletes;
+            ViewBag.SixAmAthlete2 = sessions.Single().Athletes;
+            //ViewBag.SevenAmAthletes = sevenAm.Athletes;
+
+            //return View(data1);
             return View(db.Sessions.ToList());
         }
 
