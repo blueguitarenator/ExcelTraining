@@ -1,4 +1,4 @@
-namespace Excel.Web.DataContexts.IdentityMigrations
+namespace Excel.Web.Migrations
 {
     using Excel.Web.Models;
     using Microsoft.AspNet.Identity;
@@ -12,8 +12,7 @@ namespace Excel.Web.DataContexts.IdentityMigrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
-            MigrationsDirectory = @"DataContexts\IdentityMigrations";
+            AutomaticMigrationsEnabled = false;
         }
 
         protected override void Seed(Excel.Web.DataContexts.IdentityDb context)

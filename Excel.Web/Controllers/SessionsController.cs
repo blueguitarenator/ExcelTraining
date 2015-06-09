@@ -13,7 +13,7 @@ namespace Excel.Web.Controllers
 {
     public class SessionsController : Controller
     {
-        private ExcelDb db = new ExcelDb();
+        private IdentityDb db = new IdentityDb();
 
         // GET: Sessions
         public ActionResult Index()

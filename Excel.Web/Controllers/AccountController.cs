@@ -9,6 +9,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Excel.Web.Models;
+using Excel.Entities;
+using Excel.Web.DataContexts;
 
 namespace Excel.Web.Controllers
 {
@@ -17,6 +19,7 @@ namespace Excel.Web.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private IdentityDb db = new IdentityDb();
 
         public AccountController()
         {
@@ -151,10 +154,20 @@ namespace Excel.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var athlete = new Athlete { FirstName = "Eve", LastName = "Johnson", Address = "123 Main Street", City = "OFallon", State = "MO", Zip = "63366", AthleteType = AthleteTypes.PersonalTraining };
+                //db.Athletes.Add(athlete);
+                //db.SaveChanges();
+                
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Athlete = athlete };
+                
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    //var ath = db.Athletes
+                    //.Where(b => b.FirstName == "Trish")
+                    //.FirstOrDefault();
+                    //user.Athlete = ath;
+                    //UserManager.Update(user);
                     //await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     //TempData["NewUser"] = user;
@@ -415,6 +428,7 @@ namespace Excel.Web.Controllers
                     _signInManager.Dispose();
                     _signInManager = null;
                 }
+                db.Dispose();
             }
 
             base.Dispose(disposing);

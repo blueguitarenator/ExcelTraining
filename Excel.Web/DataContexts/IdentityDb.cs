@@ -1,4 +1,5 @@
-﻿using Excel.Web.Models;
+﻿using Excel.Entities;
+using Excel.Web.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,10 @@ namespace Excel.Web.DataContexts
 {
     public class IdentityDb : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<Athlete> Athletes { get; set; }
+        public DbSet<Trainer> Trainer { get; set; }
+        public DbSet<Session> Sessions { get; set; }
+
         public IdentityDb()
             : base("DefaultConnection")
         {
