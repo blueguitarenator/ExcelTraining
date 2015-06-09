@@ -11,6 +11,7 @@ using Microsoft.Owin.Security;
 using Excel.Web.Models;
 using Excel.Entities;
 using Excel.Web.DataContexts;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Excel.Web.Controllers
 {
@@ -150,29 +151,32 @@ namespace Excel.Web.Controllers
         [HttpPost]
         [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(RegisterAthleteViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var athlete = new Athlete { FirstName = "Eve", LastName = "Johnson", Address = "123 Main Street", City = "OFallon", State = "MO", Zip = "63366", AthleteType = AthleteTypes.PersonalTraining };
-                //db.Athletes.Add(athlete);
-                //db.SaveChanges();
+                var athlete = new Athlete 
+                { 
+                    FirstName = model.FirstName, 
+                    LastName = model.LastName, 
+                    Address = model.Address, 
+                    City = model.City, 
+                    State = model.State, 
+                    Zip = model.Zip, 
+                    AthleteType = model.AthleteType, 
+                    UserType = model.UserType 
+                };
                 
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Athlete = athlete };
                 
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    //var ath = db.Athletes
-                    //.Where(b => b.FirstName == "Trish")
-                    //.FirstOrDefault();
-                    //user.Athlete = ath;
-                    //UserManager.Update(user);
-                    //await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-
-                    //TempData["NewUser"] = user;
-                    //TempData["NewEmail"] = model.Email;
-                    return RedirectToAction("Create", "Athletes");
+                    if (athlete.UserType == UserTypes.Trainer)
+                    {
+                        UserManager.AddToRole(user.Id, "admin");
+                    }
+                    return RedirectToAction("Index", "Athletes");
                 }
                 AddErrors(result);
                 

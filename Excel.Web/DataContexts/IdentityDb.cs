@@ -12,7 +12,6 @@ namespace Excel.Web.DataContexts
     public class IdentityDb : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Athlete> Athletes { get; set; }
-        public DbSet<Trainer> Trainer { get; set; }
         public DbSet<Session> Sessions { get; set; }
 
         public IdentityDb()

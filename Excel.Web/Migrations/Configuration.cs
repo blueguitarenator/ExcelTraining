@@ -1,5 +1,6 @@
 namespace Excel.Web.Migrations
 {
+    using Excel.Entities;
     using Excel.Web.Models;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
@@ -23,6 +24,7 @@ namespace Excel.Web.Migrations
                 var roleManager = new RoleManager<IdentityRole>(roleStore);
                 var store = new UserStore<ApplicationUser>(context);
                 var manager = new UserManager<ApplicationUser>(store);
+                var athlete = new Athlete { FirstName = "Ray", LastName = "Ramano", Address = "123 Main Street", City = "OFallon", State = "MO", Zip = "63366", AthleteType = AthleteTypes.PersonalTraining, UserType = UserTypes.Trainer };
                 var user = new ApplicationUser { Email = "ray@msn.com", UserName = "ray@msn.com" };
 
                 manager.Create(user, "123434");

@@ -15,4 +15,11 @@ namespace Excel.Entities
         [Display(Name = "Sports Training")]
         SportsTraining
     }
+
+    public enum UserTypes
+    {
+        Trainer,
+        Athlete
+    }
+
 }

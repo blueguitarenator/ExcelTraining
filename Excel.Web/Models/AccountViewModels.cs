@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Excel.Entities;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Excel.Web.Models
@@ -62,7 +63,7 @@ namespace Excel.Web.Models
         public bool RememberMe { get; set; }
     }
 
-    public class RegisterViewModel
+    public class RegisterAthleteViewModel
     {
         [Required]
         [EmailAddress]
@@ -79,6 +80,39 @@ namespace Excel.Web.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
+        [Required]
+        [Display(Name = "Address")]
+        public string Address { get; set; }
+
+        [Required]
+        [Display(Name = "City")]
+        public string City { get; set; }
+
+        [Required]
+        [Display(Name = "State")]
+        public string State { get; set; }
+
+        [Required]
+        [Display(Name = "Zip")]
+        public string Zip { get; set; }
+
+        [Required]
+        [Display(Name = "Athlete Type")]
+        public AthleteTypes AthleteType { get; set; }
+
+        [Required]
+        [Display(Name = "Trainer or Athlete")]
+        public UserTypes UserType { get; set; }
+
     }
 
     public class ResetPasswordViewModel

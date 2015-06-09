@@ -32,6 +32,9 @@ namespace Excel.Entities
         public string Zip { get; set; }
         [Required]
         public AthleteTypes AthleteType { get; set; }
+        [Required]
+        public UserTypes UserType { get; set; }
+
 
         public virtual ICollection<Session> Sessions { get; set; }
 
