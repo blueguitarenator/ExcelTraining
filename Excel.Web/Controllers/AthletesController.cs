@@ -53,11 +53,15 @@ namespace Excel.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,FirstName,LastName,Address,City,State,Zip,AthleteType")] Athlete athlete)
+        public ActionResult Create([Bind(Include = "Id,FirstName,LastName,Address,City,State,Zip,AthleteType,UserType")] Athlete athlete)
         {
             if (ModelState.IsValid)
             {
-                db.Athletes.Add(athlete);
+                var store = new UserStore<ApplicationUser>(db);
+                var manager = new UserManager<ApplicationUser>(store);
+                var user = new ApplicationUser { Email = "ray@msn.com", UserName = "ray@msn.com" };
+
+                //db.Athletes.Add(athlete);
                 db.SaveChanges();
 
                 return RedirectToAction("Index");
@@ -86,11 +90,22 @@ namespace Excel.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,Address,City,State,Zip,AthleteType")] Athlete athlete)
+        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,Address,City,State,Zip,AthleteType,UserType")] Athlete athlete)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(athlete).State = EntityState.Modified;
+                if (athlete.UserType == UserTypes.Trainer)
+                {
+                    var store = new UserStore<ApplicationUser>(db);
+                    var manager = new UserManager<ApplicationUser>(store);
+                   
+                    var usr = from u in db.Users 
+                                    where u.Athlete.Id == athlete.Id 
+                                    select u;
+                    manager.AddToRole(usr.First().Id, "admin");
+                    
+                }
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

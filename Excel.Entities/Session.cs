@@ -21,7 +21,5 @@ namespace Excel.Entities
         public DateTime Day { get; set; }
         
         public virtual ICollection<Athlete> Athletes { get; set; }
-
-        public virtual Trainer Trainer { get; set; }
     }
 }
