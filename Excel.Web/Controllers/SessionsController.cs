@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Excel.Entities;
 using Excel.Web.DataContexts;
 using Excel.Web.Models;
+using Microsoft.AspNet.Identity;
 
 namespace Excel.Web.Controllers
 {
@@ -29,7 +30,7 @@ namespace Excel.Web.Controllers
             sessionTableAthletes.Add(getSessionTableForHour(6));
             sessionTableAthletes.Add(getSessionTableForHour(7));
             sessionTableAthletes.Add(getSessionTableForHour(8));
-            sessionTableAthletes.Add(getSessionTableForHour(9));
+            //sessionTableAthletes.Add(getSessionTableForHour(9));
 
             return View(sessionTableAthletes);
         }
@@ -67,7 +68,14 @@ namespace Excel.Web.Controllers
         // GET: Sessions/Add/5
         public ActionResult Add(int? id)
         {
-            return View();
+            var userId = User.Identity.GetUserId();
+            var appUser = db.Users.Where(u => u.Id == userId).SingleOrDefault();
+            var session = db.Sessions.Where(s => s.Hour == id).SingleOrDefault();
+            var athlete = db.Athletes.Where(a => a.Id == appUser.Athlete.Id).SingleOrDefault();
+            session.Athletes.Add(athlete);
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
         }
 
 
