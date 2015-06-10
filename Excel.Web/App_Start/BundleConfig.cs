@@ -21,11 +21,16 @@ namespace Excel.Web
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+                      "~/Scripts/respond.js",
+                      "~/Scripts/bootstrap-datepicker.js",
+                      "~/Scripts/DatePickerReady.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/bootstrap-datepicker3.css"));
+
+
         }
     }
 }

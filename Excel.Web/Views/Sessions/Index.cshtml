@@ -5,6 +5,17 @@
 }
 
 <h2>Sessions</h2>
+<div class="form-group">
+
+    @Html.LabelFor(model => model.ElementAt(0).SessionDate, new { @class = "col-md-2 control-label" })
+
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.ElementAt(0).SessionDate)
+
+    </div>
+
+</div>
+
 @ViewBag.TodaysDate
 <br />
 
@@ -12,4 +23,7 @@
 @Html.Partial("_SessionPartial", Model.ElementAt(1))
 @Html.Partial("_SessionPartial", Model.ElementAt(2))
 @Html.Partial("_SessionPartial", Model.ElementAt(3))
+
+
+
 

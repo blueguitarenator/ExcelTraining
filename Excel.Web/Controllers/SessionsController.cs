@@ -39,6 +39,7 @@ namespace Excel.Web.Controllers
             SessionTableAthletes sta = new SessionTableAthletes();
             sta.SessionAthletes = new string[16];
             sta.hour = hour;
+            sta.SessionDate = DateTime.Now;
             Session session = db.Sessions.Include(c => c.Athletes).Where(s => s.Hour == hour).SingleOrDefault();
             for (int i = 0; i < 16; i++)
             {
