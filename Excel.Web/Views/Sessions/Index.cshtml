@@ -8,20 +8,78 @@
 @ViewBag.TodaysDate
 <br />
 @ViewBag.Number
+
+
+<table class="table" style="width: 100%" style="border:1px solid">
+    <tr>
+        <th>
+            6 AM
+        </th>
+        <th>
+        </th>
+        <th>
+        </th>
+        <th>
+        </th>
+    </tr>
+    @for (int i = 0; i < 4; i++)
+    {
+
+        <tr>
+            <td style="min-width:50px">
+                @ViewBag.SixAmAthlete[i, 0]
+             </td>
+            <td style="min-width:50px">
+                @ViewBag.SixAmAthlete[i, 1]
+            </td>
+            <td style="min-width:50px">
+                @ViewBag.SixAmAthlete[i, 2]
+            </td>
+            <td style="min-width:50px">
+                @ViewBag.SixAmAthlete[i, 3]
+            </td>
+        </tr>
+    }
+</table>
+@Html.ActionLink("Add", "Add", new { id = @ViewBag.SixAmSession.Id })
+
+<table class="table" style="width: 100%" style="border:1px solid">
+    <tr>
+        <th>
+            7 AM
+        </th>
+        <th>
+        </th>
+        <th>
+        </th>
+        <th>
+        </th>
+    </tr>
+    @for (int i = 0; i < 4; i++)
+    {
+
+        <tr>
+            <td style="min-width:50px">
+                @ViewBag.SevenAmAthlete[i, 0]
+            </td>
+            <td style="min-width:50px">
+                @ViewBag.SevenAmAthlete[i, 1]
+            </td>
+            <td style="min-width:50px">
+                @ViewBag.SevenAmAthlete[i, 2]
+            </td>
+            <td style="min-width:50px">
+                @ViewBag.SevenAmAthlete[i, 3]
+            </td>
+        </tr>
+    }
+
+
+</table>
+
+
 <p>
-@foreach (var item in ViewBag.SixAmAthlete1)
-{
-    @item.LastName;
-}
-
-
-
-
-
-
-</p>
-<p>
-    @Html.ActionLink("Create New", "Create")
+    <!-- @Html.ActionLink("Create New", "Create")-->
 </p>
 <table class="table">
     <tr>

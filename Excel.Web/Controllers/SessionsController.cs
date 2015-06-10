@@ -24,16 +24,44 @@ namespace Excel.Web.Controllers
             int month = saveNow.Month;
             int day = saveNow.Day;
 
-            var sessions = db.Sessions.Include(c => c.Athletes).Where(s => s.Hour == 6);
+            Session[] sessions = db.Sessions.Include(c => c.Athletes).Where(s => s.Hour == 6).ToArray();
+            Session sixSession = sessions[0];
+            Athlete[] athletesAndTrainer = sixSession.Athletes.ToArray();
+            Athlete[] athletesOnly = athletesAndTrainer.Where(a => a.UserType == UserTypes.Athlete).ToArray();
+            string[,] sixSlots = new string[4,4];
+            var counter = 0;
+            for(var i = 0; i < 4; i++)
+            {
+                for (var j = 0; j < 4; j++)
+                {
+                    if (counter < athletesOnly.Count())
+                    {
+                        sixSlots[i,j] = athletesOnly[counter].FirstName + " " + athletesOnly[counter].LastName;
+                    }
+                    else
+                    {
+                        sixSlots[i, j] = "open";
+                    }
+                    counter++;
+                }
+                    
+            }
 
-            ViewBag.Number = sessions.Single().Athletes.Count;
-            ViewBag.SixAmAthlete1 = sessions.Single().Athletes;
-            ViewBag.SixAmAthlete2 = sessions.Single().Athletes;
-            //ViewBag.SevenAmAthletes = sevenAm.Athletes;
+            ViewBag.SixAmAthlete = sixSlots;
+            ViewBag.SixAmSession = sixSession;
+            ViewBag.SevenAmAthlete = sixSlots;
 
-            //return View(data1);
+
+
             return View(db.Sessions.ToList());
         }
+
+        // GET: Sessions/Add/5
+        public ActionResult Add(int? id)
+        {
+            return View();
+        }
+
 
         // GET: Sessions/Details/5
         public ActionResult Details(int? id)

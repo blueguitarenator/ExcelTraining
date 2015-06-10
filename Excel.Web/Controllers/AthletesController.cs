@@ -42,33 +42,29 @@ namespace Excel.Web.Controllers
         }
 
         // GET: Athletes/Create
-        [Authorize(Roles="admin")]
-        public ActionResult Create()
-        {
-            return View();
-        }
+        //[Authorize(Roles="admin")]
+        //public ActionResult Create()
+        //{
+        //    return View();
+        //}
 
         // POST: Athletes/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,FirstName,LastName,Address,City,State,Zip,AthleteType,UserType")] Athlete athlete)
-        {
-            if (ModelState.IsValid)
-            {
-                var store = new UserStore<ApplicationUser>(db);
-                var manager = new UserManager<ApplicationUser>(store);
-                var user = new ApplicationUser { Email = "ray@msn.com", UserName = "ray@msn.com" };
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Create([Bind(Include = "Id,FirstName,LastName,Address,City,State,Zip,AthleteType,UserType")] Athlete athlete)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        db.Athletes.Add(athlete);
+        //        db.SaveChanges();
 
-                //db.Athletes.Add(athlete);
-                db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
 
-                return RedirectToAction("Index");
-            }
-
-            return View(athlete);
-        }
+        //    return View(athlete);
+        //}
 
         // GET: Athletes/Edit/5
         public ActionResult Edit(int? id)
