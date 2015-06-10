@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Excel.Entities;
 using Excel.Web.DataContexts;
+using Excel.Web.Models;
 
 namespace Excel.Web.Controllers
 {
@@ -24,36 +25,42 @@ namespace Excel.Web.Controllers
             int month = saveNow.Month;
             int day = saveNow.Day;
 
-            Session[] sessions = db.Sessions.Include(c => c.Athletes).Where(s => s.Hour == 6).ToArray();
-            Session sixSession = sessions[0];
-            Athlete[] athletesAndTrainer = sixSession.Athletes.ToArray();
-            Athlete[] athletesOnly = athletesAndTrainer.Where(a => a.UserType == UserTypes.Athlete).ToArray();
-            string[,] sixSlots = new string[4,4];
-            var counter = 0;
-            for(var i = 0; i < 4; i++)
+            List<SessionTableAthletes> sessionTableAthletes = new List<SessionTableAthletes>();
+            sessionTableAthletes.Add(getSessionTableForHour(6));
+            sessionTableAthletes.Add(getSessionTableForHour(7));
+            sessionTableAthletes.Add(getSessionTableForHour(8));
+            sessionTableAthletes.Add(getSessionTableForHour(9));
+
+            return View(sessionTableAthletes);
+        }
+
+        private SessionTableAthletes getSessionTableForHour(int hour)
+        {
+            SessionTableAthletes sta = new SessionTableAthletes();
+            sta.SessionAthletes = new string[16];
+            sta.hour = hour;
+            Session session = db.Sessions.Include(c => c.Athletes).Where(s => s.Hour == hour).SingleOrDefault();
+            for (int i = 0; i < 16; i++)
             {
-                for (var j = 0; j < 4; j++)
+                sta.SessionAthletes[i] = "open";
+            }
+            if (session != null)
+            {
+                Athlete[] athletesAndTrainer = session.Athletes.ToArray();
+                Athlete[] athletesOnly = athletesAndTrainer.Where(a => a.UserType == UserTypes.Athlete).ToArray();
+                
+                var counter = 0;
+                for (var i = 0; i < 16; i++)
                 {
                     if (counter < athletesOnly.Count())
                     {
-                        sixSlots[i,j] = athletesOnly[counter].FirstName + " " + athletesOnly[counter].LastName;
-                    }
-                    else
-                    {
-                        sixSlots[i, j] = "open";
+                        string name = athletesOnly[counter].FirstName + " " + athletesOnly[counter].LastName;
+                        sta.SessionAthletes[i] = name;
                     }
                     counter++;
                 }
-                    
             }
-
-            ViewBag.SixAmAthlete = sixSlots;
-            ViewBag.SixAmSession = sixSession;
-            ViewBag.SevenAmAthlete = sixSlots;
-
-
-
-            return View(db.Sessions.ToList());
+            return sta;
         }
 
         // GET: Sessions/Add/5

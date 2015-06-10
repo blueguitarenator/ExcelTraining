@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Excel.Entities.Session>
+﻿@model List<Excel.Web.Models.SessionTableAthletes>
 
 @{
     ViewBag.Title = "Index";
@@ -7,105 +7,9 @@
 <h2>Sessions</h2>
 @ViewBag.TodaysDate
 <br />
-@ViewBag.Number
 
+@Html.Partial("_SessionPartial", Model.ElementAt(0))
+@Html.Partial("_SessionPartial", Model.ElementAt(1))
+@Html.Partial("_SessionPartial", Model.ElementAt(2))
+@Html.Partial("_SessionPartial", Model.ElementAt(3))
 
-<table class="table" style="width: 100%" style="border:1px solid">
-    <tr>
-        <th>
-            6 AM
-        </th>
-        <th>
-        </th>
-        <th>
-        </th>
-        <th>
-        </th>
-    </tr>
-    @for (int i = 0; i < 4; i++)
-    {
-
-        <tr>
-            <td style="min-width:50px">
-                @ViewBag.SixAmAthlete[i, 0]
-             </td>
-            <td style="min-width:50px">
-                @ViewBag.SixAmAthlete[i, 1]
-            </td>
-            <td style="min-width:50px">
-                @ViewBag.SixAmAthlete[i, 2]
-            </td>
-            <td style="min-width:50px">
-                @ViewBag.SixAmAthlete[i, 3]
-            </td>
-        </tr>
-    }
-</table>
-@Html.ActionLink("Add", "Add", new { id = @ViewBag.SixAmSession.Id })
-
-<table class="table" style="width: 100%" style="border:1px solid">
-    <tr>
-        <th>
-            7 AM
-        </th>
-        <th>
-        </th>
-        <th>
-        </th>
-        <th>
-        </th>
-    </tr>
-    @for (int i = 0; i < 4; i++)
-    {
-
-        <tr>
-            <td style="min-width:50px">
-                @ViewBag.SevenAmAthlete[i, 0]
-            </td>
-            <td style="min-width:50px">
-                @ViewBag.SevenAmAthlete[i, 1]
-            </td>
-            <td style="min-width:50px">
-                @ViewBag.SevenAmAthlete[i, 2]
-            </td>
-            <td style="min-width:50px">
-                @ViewBag.SevenAmAthlete[i, 3]
-            </td>
-        </tr>
-    }
-
-
-</table>
-
-
-<p>
-    <!-- @Html.ActionLink("Create New", "Create")-->
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Hour)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Day)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Hour)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Day)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
-
-</table>
