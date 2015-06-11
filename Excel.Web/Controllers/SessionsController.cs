@@ -65,6 +65,13 @@ namespace Excel.Web.Controllers
             return sta;
         }
 
+        [HttpPost]
+        public ActionResult Index(SessionTableAthletes model)
+        {
+            DateTime dt = model.SessionDate;
+            return RedirectToAction("Index");
+        }
+
         // GET: Sessions/Add/5
         public ActionResult Add(int? id)
         {

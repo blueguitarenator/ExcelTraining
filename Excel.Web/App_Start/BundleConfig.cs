@@ -20,6 +20,7 @@ namespace Excel.Web
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
+                      "~/Scripts/jquery-1.10.2.min.js",
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js",
                       "~/Scripts/bootstrap-datepicker.js",
