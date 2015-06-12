@@ -8,7 +8,10 @@
 <div class="form-group">
     @Html.LabelFor(model => model.ElementAt(0).SessionDate, new { @class = "col-md-2 control-label" })
     <div class="col-md-10">
-        @Html.EditorFor(model => model.ElementAt(0).SessionDate)
+        @using (Html.BeginForm("Index", "Sessions"))
+        {
+            @Html.EditorFor(model => model.ElementAt(0).SessionDate)
+        }
     </div>
 </div>
 
@@ -20,11 +23,9 @@
 @Html.Partial("_SessionPartial", Model.ElementAt(2))
 
 <script type ="text/javascript">
-    $('.datepicker').datepicker().on('changeDate', function () {
-        $(this).closest('form').submit(); // or this.form.submit();
-    });
-
     $(document).ready(function () {
-        $(".datepicker").datepicker();
+        $('.datepicker').datepicker().on('changeDate', function () {
+            $(this).closest('form').submit(); // or this.form.submit();
+        });
     });
 </script>

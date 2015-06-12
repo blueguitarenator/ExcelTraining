@@ -66,9 +66,9 @@ namespace Excel.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(SessionTableAthletes model)
+        public ActionResult Index(DateTime model)
         {
-            DateTime dt = model.SessionDate;
+            DateTime dt = model;
             return RedirectToAction("Index");
         }
 
