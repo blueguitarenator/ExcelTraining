@@ -188,11 +188,11 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\AthletesController.cs" />
+    <Compile Include="Controllers\AthleteController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\SessionsController.cs" />
+    <Compile Include="Controllers\SessionController.cs" />
     <Compile Include="DataContexts\IdentityDb.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="Global.asax.cs">
@@ -377,19 +377,21 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AthleteTypes.cshtml" />
-    <Content Include="Views\Athletes\Create.cshtml" />
-    <Content Include="Views\Athletes\Delete.cshtml" />
-    <Content Include="Views\Athletes\Details.cshtml" />
-    <Content Include="Views\Athletes\Edit.cshtml" />
-    <Content Include="Views\Athletes\Index.cshtml" />
-    <Content Include="Views\Sessions\Create.cshtml" />
-    <Content Include="Views\Sessions\Delete.cshtml" />
-    <Content Include="Views\Sessions\Details.cshtml" />
-    <Content Include="Views\Sessions\Edit.cshtml" />
-    <Content Include="Views\Sessions\Index.cshtml" />
+    <Content Include="Views\Athlete\Create.cshtml" />
+    <Content Include="Views\Athlete\Delete.cshtml" />
+    <Content Include="Views\Athlete\Details.cshtml" />
+    <Content Include="Views\Athlete\Edit.cshtml" />
+    <Content Include="Views\Athlete\Index.cshtml" />
+    <Content Include="Views\Session\Create.cshtml" />
+    <Content Include="Views\Session\Delete.cshtml" />
+    <Content Include="Views\Session\Details.cshtml" />
+    <Content Include="Views\Session\Edit.cshtml" />
+    <Content Include="Views\Session\Index.cshtml" />
     <Content Include="Views\Dashboard\Index.cshtml" />
-    <Content Include="Views\Sessions\_SessionPartial.cshtml" />
+    <Content Include="Views\Session\_SessionPartial.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
+    <Content Include="Views\Session\GetProducts.cshtml" />
+    <Content Include="Views\Session\_ChangeDateSixAm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

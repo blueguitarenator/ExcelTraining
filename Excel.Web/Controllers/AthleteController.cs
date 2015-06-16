@@ -15,7 +15,7 @@ using Microsoft.AspNet.Identity;
 namespace Excel.Web.Controllers
 {
     [Authorize(Roles = "admin")]
-    public class AthletesController : Controller
+    public class AthleteController : Controller
     {
         private IdentityDb db = new IdentityDb();
 

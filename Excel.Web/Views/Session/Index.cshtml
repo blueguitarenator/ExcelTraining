@@ -1,0 +1,97 @@
+﻿@model List<Excel.Web.Models.SessionTableAthletes>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Sessions</h2>
+<div class="form-group">
+    @Html.LabelFor(model => model.ElementAt(0).SessionDate, new { @class = "col-md-2 control-label" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.ElementAt(0).SessionDate)
+        @using (Html.BeginForm("Index", "Session", FormMethod.Post))
+        {
+            @Html.HiddenFor(model => model.ElementAt(0).SessionDate)
+            
+        }
+    </div>
+</div>
+
+<div style="width:600px; margin-left:auto; margin-right:auto">
+    <div style="background-color: lightgray">
+        <h2>My Products</h2>
+    </div>
+    <p>Click the button to Get Products with an Ajax call</p>
+    <input id="btnAjax" name="btnAjax" type="button" value="Get Products" />
+    <div id="products" style="background-color:lightskyblue"></div>
+    <input id="btnSubmit" type="submit" value="Change Date">
+</div>
+
+
+
+<!--@ViewBag.TodaysDate-->
+<br />
+
+@Html.Partial("_ChangeDateSixAm", Model.ElementAt(0))
+
+@Html.Partial("_SessionPartial", Model.ElementAt(0))
+@Html.Partial("_SessionPartial", Model.ElementAt(1))
+@Html.Partial("_SessionPartial", Model.ElementAt(2))
+
+@section Scripts {
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.datecontrol').datepicker().on('changeDate', function (e) {
+            var x = $('.datecontrol').datepicker("getDate");
+            alert(x);
+            $.ajax({
+                url: '/Session/GetProducts',
+                contentType: 'application/html; charset=utf-8',
+                type: 'GET',
+                datatype: 'html'
+            })
+            .success(function (result) {
+                $('#products').html(result);
+            })
+            .error(function (xhr, status) {
+                alert(status);
+            })
+        });
+
+        
+
+        $('#btnAjax').click(function () {
+            $.ajax({
+                url: '/Session/GetProducts',
+                contentType: 'application/html; charset=utf-8',
+                type: 'GET',
+                datatype: 'html'
+            })
+            .success(function (result) {
+                $('#products').html(result);
+            })
+            .error(function (xhr, status) {
+                alert(status);
+            })
+        });
+
+        $('#btnSubmit').click(function () {
+            var idVal = $('.datecontrol').val();
+            $.ajax({
+                url: '/Session/_ChangeDateSixAm',
+                contentType: 'application/html; charset=utf-8',
+                data: { id: idVal },
+                type: 'GET',
+                dataType: 'html'
+
+            })
+            .success(function (result) {
+                $('#changeDateSixAm').html(result);
+            })
+            .error(function (xhr, status) {
+                alert(status);
+            })
+        });
+    });
+</script>
+}

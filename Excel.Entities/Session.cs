@@ -17,7 +17,8 @@ namespace Excel.Entities
         
         [Required]
         [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-mm-dd}")]
+        [DisplayFormat(DataFormatString = "{0:mm-dd-yyyy}")]
+        [Display(Name = "Session Date")]
         public DateTime Day { get; set; }
         
         public virtual ICollection<Athlete> Athletes { get; set; }

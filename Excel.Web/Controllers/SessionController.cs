@@ -13,7 +13,7 @@ using Microsoft.AspNet.Identity;
 
 namespace Excel.Web.Controllers
 {
-    public class SessionsController : Controller
+    public class SessionController : Controller
     {
         private IdentityDb db = new IdentityDb();
 
@@ -27,21 +27,27 @@ namespace Excel.Web.Controllers
             int day = saveNow.Day;
 
             List<SessionTableAthletes> sessionTableAthletes = new List<SessionTableAthletes>();
-            sessionTableAthletes.Add(getSessionTableForHour(6));
-            sessionTableAthletes.Add(getSessionTableForHour(7));
-            sessionTableAthletes.Add(getSessionTableForHour(8));
-            //sessionTableAthletes.Add(getSessionTableForHour(9));
+            sessionTableAthletes.Add(getSessionTableForHour(6, saveNow));
+            sessionTableAthletes.Add(getSessionTableForHour(7, saveNow));
+            sessionTableAthletes.Add(getSessionTableForHour(8, saveNow));
+            //sessionTableAthletes.Add(getSessionTableForHour(9, saveNow));
 
             return View(sessionTableAthletes);
         }
 
-        private SessionTableAthletes getSessionTableForHour(int hour)
+        private SessionTableAthletes getSessionTableForHour(int hour, DateTime dt)
         {
             SessionTableAthletes sta = new SessionTableAthletes();
             sta.SessionAthletes = new string[16];
             sta.hour = hour;
             sta.SessionDate = DateTime.Now;
-            Session session = db.Sessions.Include(c => c.Athletes).Where(s => s.Hour == hour).SingleOrDefault();
+            
+            Session session = db.Sessions.Include(c => c.Athletes).Where(
+                s => s.Hour == hour &&
+                s.Day.Year == dt.Year &&
+                s.Day.Month == dt.Month && 
+                s.Day.Day == dt.Day).SingleOrDefault();
+
             for (int i = 0; i < 16; i++)
             {
                 sta.SessionAthletes[i] = "open";
@@ -63,6 +69,44 @@ namespace Excel.Web.Controllers
                 }
             }
             return sta;
+        }
+
+        public PartialViewResult _ChangeDateSixAm(DateTime dt)
+        {
+            IList<Session> sessions = db.Sessions.ToArray();
+            IList<Session> todaysSessions = sessions.Where(p => p.Day.Year == dt.Year && p.Day.Month == dt.Month && p.Day.Hour == dt.Hour).ToArray();
+            if (todaysSessions == null || todaysSessions.Count() == 0)
+            {
+                var newSession = new Session { Day = dt, Hour = 6};
+                sessions.Add(newSession);
+                db.SaveChanges();
+            }
+            
+            Session sixAm = todaysSessions.Where(s => s.Hour == 6).Single();
+            SessionTableAthletes athletes = new SessionTableAthletes();
+
+            athletes = getSessionTableForHour(6, dt);
+
+            return PartialView("_ChangeDateSixAm", athletes);
+        }
+
+        public PartialViewResult GetProducts()
+        {
+            SessionTableAthletes athletes = new SessionTableAthletes { hour = 6, SessionAthletes = new string[]{
+                    "asdf", "qwer", "zxc",
+                    "asdf", "qwer", "zxc",
+                    "asdf", "qwer", "zxc",
+                    "asdf", "qwer", "zxc",
+                    "asdf", "qwer", "zxc"
+                } 
+            };
+
+            return PartialView(athletes);
+        }
+
+        public ActionResult GetGreeting(string name)
+        {
+            return Content("Hello " + name);
         }
 
         [HttpPost]
