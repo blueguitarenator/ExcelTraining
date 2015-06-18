@@ -18,21 +18,88 @@ namespace Excel.Web.Controllers
         private IdentityDb db = new IdentityDb();
 
         // GET: Sessions
-        public ActionResult Index()
+        public ActionResult Index(DateTime? dt)
         {
-            DateTime saveNow = DateTime.Now;
+            if (dt == null)
+            {
+                DateTime nowDateOnly = DateTime.Now.Date;
+                dt = nowDateOnly;
+            }
+
+            DateTime saveNow = new DateTime(2015, 06, 06, 0, 0, 0);// DateTime.Now;
             ViewBag.TodaysDate = saveNow.ToShortDateString();
             int year = saveNow.Year;
             int month = saveNow.Month;
             int day = saveNow.Day;
 
-            List<SessionTableAthletes> sessionTableAthletes = new List<SessionTableAthletes>();
-            sessionTableAthletes.Add(getSessionTableForHour(6, saveNow));
-            sessionTableAthletes.Add(getSessionTableForHour(7, saveNow));
-            sessionTableAthletes.Add(getSessionTableForHour(8, saveNow));
+            //List<SessionTableAthletes> sessionTableAthletes = new List<SessionTableAthletes>();
+            //sessionTableAthletes.Add(getSessionTableForHour(6, saveNow));
+            //sessionTableAthletes.Add(getSessionTableForHour(7, saveNow));
+            //sessionTableAthletes.Add(getSessionTableForHour(8, saveNow));
             //sessionTableAthletes.Add(getSessionTableForHour(9, saveNow));
 
-            return View(sessionTableAthletes);
+            SessionModel sessionModel = new SessionModel();
+            sessionModel.SessionDateTime = saveNow;// (DateTime)dt;
+            sessionModel.Hour = 6;
+            
+            
+            return View(sessionModel);
+        }
+
+
+        //public ActionResult Index(SessionModel model)
+        //{
+        //    if (sessionModel == null)
+        //    {
+        //        sessionModel = new SessionModel();
+        //        sessionModel.SessionDateTime = model.SessionDateTime;
+        //    }
+        //    return RedirectToAction("Index");
+        //}
+
+        public PartialViewResult GetSessionAthleteData(SessionModel model)
+        {
+            Session session = getOrCreateSession(model.Hour, model.SessionDateTime);
+            //Session session = db.Sessions.Include(c => c.Athletes).Where(
+            //    s => s.Hour == model.Hour &&
+            //    s.Day.Year == model.SessionDateTime.Year &&
+            //    s.Day.Month == model.SessionDateTime.Month &&
+            //    s.Day.Day == model.SessionDateTime.Day).SingleOrDefault();
+
+            IEnumerable<Athlete> data = session.Athletes;
+            int cnt = 0;
+            if (data != null)
+            {
+                cnt = data.Count();
+            }
+            List<Athlete> openSlots = new List<Athlete>();
+            for (int i = cnt; i < 16; i++)
+            {
+                openSlots.Add(new Athlete { LastName = "open" });
+            }
+            if (data != null)
+            {
+                data = data.Concat(openSlots);
+                return PartialView(data);
+            }
+            return PartialView(openSlots);
+        }
+
+        private Session getOrCreateSession(int hour, DateTime dt)
+        {
+            hour = 6;
+            Session session = db.Sessions.Where(
+                s => s.Hour == hour &&
+                s.Day.Year == dt.Year &&
+                s.Day.Month == dt.Month &&
+                s.Day.Day == dt.Day).SingleOrDefault();
+            if (session == null)
+            {
+                session = new Session { Day = dt, Hour = hour };
+                db.Sessions.Add(session);
+                db.SaveChanges();
+            }
+            return session;
         }
 
         private SessionTableAthletes getSessionTableForHour(int hour, DateTime dt)
@@ -71,24 +138,30 @@ namespace Excel.Web.Controllers
             return sta;
         }
 
+        public List<SessionTableAthletes> Bark()
+        {
+            SessionTableAthletes athletes = new SessionTableAthletes
+            {
+                hour = 6,
+                SessionAthletes = new string[]{
+                    "asdfasdf", "qwerasdf", "zxcasdf"
+                }
+            };
+            List<SessionTableAthletes> all = new List<SessionTableAthletes>();
+            all.Add(athletes);
+            return all;
+        }
+        
         public PartialViewResult _ChangeDateSixAm(DateTime dt)
         {
-            IList<Session> sessions = db.Sessions.ToArray();
-            IList<Session> todaysSessions = sessions.Where(p => p.Day.Year == dt.Year && p.Day.Month == dt.Month && p.Day.Hour == dt.Hour).ToArray();
-            if (todaysSessions == null || todaysSessions.Count() == 0)
-            {
-                var newSession = new Session { Day = dt, Hour = 6};
-                sessions.Add(newSession);
-                db.SaveChanges();
-            }
-            
-            Session sixAm = todaysSessions.Where(s => s.Hour == 6).Single();
+            var sixAm = getOrCreateSession(6, dt);
             SessionTableAthletes athletes = new SessionTableAthletes();
 
-            athletes = getSessionTableForHour(6, dt);
+          //  athletes = sixAm.Athletes();// getSessionTableForHour(6, dt);
 
             return PartialView("_ChangeDateSixAm", athletes);
         }
+
 
         public PartialViewResult GetProducts()
         {
@@ -107,13 +180,6 @@ namespace Excel.Web.Controllers
         public ActionResult GetGreeting(string name)
         {
             return Content("Hello " + name);
-        }
-
-        [HttpPost]
-        public ActionResult Index(DateTime model)
-        {
-            DateTime dt = model;
-            return RedirectToAction("Index");
         }
 
         // GET: Sessions/Add/5

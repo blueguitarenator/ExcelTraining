@@ -24,7 +24,8 @@ namespace Excel.Web
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js",
                       "~/Scripts/bootstrap-datepicker.js",
-                      "~/Scripts/DatePickerReady.js"));
+                      "~/Scripts/DatePickerReady.js",
+                      "~/Scripts/jquery.unobtrusive-ajax.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
