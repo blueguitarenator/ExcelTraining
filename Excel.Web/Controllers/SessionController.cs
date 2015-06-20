@@ -20,17 +20,14 @@ namespace Excel.Web.Controllers
         // GET: Sessions
         public ActionResult Index(DateTime? dt)
         {
-            if (dt == null)
+            DateTime saveNow = DateTime.Now.Date;
+            if (dt.HasValue)
             {
-                DateTime nowDateOnly = DateTime.Now.Date;
-                dt = nowDateOnly;
+                saveNow = dt.Value;
             }
 
-            DateTime saveNow = new DateTime(2015, 06, 06, 0, 0, 0);// DateTime.Now;
-            ViewBag.TodaysDate = saveNow.ToShortDateString();
-
             SessionModel sessionModel = new SessionModel();
-            sessionModel.SessionDateTime = saveNow;// (DateTime)dt;
+            sessionModel.SessionDateTime = saveNow;
             sessionModel.Hour = 6;
             return View(sessionModel);
         }
