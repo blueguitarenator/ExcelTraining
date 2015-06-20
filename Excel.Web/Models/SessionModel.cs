@@ -18,6 +18,12 @@ namespace Excel.Web.Models
 
         private List<Athlete> sixAmPersonalTraining;
         private List<Athlete> sevenAmPersonalTraining;
+        private List<Athlete> eightAmPersonalTraining;
+        private List<Athlete> nineAmPersonalTraining;
+        private List<Athlete> tenAmPersonalTraining;
+        private List<Athlete> fourPmPersonalTraining;
+        private List<Athlete> fivePmPersonalTraining;
+        private List<Athlete> sixPmPersonalTraining;
 
         public List<Athlete> SixAmPersonalTraining
         {
@@ -29,6 +35,42 @@ namespace Excel.Web.Models
         {
             get { return sevenAmPersonalTraining; }
             set { sevenAmPersonalTraining = value; }
+        }
+
+        public List<Athlete> EightAmPersonalTraining
+        {
+            get { return eightAmPersonalTraining; }
+            set { eightAmPersonalTraining = value; }
+        }
+
+        public List<Athlete> NineAmPersonalTraining
+        {
+            get { return nineAmPersonalTraining; }
+            set { nineAmPersonalTraining = value; }
+        }
+
+        public List<Athlete> TenAmPersonalTraining
+        {
+            get { return tenAmPersonalTraining; }
+            set { tenAmPersonalTraining = value; }
+        }
+
+        public List<Athlete> FourPmPersonalTraining
+        {
+            get { return fourPmPersonalTraining; }
+            set { fourPmPersonalTraining = value; }
+        }
+
+        public List<Athlete> FivePmPersonalTraining
+        {
+            get { return fivePmPersonalTraining; }
+            set { fivePmPersonalTraining = value; }
+        }
+
+        public List<Athlete> SixPmPersonalTraining
+        {
+            get { return sixPmPersonalTraining; }
+            set { sixPmPersonalTraining = value; }
         }
 
     }

@@ -41,12 +41,6 @@ namespace Excel.Web.Controllers
             return View(athlete);
         }
 
-        // GET: Athletes/Create
-        //[Authorize(Roles="admin")]
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
 
         // POST: Athletes/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 

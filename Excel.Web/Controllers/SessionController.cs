@@ -35,27 +35,26 @@ namespace Excel.Web.Controllers
             return View(sessionModel);
         }
 
-        public PartialViewResult _PersonalTrainingGrid(SessionModel model, bool? doAdd)
+        public PartialViewResult _PersonalTrainingGrid(SessionModel model)
         {
-            if (doAdd.HasValue && doAdd.Value)
-            {
-
-                var userId = User.Identity.GetUserId();
-                var appUser = db.Users.Where(u => u.Id == userId).SingleOrDefault();
-                var session = getOrCreateSession(model.Hour, model.SessionDateTime);
-                var athlete = db.Athletes.Where(a => a.Id == appUser.Athlete.Id).SingleOrDefault();
-                session.Athletes.Add(athlete);
-                db.SaveChanges();
-            }
             model.SixAmPersonalTraining = getSessionList(6, model.SessionDateTime);
             model.SevenAmPersonalTraining = getSessionList(7, model.SessionDateTime);
+            model.EightAmPersonalTraining = getSessionList(8, model.SessionDateTime);
+            model.NineAmPersonalTraining = getSessionList(9, model.SessionDateTime);
+            model.TenAmPersonalTraining = getSessionList(10, model.SessionDateTime);
+            model.FourPmPersonalTraining = getSessionList(16, model.SessionDateTime);
+            model.FivePmPersonalTraining = getSessionList(17, model.SessionDateTime);
+            model.SixPmPersonalTraining = getSessionList(18, model.SessionDateTime);
             return PartialView(model);
-
         }
 
         private List<Athlete> getSessionList(int hour, DateTime dt)
         {
             Session session = getOrCreateSession(hour, dt);
+            if (session == null)
+            {
+                session = getOrCreateSession(hour, dt);
+            }
 
             IEnumerable<Athlete> data = session.Athletes;
             int cnt = 0;
@@ -85,8 +84,14 @@ namespace Excel.Web.Controllers
                 s.Day.Day == dt.Day).SingleOrDefault();
             if (session == null)
             {
-                session = new Session { Day = dt, Hour = hour };
-                db.Sessions.Add(session);
+                db.Sessions.Add(new Session { Day = dt, Hour = 6 });
+                db.Sessions.Add(new Session { Day = dt, Hour = 7 });
+                db.Sessions.Add(new Session { Day = dt, Hour = 8 });
+                db.Sessions.Add(new Session { Day = dt, Hour = 9 });
+                db.Sessions.Add(new Session { Day = dt, Hour = 10 });
+                db.Sessions.Add(new Session { Day = dt, Hour = 16 });
+                db.Sessions.Add(new Session { Day = dt, Hour = 17 });
+                db.Sessions.Add(new Session { Day = dt, Hour = 18 });
                 db.SaveChanges();
             }
             return session;
@@ -113,10 +118,6 @@ namespace Excel.Web.Controllers
             }
             return PartialView(athletes);
         }
-
-
-
-       
 
         protected override void Dispose(bool disposing)
         {

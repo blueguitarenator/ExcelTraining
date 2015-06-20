@@ -176,7 +176,7 @@ namespace Excel.Web.Controllers
                     {
                         UserManager.AddToRole(user.Id, "admin");
                     }
-                    return RedirectToAction("Index", "Athletes");
+                    return RedirectToAction("Index", "Athlete");
                 }
                 AddErrors(result);
                 

@@ -78,6 +78,11 @@ namespace Excel.Web.Migrations
                 new Session{Hour =6, Day =DateTime.Parse("2015-06-06"), Athletes=session6Athletes},
                 new Session{Hour =7, Day =DateTime.Parse("2015-06-06"), Athletes=session7Athletes},
                 new Session{Hour =8, Day =DateTime.Parse("2015-06-06"), Athletes=session8Athletes},
+                new Session{Hour =9, Day =DateTime.Parse("2015-06-06"), Athletes=session8Athletes},
+                new Session{Hour =10, Day =DateTime.Parse("2015-06-06"), Athletes=session8Athletes},
+                new Session{Hour =16, Day =DateTime.Parse("2015-06-06"), Athletes=session8Athletes},
+                new Session{Hour =17, Day =DateTime.Parse("2015-06-06"), Athletes=session8Athletes},
+                new Session{Hour =18, Day =DateTime.Parse("2015-06-06"), Athletes=session8Athletes},
             };
             sessions.ForEach(s => context.Sessions.AddOrUpdate(a => a.Hour, s));
 
