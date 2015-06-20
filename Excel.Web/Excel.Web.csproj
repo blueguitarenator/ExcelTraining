@@ -385,17 +385,12 @@
     <Content Include="Views\Athlete\Details.cshtml" />
     <Content Include="Views\Athlete\Edit.cshtml" />
     <Content Include="Views\Athlete\Index.cshtml" />
-    <Content Include="Views\Session\Create.cshtml" />
-    <Content Include="Views\Session\Delete.cshtml" />
-    <Content Include="Views\Session\Details.cshtml" />
-    <Content Include="Views\Session\Edit.cshtml" />
     <Content Include="Views\Session\Index.cshtml" />
     <Content Include="Views\Dashboard\Index.cshtml" />
     <Content Include="Views\Session\_SessionPartial.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
-    <Content Include="Views\Session\GetProducts.cshtml" />
-    <Content Include="Views\Session\_ChangeDateSixAm.cshtml" />
-    <Content Include="Views\Session\GetSessionAthleteData.cshtml" />
+    <Content Include="Views\Session\_PersonalTrainingGrid.cshtml" />
+    <Content Include="Views\Session\_OneSession.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

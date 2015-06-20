@@ -1,0 +1,17 @@
+﻿@model Excel.Web.Models.SessionModel
+
+<div>
+    <h3>6 AM</h3>
+    @Ajax.ActionLink("Add", "_OneSession", new { hour = 6, dt = Model.SessionDateTime }, new AjaxOptions { UpdateTargetId = "SixAm" })
+    <div id="SixAm">
+        @Html.Partial("_OneSession", Model.SixAmPersonalTraining)
+    </div>
+</div>
+
+<div>
+    <h3>7 AM</h3>
+    @Ajax.ActionLink("Add", "_OneSession", new { hour = 7, dt = Model.SessionDateTime }, new AjaxOptions { UpdateTargetId = "SevenAm" })
+    <div id="SevenAm">
+        @Html.Partial("_OneSession", Model.SevenAmPersonalTraining)
+    </div>
+</div>
