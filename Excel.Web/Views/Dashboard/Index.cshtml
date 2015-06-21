@@ -1,7 +1,23 @@
-﻿
+﻿@using Excel.Entities
+@model Excel.Web.Models.DashboardModel
+
+
 @{
     ViewBag.Title = "My Dashboard";
 }
 
-<h2>Content coming soon</h2>
+<h2>My Upcoming Sessions</h2>
 
+<table>
+    <tr>
+        <th>Hour</th>
+        <th>Date</th>
+    </tr>
+    @foreach (var s in Model.MySessions)
+    {
+        <tr>
+            <td>@s.Hour</td>
+            <td>@s.Day.Date.ToLongDateString()</td>
+        </tr>
+    }
+</table>

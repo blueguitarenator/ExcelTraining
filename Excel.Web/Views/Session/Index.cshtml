@@ -1,5 +1,11 @@
 ﻿@model Excel.Web.Models.SessionModel
 
+<style>
+    .datepicker {
+        z-index: 1151 !important;
+    }
+</style>
+
 @{
     ViewBag.Title = "Index";
     AjaxOptions ajaxOptions = new AjaxOptions
@@ -15,7 +21,7 @@
 {
     @Html.LabelFor(model => model.SessionDateTime, new { @class = "col-md-2 control-label" })
     <div class="col-md-10">
-        @Html.EditorFor(model => model.SessionDateTime)
+        @Html.EditorFor(model => model.SessionDateTime, new { @class = "form-control datepicker", placeholder = "Enter Session date here..." })
         <button type="submit">Submit</button>
     </div>
 }
@@ -27,5 +33,4 @@
 </div>
 
 <!-- Else Sports Training -->
-
 

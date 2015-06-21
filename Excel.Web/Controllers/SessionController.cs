@@ -13,6 +13,7 @@ using Microsoft.AspNet.Identity;
 
 namespace Excel.Web.Controllers
 {
+    [Authorize]
     public class SessionController : Controller
     {
         private IdentityDb db = new IdentityDb();
@@ -52,8 +53,11 @@ namespace Excel.Web.Controllers
             {
                 session = getOrCreateSession(hour, dt);
             }
-
-            IEnumerable<Athlete> data = session.Athletes;
+            IEnumerable<Athlete> data = null;
+            if (session.Athletes != null)
+            {
+                data = session.Athletes.Where(a => a.UserType != UserTypes.Trainer);
+            }
             int cnt = 0;
             if (data != null)
             {
@@ -104,7 +108,7 @@ namespace Excel.Web.Controllers
             session.Athletes.Add(athlete);
             db.SaveChanges();
 
-            IEnumerable<Athlete> athletes = session.Athletes;
+            IEnumerable<Athlete> athletes = session.Athletes.Where(a => a.UserType != UserTypes.Trainer);
             List<Athlete> openSlots = new List<Athlete>();
 
             athletes = athletes.Concat(openSlots);
