@@ -9,15 +9,23 @@
 <h2>My Upcoming Sessions</h2>
 
 <table>
-    <tr>
-        <th>Hour</th>
-        <th>Date</th>
-    </tr>
-    @foreach (var s in Model.MySessions)
-    {
+    <thead>
         <tr>
-            <td>@s.Hour</td>
-            <td>@s.Day.Date.ToLongDateString()</td>
+            <th>Hour</th>
+            <th>Date</th>
+            <th>Remove</th>
         </tr>
-    }
+    </thead>
+    <tbody id="upcomingSessions">
+        @foreach (var s in Model.MySessions)
+        {
+            <tr>
+                <td>@s.Hour</td>
+                <td>@s.Day.Date.ToLongDateString()</td>
+                <td>@Html.ActionLink("Remove", "RemoveSession",
+                    new { sessionId = s.Id },
+                    new AjaxOptions { UpdateTargetId = "upcomingSessions" })</td>
+            </tr>
+        }
+    </tbody>
 </table>

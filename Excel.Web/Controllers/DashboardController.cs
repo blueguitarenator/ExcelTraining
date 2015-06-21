@@ -26,6 +26,23 @@ namespace Excel.Web.Controllers
             return View(model);
         }
 
+        public ActionResult RemoveSession(int sessionId)
+        {
+            DashboardModel model = new DashboardModel();
+            var userId = User.Identity.GetUserId();
+            var appUser = db.Users.Where(u => u.Id == userId).SingleOrDefault();
+            var athlete = db.Athletes.Where(a => a.Id == appUser.Athlete.Id).SingleOrDefault();
+
+            var session = db.Sessions.Where(s => s.Id == sessionId).SingleOrDefault();
+            var x = session.Athletes.Where(a => a.Id == athlete.Id).SingleOrDefault();
+
+            session.Athletes.Remove(x);
+
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
         private List<Session> getFutureSessions()
         {
             DateTime saveNow = DateTime.Now.Date;
