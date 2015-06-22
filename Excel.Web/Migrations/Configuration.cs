@@ -18,6 +18,7 @@ namespace Excel.Web.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
+            AutomaticMigrationDataLossAllowed = true;
         }
 
         protected override void Seed(IdentityDb context)
@@ -41,14 +42,6 @@ namespace Excel.Web.Migrations
 
         private void moreSeed(UserManager<ApplicationUser> manager, IdentityDb context)
         {
-            //var athletes = new List<Athlete>
-            //{
-            //    new Athlete{FirstName="Kenny", LastName="Ball", Address="444 Primrose", City="Dardenne", State="MO", Zip="63368", UserType = UserTypes.Trainer},
-            //    new Athlete{FirstName="George", LastName="Harrison", Address="123 Main", City="Cottleville", State="MO", Zip="63367", AthleteType = AthleteTypes.PersonalTraining, UserType = UserTypes.Athlete},
-            //    new Athlete{FirstName="John", LastName="Lennon", Address="123 Main", City="Cottleville", State="MO", Zip="63367", AthleteType = AthleteTypes.PersonalTraining, UserType = UserTypes.Athlete},
-            //    new Athlete{FirstName="Paul", LastName="McCartney", Address="123 Main", City="Cottleville", State="MO", Zip="63367", AthleteType = AthleteTypes.PersonalTraining, UserType = UserTypes.Athlete},
-            //    new Athlete{FirstName="Ringo", LastName="Starr", Address="123 Main", City="Cottleville", State="MO", Zip="63367", AthleteType = AthleteTypes.PersonalTraining, UserType = UserTypes.Athlete},
-            //};
             Athlete kenny = new Athlete { FirstName = "Kenny", LastName = "Ball", Address = "444 Primrose", City = "Dardenne", State = "MO", Zip = "63368", UserType = UserTypes.Trainer };
             ApplicationUser k = new ApplicationUser { Email = "kenny@msn.com", UserName = "kenny@msn.com", Athlete = kenny };
             manager.Create(k, "123434");
@@ -85,6 +78,9 @@ namespace Excel.Web.Migrations
                 new Session{Hour =18, Day =DateTime.Parse("2015-06-06"), Athletes=session8Athletes},
             };
             sessions.ForEach(s => context.Sessions.AddOrUpdate(a => a.Hour, s));
+
+            var locationDardenne = new Location { Name = "Dardenne Prairie" };
+            var locationMidRivers = new Location { Name = "Mid Rivers" };
 
             SaveChanges(context);
             base.Seed(context);

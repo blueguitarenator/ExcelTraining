@@ -188,9 +188,11 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AthleteController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\SessionController.cs" />
     <Compile Include="DataContexts\IdentityDb.cs" />
@@ -210,6 +212,10 @@
     <Compile Include="Migrations\201506092225533_RemoveTrainerFromSession.cs" />
     <Compile Include="Migrations\201506092225533_RemoveTrainerFromSession.Designer.cs">
       <DependentUpon>201506092225533_RemoveTrainerFromSession.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506220012247_AddLocation.cs" />
+    <Compile Include="Migrations\201506220012247_AddLocation.Designer.cs">
+      <DependentUpon>201506220012247_AddLocation.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -391,6 +397,12 @@
     <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
     <Content Include="Views\Session\_PersonalTrainingGrid.cshtml" />
     <Content Include="Views\Session\_OneSession.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Location\Create.cshtml" />
+    <Content Include="Views\Location\Delete.cshtml" />
+    <Content Include="Views\Location\Details.cshtml" />
+    <Content Include="Views\Location\Edit.cshtml" />
+    <Content Include="Views\Location\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -417,6 +429,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201506092225533_RemoveTrainerFromSession.resx">
       <DependentUpon>201506092225533_RemoveTrainerFromSession.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506220012247_AddLocation.resx">
+      <DependentUpon>201506220012247_AddLocation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

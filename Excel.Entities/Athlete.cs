@@ -36,6 +36,7 @@ namespace Excel.Entities
         public UserTypes UserType { get; set; }
 
 
+        public virtual Location location { get; set; }
         public virtual ICollection<Session> Sessions { get; set; }
 
     }
