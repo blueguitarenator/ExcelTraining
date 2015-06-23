@@ -13,7 +13,7 @@ namespace Excel.Web.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201506220012247_AddLocation"; }
+            get { return "201506232305126_AddLocation"; }
         }
         
         string IMigrationMetadata.Source

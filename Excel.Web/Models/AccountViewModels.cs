@@ -113,6 +113,10 @@ namespace Excel.Web.Models
         [Display(Name = "Trainer or Athlete")]
         public UserTypes UserType { get; set; }
 
+        [Required]
+        [Display(Name = "Location")]
+        public int LocationId { get; set; }
+
     }
 
     public class ResetPasswordViewModel

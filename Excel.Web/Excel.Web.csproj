@@ -213,9 +213,9 @@
     <Compile Include="Migrations\201506092225533_RemoveTrainerFromSession.Designer.cs">
       <DependentUpon>201506092225533_RemoveTrainerFromSession.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201506220012247_AddLocation.cs" />
-    <Compile Include="Migrations\201506220012247_AddLocation.Designer.cs">
-      <DependentUpon>201506220012247_AddLocation.cs</DependentUpon>
+    <Compile Include="Migrations\201506232305126_AddLocation.cs" />
+    <Compile Include="Migrations\201506232305126_AddLocation.Designer.cs">
+      <DependentUpon>201506232305126_AddLocation.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -430,8 +430,8 @@
     <EmbeddedResource Include="Migrations\201506092225533_RemoveTrainerFromSession.resx">
       <DependentUpon>201506092225533_RemoveTrainerFromSession.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201506220012247_AddLocation.resx">
-      <DependentUpon>201506220012247_AddLocation.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201506232305126_AddLocation.resx">
+      <DependentUpon>201506232305126_AddLocation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

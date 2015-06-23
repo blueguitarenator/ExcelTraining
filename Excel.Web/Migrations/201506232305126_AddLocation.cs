@@ -16,16 +16,12 @@ namespace Excel.Web.Migrations
                     })
                 .PrimaryKey(t => t.Id);
             
-            AddColumn("identity.Athletes", "location_Id", c => c.Int());
-            CreateIndex("identity.Athletes", "location_Id");
-            AddForeignKey("identity.Athletes", "location_Id", "identity.Locations", "Id");
+            AddColumn("identity.Athletes", "LocationId", c => c.Int(nullable: false));
         }
         
         public override void Down()
         {
-            DropForeignKey("identity.Athletes", "location_Id", "identity.Locations");
-            DropIndex("identity.Athletes", new[] { "location_Id" });
-            DropColumn("identity.Athletes", "location_Id");
+            DropColumn("identity.Athletes", "LocationId");
             DropTable("identity.Locations");
         }
     }

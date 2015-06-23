@@ -143,7 +143,25 @@ namespace Excel.Web.Controllers
         [Authorize(Roles="admin")]
         public ActionResult Register()
         {
+            GetLocationSelectList();
             return View();
+        }
+
+        private void GetLocationSelectList()
+        {
+            var content = from p in db.Locations
+
+                          orderby p.Name
+                          select new { p.Id, p.Name };
+
+            var x = content.ToList().Select(c => new SelectListItem
+            {
+                Text = c.Name,
+                Value = c.Id.ToString(),
+
+            }).ToList();
+            ViewBag.Locations = x;
+
         }
 
         //
@@ -164,7 +182,8 @@ namespace Excel.Web.Controllers
                     State = model.State, 
                     Zip = model.Zip, 
                     AthleteType = model.AthleteType, 
-                    UserType = model.UserType 
+                    UserType = model.UserType,
+                    LocationId = model.LocationId
                 };
                 
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Athlete = athlete };

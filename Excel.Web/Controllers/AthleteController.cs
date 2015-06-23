@@ -72,7 +72,27 @@ namespace Excel.Web.Controllers
             {
                 return HttpNotFound();
             }
+            GetLocationSelectList();
+            
+
             return View(athlete);
+        }
+
+        private void GetLocationSelectList()
+        {
+            var content = from p in db.Locations
+                  
+                  orderby p.Name
+                  select new { p.Id, p.Name };
+ 
+            var x = content.ToList().Select(c => new SelectListItem         
+                            {
+                               Text = c.Name,
+                               Value = c.Id.ToString(),
+                               
+                            }).ToList();
+             ViewBag.Locations = x;
+ 
         }
 
         // POST: Athletes/Edit/5
@@ -80,7 +100,7 @@ namespace Excel.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,Address,City,State,Zip,AthleteType,UserType")] Athlete athlete)
+        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,Address,City,State,Zip,AthleteType,UserType,LocationId")] Athlete athlete)
         {
             if (ModelState.IsValid)
             {
