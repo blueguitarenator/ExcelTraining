@@ -217,8 +217,13 @@
     <Compile Include="Migrations\201506232305126_AddLocation.Designer.cs">
       <DependentUpon>201506232305126_AddLocation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201506240021044_AddLocationObjectToAthlete.cs" />
+    <Compile Include="Migrations\201506240021044_AddLocationObjectToAthlete.Designer.cs">
+      <DependentUpon>201506240021044_AddLocationObjectToAthlete.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AthleteViewModel.cs" />
     <Compile Include="Models\DashboardModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -432,6 +437,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201506232305126_AddLocation.resx">
       <DependentUpon>201506232305126_AddLocation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506240021044_AddLocationObjectToAthlete.resx">
+      <DependentUpon>201506240021044_AddLocationObjectToAthlete.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -1,5 +1,4 @@
-﻿@model IEnumerable<Excel.Entities.Athlete>
-
+﻿@model Excel.Web.Models.AthleteViewModel
 @{
     ViewBag.Title = "Index";
 }
@@ -12,36 +11,36 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.FirstName)
+            @Html.DisplayNameFor(model => model.Athletes.FirstOrDefault().FirstName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.LastName)
+            @Html.DisplayNameFor(model => model.Athletes.FirstOrDefault().LastName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Address)
+            @Html.DisplayNameFor(model => model.Athletes.FirstOrDefault().Address)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.City)
+            @Html.DisplayNameFor(model => model.Athletes.FirstOrDefault().City)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.State)
+            @Html.DisplayNameFor(model => model.Athletes.FirstOrDefault().State)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Zip)
+            @Html.DisplayNameFor(model => model.Athletes.FirstOrDefault().Zip)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.AthleteType)
+            @Html.DisplayNameFor(model => model.Athletes.FirstOrDefault().AthleteType)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.UserType)
+            @Html.DisplayNameFor(model => model.Athletes.FirstOrDefault().UserType)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.LocationId)
+            @Html.DisplayName("Location")
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in Model.Athletes) {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.FirstName)
@@ -68,7 +67,7 @@
             @Html.DisplayFor(modelItem => item.UserType)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.LocationId)
+            @Html.DisplayFor(modelItem => item.Location.Name)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |

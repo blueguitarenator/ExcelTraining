@@ -22,7 +22,10 @@ namespace Excel.Web.Controllers
         // GET: Athletes
         public ActionResult Index()
         {
-            return View(db.Athletes.ToList());
+            AthleteViewModel model = new AthleteViewModel();
+            model.Athletes = db.Athletes.ToList();
+            model.Locations = db.Locations.ToList();
+            return View(model);
         }
 
         // GET: Athletes/Details/5
