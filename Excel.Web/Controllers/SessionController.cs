@@ -30,7 +30,23 @@ namespace Excel.Web.Controllers
             SessionModel sessionModel = new SessionModel();
             sessionModel.SessionDateTime = saveNow;
             sessionModel.Hour = 6;
+
+            loadLocationSelectList(sessionModel);
             return View(sessionModel);
+        }
+
+        private void loadLocationSelectList(SessionModel sessionModel)
+        {
+            sessionModel.SelectedLocationId = getThisAthlete().LocationId;
+            sessionModel.LocationSelectList = new SelectList(db.Locations, "Id", "Name", sessionModel.SelectedLocationId);
+        }
+
+        [HttpPost]
+        public ActionResult Index(SessionModel model)
+        {
+
+
+            return RedirectToAction("Index");
         }
 
         public PartialViewResult _PersonalTrainingGrid(SessionModel model)
@@ -98,14 +114,19 @@ namespace Excel.Web.Controllers
             return session;
         }
 
-        // GET: Sessions/Add/5
-        public PartialViewResult _OneSession(DateTime dt, int hour)
+        private Athlete getThisAthlete()
         {
             var userId = User.Identity.GetUserId();
             var appUser = db.Users.Where(u => u.Id == userId).SingleOrDefault();
-            var session = getOrCreateSession(hour, dt);
             var athlete = db.Athletes.Where(a => a.Id == appUser.Athlete.Id).SingleOrDefault();
-            session.Athletes.Add(athlete);
+            return athlete;
+        }
+
+        // GET: Sessions/Add/5
+        public PartialViewResult _OneSession(DateTime dt, int hour)
+        {
+            var session = getOrCreateSession(hour, dt);
+            session.Athletes.Add(getThisAthlete());
             db.SaveChanges();
 
             IEnumerable<Athlete> athletes = session.Athletes.Where(a => a.UserType != UserTypes.Trainer);

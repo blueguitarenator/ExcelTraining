@@ -32,8 +32,8 @@ namespace Excel.Web.Migrations
                 var roleManager = new RoleManager<IdentityRole>(roleStore);
                 var store = new UserStore<ApplicationUser>(context);
                 var manager = new UserManager<ApplicationUser>(store);
-                var athlete = new Athlete { FirstName = "Rich", LastName = "Schwepker", Address = "123 Main Street", City = "OFallon", State = "MO", Zip = "63366", AthleteType = AthleteTypes.PersonalTraining, UserType = UserTypes.Trainer, Location = dardenne };
-                var user = new ApplicationUser { Email = "rich@msn.com", UserName = "rich@msn.com" };
+                var rich = new Athlete { FirstName = "Rich", LastName = "Schwepker", Address = "123 Main Street", City = "OFallon", State = "MO", Zip = "63366", AthleteType = AthleteTypes.PersonalTraining, UserType = UserTypes.Trainer, Location = dardenne };
+                var user = new ApplicationUser { Email = "rich@msn.com", UserName = "rich@msn.com", Athlete = rich };
 
                 manager.Create(user, "123434");
                 roleManager.Create(new IdentityRole { Name = "admin" });

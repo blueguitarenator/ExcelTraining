@@ -26,6 +26,9 @@
     </div>
 }
 
+@Html.LabelFor(m => m.LocationSelectList, "Location", new { @class = "control-label ddlLabel sr-only" })
+@Html.DropDownListFor(model => model.SelectedLocationId, Model.LocationSelectList, "--Location--", new { @class = "form-control floatLabel ", placeholder = "Location Type" , onchange = "this.form.submit();" })
+
 
 <!-- If Personal Training -->
 <div id="PersonalTraining">
