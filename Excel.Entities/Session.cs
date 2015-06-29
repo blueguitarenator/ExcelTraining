@@ -11,6 +11,9 @@ namespace Excel.Entities
     {
   
         public int Id { get; set; }
+
+        [Required]
+        public virtual int LocationId { get; set; }
         
         [Required]
         public int Hour { get; set; }

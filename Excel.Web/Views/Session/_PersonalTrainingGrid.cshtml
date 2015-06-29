@@ -2,7 +2,7 @@
 
 <div>
     <h3>6 AM</h3>
-    @Ajax.ActionLink("Add", "_OneSession", new { hour = 6, dt = Model.SessionDateTime }, new AjaxOptions { UpdateTargetId = "SixAm" })
+    @Ajax.ActionLink("Add", "_OneSession", new { hour = 6, dt = Model.SessionDateTime, Model.SelectedLocationId }, new AjaxOptions { UpdateTargetId = "SixAm" })
     <div id="SixAm">
         @Html.Partial("_OneSession", Model.SixAmPersonalTraining)
     </div>
@@ -10,7 +10,7 @@
 
 <div>
     <h3>7 AM</h3>
-    @Ajax.ActionLink("Add", "_OneSession", new { hour = 7, dt = Model.SessionDateTime }, new AjaxOptions { UpdateTargetId = "SevenAm" })
+    @Ajax.ActionLink("Add", "_OneSession", new { hour = 7, dt = Model.SessionDateTime, Model.SelectedLocationId }, new AjaxOptions { UpdateTargetId = "SevenAm" })
     <div id="SevenAm">
         @Html.Partial("_OneSession", Model.SevenAmPersonalTraining)
     </div>
@@ -18,7 +18,7 @@
 
 <div>
     <h3>8 AM</h3>
-    @Ajax.ActionLink("Add", "_OneSession", new { hour = 8, dt = Model.SessionDateTime }, new AjaxOptions { UpdateTargetId = "EightAm" })
+    @Ajax.ActionLink("Add", "_OneSession", new { hour = 8, dt = Model.SessionDateTime, Model.SelectedLocationId }, new AjaxOptions { UpdateTargetId = "EightAm" })
     <div id="EightAm">
         @Html.Partial("_OneSession", Model.EightAmPersonalTraining)
     </div>
@@ -26,7 +26,7 @@
 
 <div>
     <h3>9 AM</h3>
-    @Ajax.ActionLink("Add", "_OneSession", new { hour = 9, dt = Model.SessionDateTime }, new AjaxOptions { UpdateTargetId = "NineAm" })
+    @Ajax.ActionLink("Add", "_OneSession", new { hour = 9, dt = Model.SessionDateTime, Model.SelectedLocationId }, new AjaxOptions { UpdateTargetId = "NineAm" })
     <div id="NineAm">
         @Html.Partial("_OneSession", Model.NineAmPersonalTraining)
     </div>
@@ -34,7 +34,7 @@
 
 <div>
     <h3>10 AM</h3>
-    @Ajax.ActionLink("Add", "_OneSession", new { hour = 10, dt = Model.SessionDateTime }, new AjaxOptions { UpdateTargetId = "TenAm" })
+    @Ajax.ActionLink("Add", "_OneSession", new { hour = 10, dt = Model.SessionDateTime, Model.SelectedLocationId }, new AjaxOptions { UpdateTargetId = "TenAm" })
     <div id="TenAm">
         @Html.Partial("_OneSession", Model.TenAmPersonalTraining)
     </div>
@@ -42,7 +42,7 @@
 
 <div>
     <h3>4 PM</h3>
-    @Ajax.ActionLink("Add", "_OneSession", new { hour = 16, dt = Model.SessionDateTime }, new AjaxOptions { UpdateTargetId = "FourPm" })
+    @Ajax.ActionLink("Add", "_OneSession", new { hour = 16, dt = Model.SessionDateTime, Model.SelectedLocationId }, new AjaxOptions { UpdateTargetId = "FourPm" })
     <div id="FourPm">
         @Html.Partial("_OneSession", Model.FourPmPersonalTraining)
     </div>
@@ -50,7 +50,7 @@
 
 <div>
     <h3>5 PM</h3>
-    @Ajax.ActionLink("Add", "_OneSession", new { hour = 17, dt = Model.SessionDateTime }, new AjaxOptions { UpdateTargetId = "FivePm" })
+    @Ajax.ActionLink("Add", "_OneSession", new { hour = 17, dt = Model.SessionDateTime, Model.SelectedLocationId }, new AjaxOptions { UpdateTargetId = "FivePm" })
     <div id="FivePm">
         @Html.Partial("_OneSession", Model.FivePmPersonalTraining)
     </div>
@@ -58,7 +58,7 @@
 
 <div>
     <h3>6 PM</h3>
-    @Ajax.ActionLink("Add", "_OneSession", new { hour = 18, dt = Model.SessionDateTime }, new AjaxOptions { UpdateTargetId = "SixPm" })
+    @Ajax.ActionLink("Add", "_OneSession", new { hour = 18, dt = Model.SessionDateTime, Model.SelectedLocationId }, new AjaxOptions { UpdateTargetId = "SixPm" })
     <div id="SixPm">
         @Html.Partial("_OneSession", Model.SixPmPersonalTraining)
     </div>

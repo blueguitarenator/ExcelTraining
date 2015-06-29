@@ -37,6 +37,7 @@ namespace Excel.Web.Controllers
 
         private void loadLocationSelectList(SessionModel sessionModel)
         {
+            
             sessionModel.SelectedLocationId = getThisAthlete().LocationId;
             sessionModel.LocationSelectList = new SelectList(db.Locations, "Id", "Name", sessionModel.SelectedLocationId);
         }
@@ -51,23 +52,23 @@ namespace Excel.Web.Controllers
 
         public PartialViewResult _PersonalTrainingGrid(SessionModel model)
         {
-            model.SixAmPersonalTraining = getSessionList(6, model.SessionDateTime);
-            model.SevenAmPersonalTraining = getSessionList(7, model.SessionDateTime);
-            model.EightAmPersonalTraining = getSessionList(8, model.SessionDateTime);
-            model.NineAmPersonalTraining = getSessionList(9, model.SessionDateTime);
-            model.TenAmPersonalTraining = getSessionList(10, model.SessionDateTime);
-            model.FourPmPersonalTraining = getSessionList(16, model.SessionDateTime);
-            model.FivePmPersonalTraining = getSessionList(17, model.SessionDateTime);
-            model.SixPmPersonalTraining = getSessionList(18, model.SessionDateTime);
+            model.SixAmPersonalTraining = getSessionList(6, model.SessionDateTime, model.SelectedLocationId);
+            model.SevenAmPersonalTraining = getSessionList(7, model.SessionDateTime, model.SelectedLocationId);
+            model.EightAmPersonalTraining = getSessionList(8, model.SessionDateTime, model.SelectedLocationId);
+            model.NineAmPersonalTraining = getSessionList(9, model.SessionDateTime, model.SelectedLocationId);
+            model.TenAmPersonalTraining = getSessionList(10, model.SessionDateTime, model.SelectedLocationId);
+            model.FourPmPersonalTraining = getSessionList(16, model.SessionDateTime, model.SelectedLocationId);
+            model.FivePmPersonalTraining = getSessionList(17, model.SessionDateTime, model.SelectedLocationId);
+            model.SixPmPersonalTraining = getSessionList(18, model.SessionDateTime, model.SelectedLocationId);
             return PartialView(model);
         }
 
-        private List<Athlete> getSessionList(int hour, DateTime dt)
+        private List<Athlete> getSessionList(int hour, DateTime dt, int locationId)
         {
-            Session session = getOrCreateSession(hour, dt);
+            Session session = getOrCreateSession(hour, dt, locationId);
             if (session == null)
             {
-                session = getOrCreateSession(hour, dt);
+                session = getOrCreateSession(hour, dt, locationId);
             }
             IEnumerable<Athlete> data = null;
             if (session.Athletes != null)
@@ -92,7 +93,7 @@ namespace Excel.Web.Controllers
             return openSlots;
         }
 
-        private Session getOrCreateSession(int hour, DateTime dt)
+        private Session getOrCreateSession(int hour, DateTime dt, int locationId)
         {
             Session session = db.Sessions.Where(
                 s => s.Hour == hour &&
@@ -101,14 +102,14 @@ namespace Excel.Web.Controllers
                 s.Day.Day == dt.Day).SingleOrDefault();
             if (session == null)
             {
-                db.Sessions.Add(new Session { Day = dt, Hour = 6 });
-                db.Sessions.Add(new Session { Day = dt, Hour = 7 });
-                db.Sessions.Add(new Session { Day = dt, Hour = 8 });
-                db.Sessions.Add(new Session { Day = dt, Hour = 9 });
-                db.Sessions.Add(new Session { Day = dt, Hour = 10 });
-                db.Sessions.Add(new Session { Day = dt, Hour = 16 });
-                db.Sessions.Add(new Session { Day = dt, Hour = 17 });
-                db.Sessions.Add(new Session { Day = dt, Hour = 18 });
+                db.Sessions.Add(new Session { Day = dt, Hour = 6, LocationId = locationId });
+                db.Sessions.Add(new Session { Day = dt, Hour = 7, LocationId = locationId });
+                db.Sessions.Add(new Session { Day = dt, Hour = 8, LocationId = locationId });
+                db.Sessions.Add(new Session { Day = dt, Hour = 9, LocationId = locationId });
+                db.Sessions.Add(new Session { Day = dt, Hour = 10, LocationId = locationId });
+                db.Sessions.Add(new Session { Day = dt, Hour = 16, LocationId = locationId });
+                db.Sessions.Add(new Session { Day = dt, Hour = 17, LocationId = locationId });
+                db.Sessions.Add(new Session { Day = dt, Hour = 18, LocationId = locationId });
                 db.SaveChanges();
             }
             return session;
@@ -123,9 +124,9 @@ namespace Excel.Web.Controllers
         }
 
         // GET: Sessions/Add/5
-        public PartialViewResult _OneSession(DateTime dt, int hour)
+        public PartialViewResult _OneSession(DateTime dt, int hour, int locationId)
         {
-            var session = getOrCreateSession(hour, dt);
+            var session = getOrCreateSession(hour, dt, locationId);
             session.Athletes.Add(getThisAthlete());
             db.SaveChanges();
 
