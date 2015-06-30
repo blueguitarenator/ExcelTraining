@@ -19,16 +19,26 @@ namespace Excel.Web.Controllers
         private IdentityDb db = new IdentityDb();
 
         // GET: Sessions
-        public ActionResult Index(DateTime? dt)
+        public ActionResult Index(DateTime? dt, int? locationId)
         {
-            DateTime saveNow = DateTime.Now.Date;
+            SessionModel sessionModel = new SessionModel();
             if (dt.HasValue)
             {
-                saveNow = dt.Value;
+                sessionModel.SessionDateTime = dt.Value;
+            }
+            else
+            {
+                sessionModel.SessionDateTime = DateTime.Now.Date;
+            }
+            if (locationId.HasValue)
+            {
+                sessionModel.SelectedLocationId = (int)locationId;
+            }
+            else
+            {
+                sessionModel.SelectedLocationId = 0;
             }
 
-            SessionModel sessionModel = new SessionModel();
-            sessionModel.SessionDateTime = saveNow;
             sessionModel.Hour = 6;
 
             loadLocationSelectList(sessionModel);
@@ -38,16 +48,19 @@ namespace Excel.Web.Controllers
         private void loadLocationSelectList(SessionModel sessionModel)
         {
             
-            sessionModel.SelectedLocationId = getThisAthlete().LocationId;
+            //sessionModel.SelectedLocationId = getThisAthlete().LocationId;
             sessionModel.LocationSelectList = new SelectList(db.Locations, "Id", "Name", sessionModel.SelectedLocationId);
         }
 
         [HttpPost]
         public ActionResult Index(SessionModel model)
         {
-
-
             return RedirectToAction("Index");
+        }
+
+        public ActionResult ChangeLocation(int? locId)
+        {
+            return RedirectToAction("Index", new {locationId = locId});
         }
 
         public PartialViewResult _PersonalTrainingGrid(SessionModel model)
@@ -99,7 +112,8 @@ namespace Excel.Web.Controllers
                 s => s.Hour == hour &&
                 s.Day.Year == dt.Year &&
                 s.Day.Month == dt.Month &&
-                s.Day.Day == dt.Day).SingleOrDefault();
+                s.Day.Day == dt.Day &&
+                s.LocationId == locationId).SingleOrDefault();
             if (session == null)
             {
                 db.Sessions.Add(new Session { Day = dt, Hour = 6, LocationId = locationId });

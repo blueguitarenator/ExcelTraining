@@ -27,8 +27,8 @@
 }
 
 @Html.LabelFor(m => m.LocationSelectList, "Location", new { @class = "control-label ddlLabel sr-only" })
-@Html.DropDownListFor(model => model.SelectedLocationId, Model.LocationSelectList, "--Location--", new { @class = "form-control floatLabel ", placeholder = "Location Type" , onchange = "this.form.submit();" })
-
+@Html.DropDownList("loc", Model.LocationSelectList,
+     new { @onchange = "CallChangefunc(this.value)", @class = "form-control floatLable" })
 
 <!-- If Personal Training -->
 <div id="PersonalTraining">
@@ -37,3 +37,8 @@
 
 <!-- Else Sports Training -->
 
+<script>
+    function CallChangefunc(val) {
+        window.location.href = "/Session/ChangeLocation?locId=" + val;
+    }
+</script>
