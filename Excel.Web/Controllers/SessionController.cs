@@ -19,9 +19,17 @@ namespace Excel.Web.Controllers
         private IdentityDb db = new IdentityDb();
 
         // GET: Sessions
-        public ActionResult Index(DateTime? dt, int? locationId)
+        public ActionResult Index(DateTime? dt, int? locationId, SessionModel model)
         {
-            SessionModel sessionModel = new SessionModel();
+            SessionModel sessionModel;
+            if (model != null)
+            {
+                sessionModel = model;
+            }
+            else
+            {
+                sessionModel = new SessionModel();
+            }
             if (dt.HasValue)
             {
                 sessionModel.SessionDateTime = dt.Value;
@@ -36,7 +44,7 @@ namespace Excel.Web.Controllers
             }
             else
             {
-                sessionModel.SelectedLocationId = 0;
+                sessionModel.SelectedLocationId = 1;
             }
 
             sessionModel.Hour = 6;
@@ -48,14 +56,13 @@ namespace Excel.Web.Controllers
         private void loadLocationSelectList(SessionModel sessionModel)
         {
             
-            //sessionModel.SelectedLocationId = getThisAthlete().LocationId;
             sessionModel.LocationSelectList = new SelectList(db.Locations, "Id", "Name", sessionModel.SelectedLocationId);
         }
 
         [HttpPost]
-        public ActionResult Index(SessionModel model)
+        public ActionResult Index(SessionModel sessionModel)
         {
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { model = sessionModel });
         }
 
         public ActionResult ChangeLocation(int? locId)
@@ -138,9 +145,9 @@ namespace Excel.Web.Controllers
         }
 
         // GET: Sessions/Add/5
-        public PartialViewResult _OneSession(DateTime dt, int hour, int locationId)
+        public PartialViewResult _OneSession(DateTime dt, int hour, int SelectedLocationId)
         {
-            var session = getOrCreateSession(hour, dt, locationId);
+            var session = getOrCreateSession(hour, dt, SelectedLocationId);
             session.Athletes.Add(getThisAthlete());
             db.SaveChanges();
 
