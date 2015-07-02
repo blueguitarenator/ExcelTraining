@@ -83,13 +83,7 @@ namespace Excel.Web.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    var userId = User.Identity.GetUserId();
-                    var appUser = db.Users.Where(u => u.Id == userId).SingleOrDefault();
-                    var athlete = db.Athletes.Where(a => a.Id == appUser.Athlete.Id).SingleOrDefault();
-                    athlete.SelectedLocationId = athlete.LocationId;
-                    athlete.SelectedDate = DateTime.Now.Date;
-                    db.SaveChanges();
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("DoWork", new { returnUrlPath = returnUrl });
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -99,6 +93,22 @@ namespace Excel.Web.Controllers
                     ModelState.AddModelError("", "Invalid login attempt.");
                     return View(model);
             }
+        }
+
+        public async Task<ActionResult> DoWork(string returnUrl)
+        {
+            await Task.Run(() => UpdateUserDefaults());
+            return RedirectToLocal(returnUrl);
+        }
+
+        private void UpdateUserDefaults()
+        {
+            string userId = User.Identity.GetUserId();
+            var appUser = db.Users.Where(u => u.Id == userId).SingleOrDefault();
+            var athlete = db.Athletes.Where(a => a.Id == appUser.Athlete.Id).SingleOrDefault();
+            athlete.SelectedLocationId = athlete.LocationId;
+            athlete.SelectedDate = DateTime.Now.Date;
+            db.SaveChanges();
         }
 
         //
