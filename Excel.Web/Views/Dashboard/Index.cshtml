@@ -1,7 +1,6 @@
 ﻿@using Excel.Entities
 @model Excel.Web.Models.DashboardModel
 
-
 @{
     ViewBag.Title = "My Dashboard";
 }
@@ -13,6 +12,7 @@
         <tr>
             <th>Hour</th>
             <th>Date</th>
+            <th>Location</th>
             <th>Remove</th>
         </tr>
     </thead>
@@ -22,6 +22,7 @@
             <tr>
                 <td>@s.Hour</td>
                 <td>@s.Day.Date.ToLongDateString()</td>
+                <td>@s.Location.Name</td>
                 <td>@Html.ActionLink("Remove", "RemoveSession",
                     new { sessionId = s.Id },
                     new AjaxOptions { UpdateTargetId = "upcomingSessions" })</td>

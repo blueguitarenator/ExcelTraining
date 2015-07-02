@@ -18,7 +18,6 @@ namespace Excel.Web.Controllers
         // GET: Dashboard
         public ActionResult Index()
         {
-
             DashboardModel model = new DashboardModel();
 
             model.MySessions = getFutureSessions();
@@ -53,7 +52,6 @@ namespace Excel.Web.Controllers
                 return new List<Session>();
             }
             var athlete = db.Athletes.Where(a => a.Id == appUser.Athlete.Id).SingleOrDefault();
-
 
             var q = from s in db.Sessions
                 where s.Day.Year >= saveNow.Year &&
