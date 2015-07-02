@@ -47,6 +47,14 @@ namespace Excel.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult ChangeDate(DateTime dt)
+        {
+            var athlete = getThisAthlete();
+            athlete.SelectedDate = dt;
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
         public ActionResult ChangeLocation(int locId)
         {
             var athlete = getThisAthlete();

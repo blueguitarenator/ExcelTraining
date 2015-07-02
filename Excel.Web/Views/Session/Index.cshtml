@@ -11,21 +11,24 @@
 }
 
 <h2>Sessions</h2>
-
-@using (Html.BeginForm("TrainingGrid"))
-{
-    @Html.LabelFor(model => model.SessionDateTime, new { @class = "col-md-2 control-label" })
-    <div class="col-md-10">
-        @Html.EditorFor(model => model.SessionDateTime, new { @class = "form-control datepicker", placeholder = "Enter Session date here..." })
-        <button type="submit">Submit</button>
-    </div>
-}
-
-@Html.LabelFor(m => m.LocationSelectList, "Location", new { @class = "control-label ddlLabel sr-only" })
-@Html.DropDownList("loc", Model.LocationSelectList,
-     new { @onchange = "CallChangefunc(this.value)", @class = "form-control floatLable" })
-
-
+<div class="row">
+        @using (Html.BeginForm("TrainingGrid"))
+        {
+            <div class="col-md-4 control-label">
+                @Html.LabelFor(model => model.SessionDateTime, new { @class = "col-md-2 control-label" })
+            </div>
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.SessionDateTime, new { @class = "form-control datepicker", placeholder = "Enter Session date here..." })
+                <!--<button type="submit">Submit</button>-->
+            </div>
+        }
+        <div class="col-md-4">
+            @Html.LabelFor(m => m.LocationSelectList, "Location", new { @class = "control-label ddlLabel sr-only" })
+        </div>
+            @Html.DropDownList("loc", Model.LocationSelectList,
+         new { @onchange = "CallChangefunc(this.value)", @class = "form-control floatLable" })
+        </div>
+</div>
 <!-- If Personal Training -->
 
 @{ Html.RenderPartial("_PersonalTrainingGrid", @Model);}
@@ -34,7 +37,20 @@
 <!-- Else Sports Training -->
 
 <script>
-    function CallChangefunc(val) {
-        window.location.href = "/Session/ChangeLocation?locId=" + val;
-    }
+    $(document).ready(function () {
+        function CallChangefunc(val) {
+            window.location.href = "/Session/ChangeLocation?locId=" + val;
+        }
+        $('.datecontrol').datepicker().on('changeDate', function (ev) {
+            alert($('#SessionDateTime'));
+            $('#SessionDateTime').change();
+
+            $('#SessionDateTime').change(function () {
+                window.location.href = "/Session/ChangeDate?dt=" + $('#SessionDateTime').val();
+            });
+
+            
+        });
+    });
+    
 </script>
