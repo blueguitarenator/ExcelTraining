@@ -8,16 +8,11 @@
 
 @{
     ViewBag.Title = "Index";
-    AjaxOptions ajaxOptions = new AjaxOptions
-    {
-        UpdateTargetId = "PersonalTraining",
-        HttpMethod = "GET"       
-    };
 }
 
 <h2>Sessions</h2>
 
-@using (Ajax.BeginForm("_PersonalTrainingGrid", ajaxOptions))
+@using (Html.BeginForm("TrainingGrid"))
 {
     @Html.LabelFor(model => model.SessionDateTime, new { @class = "col-md-2 control-label" })
     <div class="col-md-10">
@@ -26,23 +21,20 @@
     </div>
 }
 
-<input type="hidden" id="hdnVal" value="@Model.SessionDateTime" />
-
 @Html.LabelFor(m => m.LocationSelectList, "Location", new { @class = "control-label ddlLabel sr-only" })
 @Html.DropDownList("loc", Model.LocationSelectList,
-     new { @onchange = "CallChangefunc(this.value, '" + @Model.SessionDateTime + "')", @class = "form-control floatLable" })
+     new { @onchange = "CallChangefunc(this.value)", @class = "form-control floatLable" })
 
 
 <!-- If Personal Training -->
-<div id="PersonalTraining">
-    @Html.Action("_PersonalTrainingGrid", new { model = Model })
-</div>
+
+@{ Html.RenderPartial("_PersonalTrainingGrid", @Model);}
+
 
 <!-- Else Sports Training -->
 
 <script>
-    function CallChangefunc(val, dt) {
-        var valueToStore = $("#hdnVal").val();
-        window.location.href = "/Session/ChangeLocation?locId=" + val + "&dateTime=" + valueToStore;
+    function CallChangefunc(val) {
+        window.location.href = "/Session/ChangeLocation?locId=" + val;
     }
 </script>

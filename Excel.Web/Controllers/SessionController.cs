@@ -19,58 +19,43 @@ namespace Excel.Web.Controllers
         private IdentityDb db = new IdentityDb();
 
         // GET: Sessions
-        public ActionResult Index(DateTime? dt, int? locationId, SessionModel model)
+        public ActionResult Index()
         {
-            SessionModel sessionModel;
-            if (model != null)
-            {
-                sessionModel = model;
-            }
-            else
-            {
-                sessionModel = new SessionModel();
-            }
-            if (dt.HasValue)
-            {
-                sessionModel.SessionDateTime = dt.Value;
-            }
-            else
-            {
-                sessionModel.SessionDateTime = DateTime.Now.Date;
-            }
-            if (locationId.HasValue)
-            {
-                sessionModel.SelectedLocationId = (int)locationId;
-            }
-            else
-            {
-                sessionModel.SelectedLocationId = 1;
-            }
+            SessionModel sessionModel = new SessionModel();
+
+            var athlete = getThisAthlete();
+            sessionModel.SessionDateTime = athlete.SelectedDate;
+            sessionModel.SelectedLocationId = athlete.SelectedLocationId;
 
             sessionModel.Hour = 6;
-
+            LoadGrid(sessionModel);
             loadLocationSelectList(sessionModel);
             return View(sessionModel);
         }
 
         private void loadLocationSelectList(SessionModel sessionModel)
         {
-            
             sessionModel.LocationSelectList = new SelectList(db.Locations, "Id", "Name", sessionModel.SelectedLocationId);
         }
 
         [HttpPost]
         public ActionResult Index(SessionModel sessionModel)
         {
-            return RedirectToAction("Index", new { model = sessionModel });
+            var athlete = getThisAthlete();
+            athlete.SelectedDate = sessionModel.SessionDateTime;
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
-        public ActionResult ChangeLocation(int locId, DateTime dateTime)
+        public ActionResult ChangeLocation(int locId)
         {
-            return RedirectToAction("Index", new {locationId = locId, dt = dateTime});
+            var athlete = getThisAthlete();
+            athlete.SelectedLocationId = locId;
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
-        public PartialViewResult _PersonalTrainingGrid(SessionModel model)
+        private void LoadGrid(SessionModel model)
         {
             model.SixAmPersonalTraining = getSessionList(6, model.SessionDateTime, model.SelectedLocationId);
             model.SevenAmPersonalTraining = getSessionList(7, model.SessionDateTime, model.SelectedLocationId);
@@ -80,7 +65,6 @@ namespace Excel.Web.Controllers
             model.FourPmPersonalTraining = getSessionList(16, model.SessionDateTime, model.SelectedLocationId);
             model.FivePmPersonalTraining = getSessionList(17, model.SessionDateTime, model.SelectedLocationId);
             model.SixPmPersonalTraining = getSessionList(18, model.SessionDateTime, model.SelectedLocationId);
-            return PartialView(model);
         }
 
         private List<Athlete> getSessionList(int hour, DateTime dt, int locationId)
