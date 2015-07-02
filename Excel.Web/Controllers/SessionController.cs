@@ -65,9 +65,9 @@ namespace Excel.Web.Controllers
             return RedirectToAction("Index", new { model = sessionModel });
         }
 
-        public ActionResult ChangeLocation(int? locId)
+        public ActionResult ChangeLocation(int locId, DateTime dateTime)
         {
-            return RedirectToAction("Index", new {locationId = locId});
+            return RedirectToAction("Index", new {locationId = locId, dt = dateTime});
         }
 
         public PartialViewResult _PersonalTrainingGrid(SessionModel model)

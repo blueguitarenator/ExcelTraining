@@ -26,9 +26,12 @@
     </div>
 }
 
+<input type="hidden" id="hdnVal" value="@Model.SessionDateTime" />
+
 @Html.LabelFor(m => m.LocationSelectList, "Location", new { @class = "control-label ddlLabel sr-only" })
 @Html.DropDownList("loc", Model.LocationSelectList,
-     new { @onchange = "CallChangefunc(this.value)", @class = "form-control floatLable" })
+     new { @onchange = "CallChangefunc(this.value, '" + @Model.SessionDateTime + "')", @class = "form-control floatLable" })
+
 
 <!-- If Personal Training -->
 <div id="PersonalTraining">
@@ -38,7 +41,8 @@
 <!-- Else Sports Training -->
 
 <script>
-    function CallChangefunc(val) {
-        window.location.href = "/Session/ChangeLocation?locId=" + val;
+    function CallChangefunc(val, dt) {
+        var valueToStore = $("#hdnVal").val();
+        window.location.href = "/Session/ChangeLocation?locId=" + val + "&dateTime=" + valueToStore;
     }
 </script>
