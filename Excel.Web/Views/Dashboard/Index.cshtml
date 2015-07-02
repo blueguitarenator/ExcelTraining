@@ -7,26 +7,31 @@
 
 <h2>My Upcoming Sessions</h2>
 
-<table>
-    <thead>
-        <tr>
-            <th>Hour</th>
-            <th>Date</th>
-            <th>Location</th>
-            <th>Remove</th>
-        </tr>
-    </thead>
-    <tbody id="upcomingSessions">
-        @foreach (var s in Model.MySessions)
-        {
+<div class="table-responsive">
+    <table class="table table-striped ">
+        <thead>
             <tr>
-                <td>@s.Hour</td>
-                <td>@s.Day.Date.ToLongDateString()</td>
-                <td>@s.Location.Name</td>
-                <td>@Html.ActionLink("Remove", "RemoveSession",
-                    new { sessionId = s.Id },
-                    new AjaxOptions { UpdateTargetId = "upcomingSessions" })</td>
+                <th>Remove</th>
+                <th>Hour</th>
+                <th>Date</th>
+                <th>Location</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody id="upcomingSessions">
+            @foreach (var s in Model.MySessions)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink("Remove", "RemoveSession",
+                            new { sessionId = s.Id },
+                            new AjaxOptions { UpdateTargetId = "upcomingSessions" })
+                    </td>
+                    <td>@s.Hour</td>
+                    <td>@s.Day.Date.ToLongDateString()</td>
+                    <td>@s.Location.Name</td>
+            </tr>
+            }
+        </tbody>    
+    </table>
+</div>
+
