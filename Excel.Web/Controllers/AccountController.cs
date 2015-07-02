@@ -83,6 +83,12 @@ namespace Excel.Web.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    var userId = User.Identity.GetUserId();
+                    var appUser = db.Users.Where(u => u.Id == userId).SingleOrDefault();
+                    var athlete = db.Athletes.Where(a => a.Id == appUser.Athlete.Id).SingleOrDefault();
+                    athlete.SelectedLocationId = athlete.LocationId;
+                    athlete.SelectedDate = DateTime.Now.Date;
+                    db.SaveChanges();
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");

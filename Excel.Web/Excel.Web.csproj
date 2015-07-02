@@ -225,6 +225,14 @@
     <Compile Include="Migrations\201506271837099_AddLocationToSession.Designer.cs">
       <DependentUpon>201506271837099_AddLocationToSession.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201507020212363_AddAthleteSelectedLocationId.cs" />
+    <Compile Include="Migrations\201507020212363_AddAthleteSelectedLocationId.Designer.cs">
+      <DependentUpon>201507020212363_AddAthleteSelectedLocationId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507020230344_AddAthleteSelectedDate.cs" />
+    <Compile Include="Migrations\201507020230344_AddAthleteSelectedDate.Designer.cs">
+      <DependentUpon>201507020230344_AddAthleteSelectedDate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AthleteViewModel.cs" />
@@ -446,6 +454,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201506271837099_AddLocationToSession.resx">
       <DependentUpon>201506271837099_AddLocationToSession.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507020212363_AddAthleteSelectedLocationId.resx">
+      <DependentUpon>201507020212363_AddAthleteSelectedLocationId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507020230344_AddAthleteSelectedDate.resx">
+      <DependentUpon>201507020230344_AddAthleteSelectedDate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

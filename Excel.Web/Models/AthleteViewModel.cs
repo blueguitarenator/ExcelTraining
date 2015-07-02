@@ -23,11 +23,6 @@ namespace Excel.Web.Models
             set { locations = value; }
         }
 
-        public static String getLocation(int id)
-        {
-            return "asdf";// locations.Where(l => l.Id == id).SingleOrDefault().Name;
-        }
-
 
     }
 }
