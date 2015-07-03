@@ -21,6 +21,7 @@ namespace Excel.Web.Controllers
             DashboardModel model = new DashboardModel();
 
             model.MySessions = getFutureSessions();
+            model.TotalSession = getPastSessionCount();
 
             return View(model);
         }
@@ -63,5 +64,28 @@ namespace Excel.Web.Controllers
 
             return q.ToList();
         }
+
+        private int getPastSessionCount()
+        {
+            DateTime saveNow = DateTime.Now.Date;
+            var userId = User.Identity.GetUserId();
+            var appUser = db.Users.Where(u => u.Id == userId).SingleOrDefault();
+            if (appUser == null)
+            {
+                return 0;
+            }
+            var athlete = db.Athletes.Where(a => a.Id == appUser.Athlete.Id).SingleOrDefault();
+
+            var q = from s in db.Sessions
+                    where s.Day.Year <= saveNow.Year &&
+                        s.Day.Month <= saveNow.Month &&
+                        s.Day.Day < saveNow.Day &&
+                        s.Athletes.Any(a => a.Id == athlete.Id)
+                    select s;
+
+
+            return q.Count();
+        }
+
     }
 }

@@ -1,14 +1,5 @@
 ﻿@model Excel.Web.Models.SessionModel
 
-<style>
-    .datepicker {
-        z-index: 1151 !important;
-    }
-</style>
-
-
-
-
 @{
     ViewBag.Title = "Index";
 }
@@ -42,25 +33,6 @@
         $("#jdatepicker").datepicker();
         $('#jdatepicker').change(function () {
             window.location.href = "/Session/ChangeDate?dt=" + $('#jdatepicker').val();
-        });
-    });
-
-    $(document).ready(function () {
-        
-        $('#SessionDateTime').datepicker().on('changeDate', function (ev) {
-            $('#SessionDateTime').change();
-
-            $('#SessionDateTime').change(function () {
-                window.location.href = "/Session/ChangeDate?dt=" + $('#SessionDateTime').val();
-            });
-        });
-
-        $('#mydatepicker').datepicker().on('changeDate', function (ev) {
-            $('#mydatepicker').change();
-
-            $('#mydatepicker').change(function () {
-                window.location.href = "/Session/ChangeDate?dt=" + $('#mydatepicker').val();
-            });
         });
     });
     

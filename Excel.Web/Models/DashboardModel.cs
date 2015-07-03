@@ -10,6 +10,8 @@ namespace Excel.Web.Models
     {
         private List<Session> mySessions;
 
+        public int TotalSession { get; set; }
+
         public List<Session> MySessions
         {
             get { return mySessions; }

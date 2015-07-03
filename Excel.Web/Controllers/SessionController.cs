@@ -38,15 +38,6 @@ namespace Excel.Web.Controllers
             sessionModel.LocationSelectList = new SelectList(db.Locations, "Id", "Name", sessionModel.SelectedLocationId);
         }
 
-        [HttpPost]
-        public ActionResult Index(SessionModel sessionModel)
-        {
-            var athlete = getThisAthlete();
-            athlete.SelectedDate = sessionModel.SessionDateTime;
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
         public ActionResult ChangeDate(DateTime dt)
         {
             var athlete = getThisAthlete();
