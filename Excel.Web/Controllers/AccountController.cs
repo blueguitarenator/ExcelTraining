@@ -199,7 +199,9 @@ namespace Excel.Web.Controllers
                     Zip = model.Zip, 
                     AthleteType = model.AthleteType, 
                     UserType = model.UserType,
-                    LocationId = model.LocationId
+                    LocationId = model.LocationId,
+                    SelectedLocationId = model.LocationId,
+                    SelectedDate = DateTime.Now.Date
                 };
                 
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Athlete = athlete };
