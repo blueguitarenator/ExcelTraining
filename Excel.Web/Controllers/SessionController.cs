@@ -16,7 +16,20 @@ namespace Excel.Web.Controllers
     [Authorize]
     public class SessionController : Controller
     {
-        private IdentityDb db = new IdentityDb();
+        private IAthleteRepository athleteRepository;
+
+        public Func<string> GetUserId; //For testing
+
+        public SessionController()
+        {
+            athleteRepository = new AthleteRepository();
+            GetUserId = () => User.Identity.GetUserId();
+        }
+
+        public SessionController(IAthleteRepository db)
+        {
+            athleteRepository = db;
+        }
 
         // GET: Sessions
         public ActionResult Index()
@@ -27,7 +40,6 @@ namespace Excel.Web.Controllers
             sessionModel.SessionDateTime = athlete.SelectedDate;
             sessionModel.SelectedLocationId = athlete.SelectedLocationId;
 
-            sessionModel.Hour = 6;
             LoadGrid(sessionModel);
             loadLocationSelectList(sessionModel);
             return View(sessionModel);
@@ -35,14 +47,14 @@ namespace Excel.Web.Controllers
 
         private void loadLocationSelectList(SessionModel sessionModel)
         {
-            sessionModel.LocationSelectList = new SelectList(db.Locations, "Id", "Name", sessionModel.SelectedLocationId);
+            sessionModel.LocationSelectList = new SelectList(athleteRepository.GetLocations(), "Id", "Name", sessionModel.SelectedLocationId);
         }
 
         public ActionResult ChangeDate(DateTime dt)
         {
             var athlete = getThisAthlete();
             athlete.SelectedDate = dt;
-            db.SaveChanges();
+            athleteRepository.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -50,7 +62,7 @@ namespace Excel.Web.Controllers
         {
             var athlete = getThisAthlete();
             athlete.SelectedLocationId = locId;
-            db.SaveChanges();
+            athleteRepository.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -69,14 +81,11 @@ namespace Excel.Web.Controllers
         private List<Athlete> getSessionList(int hour, DateTime dt, int locationId)
         {
             Session session = getOrCreateSession(hour, dt, locationId);
-            if (session == null)
-            {
-                session = getOrCreateSession(hour, dt, locationId);
-            }
+            
             IEnumerable<Athlete> data = null;
             if (session.Athletes != null)
             {
-                data = session.Athletes.Where(a => a.UserType != UserTypes.Trainer);
+                data = athleteRepository.GetPersonalTrainingAthletes(session.Id);
             }
             int cnt = 0;
             if (data != null)
@@ -98,41 +107,25 @@ namespace Excel.Web.Controllers
 
         private Session getOrCreateSession(int hour, DateTime dt, int locationId)
         {
-            Session session = db.Sessions.Where(
-                s => s.Hour == hour &&
-                s.Day.Year == dt.Year &&
-                s.Day.Month == dt.Month &&
-                s.Day.Day == dt.Day &&
-                s.LocationId == locationId).SingleOrDefault();
+            Session session = athleteRepository.GetSession(hour, dt, locationId);
             if (session == null)
             {
-                db.Sessions.Add(new Session { Day = dt, Hour = 6, LocationId = locationId });
-                db.Sessions.Add(new Session { Day = dt, Hour = 7, LocationId = locationId });
-                db.Sessions.Add(new Session { Day = dt, Hour = 8, LocationId = locationId });
-                db.Sessions.Add(new Session { Day = dt, Hour = 9, LocationId = locationId });
-                db.Sessions.Add(new Session { Day = dt, Hour = 10, LocationId = locationId });
-                db.Sessions.Add(new Session { Day = dt, Hour = 16, LocationId = locationId });
-                db.Sessions.Add(new Session { Day = dt, Hour = 17, LocationId = locationId });
-                db.Sessions.Add(new Session { Day = dt, Hour = 18, LocationId = locationId });
-                db.SaveChanges();
+                athleteRepository.Write_CreateSessions(dt, locationId);                
             }
             return session;
         }
 
         private Athlete getThisAthlete()
         {
-            var userId = User.Identity.GetUserId();
-            var appUser = db.Users.Where(u => u.Id == userId).SingleOrDefault();
-            var athlete = db.Athletes.Where(a => a.Id == appUser.Athlete.Id).SingleOrDefault();
-            return athlete;
+            var userId = GetUserId();
+            return athleteRepository.GetAthleteByUserId(userId);
         }
 
         // GET: Sessions/Add/5
         public PartialViewResult _OneSession(DateTime dt, int hour, int SelectedLocationId)
         {
-            var session = getOrCreateSession(hour, dt, SelectedLocationId);
-            session.Athletes.Add(getThisAthlete());
-            db.SaveChanges();
+            Session session = athleteRepository.GetSession(hour, dt, SelectedLocationId);
+            athleteRepository.AddAthleteToSession(session.Id, getThisAthlete().Id);
 
             IEnumerable<Athlete> athletes = session.Athletes.Where(a => a.UserType != UserTypes.Trainer);
             List<Athlete> openSlots = new List<Athlete>();
@@ -150,7 +143,7 @@ namespace Excel.Web.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                athleteRepository.Dispose();
             }
             base.Dispose(disposing);
         }

@@ -14,6 +14,7 @@ namespace Excel.Web.Models
     {
         private IdentityDb db = new IdentityDb();
 
+        //Athlete
         public void CreateNewAthlete(Athlete athleteToCreate)
         {
             db.Athletes.Add(athleteToCreate);
@@ -38,11 +39,6 @@ namespace Excel.Web.Models
             return db.Athletes.FirstOrDefault(d => d.Id == appUser.Athlete.Id);
         }
 
-        public Session GetSessionById(int id)
-        {
-            return db.Sessions.Where(s => s.Id == id).FirstOrDefault();
-        }
-
         public IEnumerable<Athlete> GetAllAthletes()
         {
             return db.Athletes.ToList();
@@ -55,6 +51,45 @@ namespace Excel.Web.Models
             var x = session.Athletes.Where(a => a.Id == athlete.Id).SingleOrDefault();
 
             session.Athletes.Remove(x);
+        }
+
+        public void AddAthleteToSession(int sessionId, int athleteId)
+        {
+            var session = GetSessionById(sessionId);
+            var athlete = GetAthleteById(athleteId);
+            session.Athletes.Add(athlete);
+            db.SaveChanges();
+        }
+
+        // Sessions
+        public Session GetSession(int hour, DateTime dt, int locationId)
+        {
+            Session session = db.Sessions.Where(
+                s => s.Hour == hour &&
+                s.Day.Year == dt.Year &&
+                s.Day.Month == dt.Month &&
+                s.Day.Day == dt.Day &&
+                s.LocationId == locationId).SingleOrDefault();
+
+            return session;
+        }
+
+        public void Write_CreateSessions(DateTime dt, int locationId)
+        {
+            db.Sessions.Add(new Session { Day = dt, Hour = 6, LocationId = locationId });
+            db.Sessions.Add(new Session { Day = dt, Hour = 7, LocationId = locationId });
+            db.Sessions.Add(new Session { Day = dt, Hour = 8, LocationId = locationId });
+            db.Sessions.Add(new Session { Day = dt, Hour = 9, LocationId = locationId });
+            db.Sessions.Add(new Session { Day = dt, Hour = 10, LocationId = locationId });
+            db.Sessions.Add(new Session { Day = dt, Hour = 16, LocationId = locationId });
+            db.Sessions.Add(new Session { Day = dt, Hour = 17, LocationId = locationId });
+            db.Sessions.Add(new Session { Day = dt, Hour = 18, LocationId = locationId });
+            db.SaveChanges();
+        }
+
+        public Session GetSessionById(int id)
+        {
+            return db.Sessions.Where(s => s.Id == id).FirstOrDefault();
         }
 
         public IEnumerable<Session> GetFutureSessions(int athleteId)
@@ -83,9 +118,26 @@ namespace Excel.Web.Models
             return q;
         }
 
+        public IEnumerable<Athlete> GetPersonalTrainingAthletes(int sessionId)
+        {
+            var session = GetSessionById(sessionId);
+            return session.Athletes.Where(a => a.AthleteType == AthleteTypes.PersonalTraining && a.UserType == UserTypes.Athlete);
+        }
+
+        //Locations
+        public IEnumerable<Location> GetLocations()
+        {
+            return db.Locations;
+        }
+
         public int SaveChanges()
         {
             return db.SaveChanges();
+        }
+
+        public void Dispose()
+        {
+            db.Dispose();
         }
     }
 }

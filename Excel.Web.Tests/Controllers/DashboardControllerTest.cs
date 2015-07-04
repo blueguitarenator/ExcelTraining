@@ -16,37 +16,46 @@ namespace Excel.Web.Tests.Controllers
     [TestClass]
     public class DashboardControllerTest
     {
+
         [TestMethod]
-        public void IndexAction_ShouldReturnViewFor_DashboardModel()
+        public void Index_LoadsFutureSessionsAndTotalSessions()
         {
+            var sessions = new List<Session>();
+            var athlete = new Athlete() { Id = 1, FirstName = "Rich", LastName = "Johnson" };
+            List<Athlete> myList = new List<Athlete>();
+            var mockRepo = new Mock<IAthleteRepository>();
+            var controller = CreateDashboardController(mockRepo.Object);
+            mockRepo.Setup(x => x.GetAthleteByUserId("1")).Returns(athlete);
+            mockRepo.Setup(x => x.GetFutureSessions(1)).Returns(sessions);
 
-            // Arrange
-            var controller = CreateDashboardController();
-
-            // Act
             var result = controller.Index() as ViewResult;
 
-            // Assert
             Assert.IsInstanceOfType(result.ViewData.Model, typeof(DashboardModel));
         }
 
-        DashboardController CreateDashboardControllerAs(string userName)
+        [TestMethod]
+        public void RemoveFromSession_UsesRepoCorrectly_AndRedirectsToIndex()
         {
+            var athlete = new Athlete() { Id = 1, FirstName = "Rich", LastName = "Johnson" };
+            List<Athlete> athletes = new List<Athlete>();
+            athletes.Add(athlete);
+            var session = new Session() { Id = 1, Hour = 6, LocationId = 1, Athletes = athletes };
+            var mockRepo = new Mock<IAthleteRepository>();
+            var controller = CreateDashboardController(mockRepo.Object);
+            mockRepo.Setup(x => x.GetAthleteByUserId("1")).Returns(athlete);
+            mockRepo.Setup(x => x.GetSessionById(1)).Returns(session);
 
-            var mock = new Mock<ControllerContext>();
-            mock.SetupGet(p => p.HttpContext.User.Identity.Name).Returns(userName);
-            mock.SetupGet(p => p.HttpContext.Request.IsAuthenticated).Returns(true);
+            var result = controller.RemoveFromSession(session.Id) as RedirectToRouteResult;
 
-            var controller = CreateDashboardController();
-            controller.ControllerContext = mock.Object;
-
-            return controller;
+            Assert.AreEqual("Index", result.RouteValues["Action"]);
+            mockRepo.Verify(x => x.RemoveAthleteFromSession(session.Id, athlete.Id));
+            mockRepo.Verify(x => x.SaveChanges());
         }
 
-        DashboardController CreateDashboardController()
+        DashboardController CreateDashboardController(IAthleteRepository repo)
         {
-            var repository = new InMemoryAthleteRepository(CreateTestAthletes());
-            return new DashboardController(repository)
+            //var repository = new InMemoryAthleteRepository(CreateTestAthletes());
+            return new DashboardController(repo)
             {
                 GetUserId = () => "1"
             };
@@ -76,6 +85,20 @@ namespace Excel.Web.Tests.Controllers
                 athletes.Add(sampleAthlete);
             }
             return athletes;
+        }
+
+        // NOT USED
+        DashboardController CreateDashboardControllerAs(string userName)
+        {
+            var mock = new Mock<ControllerContext>();
+            mock.SetupGet(p => p.HttpContext.User.Identity.Name).Returns(userName);
+            mock.SetupGet(p => p.HttpContext.Request.IsAuthenticated).Returns(true);
+
+            var mockRepo = new Mock<IAthleteRepository>();
+            var controller = CreateDashboardController(mockRepo.Object);
+            controller.ControllerContext = mock.Object;
+
+            return controller;
         }
     }
 }

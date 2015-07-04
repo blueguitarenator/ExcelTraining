@@ -9,46 +9,46 @@ using System.Security.Principal;
 
 namespace Excel.Web.Tests.Models
 {
-    public class InMemoryAthleteRepository : IAthleteRepository
+    public class InMemoryAthleteRepository 
     {
-        private List<Athlete> db = new List<Athlete>();
-        //private List<IPrincipal> userDb = new List<IPrincipal>();
+        private List<Athlete> athleteDb = new List<Athlete>();
+        private List<Session> sessionDb = new List<Session>();
 
         public Exception ExceptionToThrow { get; set; }
 
         public InMemoryAthleteRepository(List<Athlete> athletes)
         {
-            db = athletes;
+            athleteDb = athletes;
         }
 
-        public void SaveChanges(Athlete athleteToUpdate)
-        {
+        //public void SaveChanges(Athlete athleteToUpdate)
+        //{
 
-            foreach (Athlete athlete in db)
-            {
-                if (athlete.Id == athleteToUpdate.Id)
-                {
-                    db.Remove(athlete);
-                    db.Add(athleteToUpdate);
-                    break;
-                }
-            }
-        }
+        //    foreach (Athlete athlete in athleteDb)
+        //    {
+        //        if (athlete.Id == athleteToUpdate.Id)
+        //        {
+        //            athleteDb.Remove(athlete);
+        //            athleteDb.Add(athleteToUpdate);
+        //            break;
+        //        }
+        //    }
+        //}
 
         public void Add(Athlete athleteToAdd)
         {
             
-            db.Add(athleteToAdd);
+            athleteDb.Add(athleteToAdd);
         }
 
         public Athlete GetAthleteById(int id)
         {
-            return db.FirstOrDefault(d => d.Id == id);
+            return athleteDb.FirstOrDefault(d => d.Id == id);
         }
 
         public Athlete GetAthleteByUserId(string userId)
         {
-            return db.FirstOrDefault();
+            return athleteDb.FirstOrDefault();
         }
 
         public void CreateNewAthlete(Athlete athleteToCreate)
@@ -56,7 +56,7 @@ namespace Excel.Web.Tests.Models
             if (ExceptionToThrow != null)
                 throw ExceptionToThrow;
 
-            db.Add(athleteToCreate);
+            athleteDb.Add(athleteToCreate);
             // return contactToCreate;
         }
 
@@ -67,7 +67,7 @@ namespace Excel.Web.Tests.Models
 
         public IEnumerable<Athlete> GetAllAthletes()
         {
-            return db.ToList();
+            return athleteDb.ToList();
         }
 
         public Session GetSessionById(int id)
@@ -94,7 +94,7 @@ namespace Excel.Web.Tests.Models
 
         public void DeleteAthlete(int id)
         {
-            db.Remove(GetAthleteById(id));
+            athleteDb.Remove(GetAthleteById(id));
         }
 
     }

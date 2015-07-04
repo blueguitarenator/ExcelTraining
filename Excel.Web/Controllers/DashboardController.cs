@@ -17,9 +17,14 @@ namespace Excel.Web.Controllers
 
         public Func<string> GetUserId; //For testing
 
+        public DashboardController()
+        {
+            athleteRepository = new AthleteRepository();
+            GetUserId = () => User.Identity.GetUserId();
+        }
+
         public DashboardController(IAthleteRepository db)
         {
-            GetUserId = () => User.Identity.GetUserId();
             athleteRepository = db;
         }
 
@@ -34,16 +39,26 @@ namespace Excel.Web.Controllers
             return View(model);
         }
 
-        public ActionResult RemoveSession(int sessionId)
+        public ActionResult RemoveFromSession(int sessionId)
         {
             DashboardModel model = new DashboardModel();
             var userId = GetUserId();
             var athlete = athleteRepository.GetAthleteByUserId(userId);
 
             var session = athleteRepository.GetSessionById(sessionId);
+            athleteRepository.RemoveAthleteFromSession(session.Id, athlete.Id);
             athleteRepository.SaveChanges();
 
             return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                athleteRepository.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
         private List<Session> getFutureSessions()
