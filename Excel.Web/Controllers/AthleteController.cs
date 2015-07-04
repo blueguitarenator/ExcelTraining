@@ -17,6 +17,7 @@ namespace Excel.Web.Controllers
     [Authorize(Roles = "admin")]
     public class AthleteController : Controller
     {
+        private IAthleteRepository athleteRepository;
         private IdentityDb db = new IdentityDb();
 
         // GET: Athletes

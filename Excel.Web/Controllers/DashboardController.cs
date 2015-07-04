@@ -13,7 +13,18 @@ namespace Excel.Web.Controllers
     [Authorize]
     public class DashboardController : Controller
     {
-        private IdentityDb db = new IdentityDb();
+        //private IdentityDb db = new IdentityDb();
+        private IAthleteRepository athleteRepository;
+
+        public DashboardController()
+        {
+            athleteRepository = new AthleteRepository();
+        }
+
+        public DashboardController(IAthleteRepository athleteRepository)
+        {
+            this.athleteRepository = athleteRepository;
+        }
 
         // GET: Dashboard
         public ActionResult Index()
@@ -30,15 +41,18 @@ namespace Excel.Web.Controllers
         {
             DashboardModel model = new DashboardModel();
             var userId = User.Identity.GetUserId();
-            var appUser = db.Users.Where(u => u.Id == userId).SingleOrDefault();
-            var athlete = db.Athletes.Where(a => a.Id == appUser.Athlete.Id).SingleOrDefault();
+            //var appUser = db.Users.Where(u => u.Id == userId).SingleOrDefault();
+            //var athlete = db.Athletes.Where(a => a.Id == appUser.Athlete.Id).SingleOrDefault();
+            var athlete = athleteRepository.GetAthleteByUserId(userId);
 
-            var session = db.Sessions.Where(s => s.Id == sessionId).SingleOrDefault();
-            var x = session.Athletes.Where(a => a.Id == athlete.Id).SingleOrDefault();
+            var session = athleteRepository.GetSessionById(sessionId);
+            //var session = db.Sessions.Where(s => s.Id == sessionId).SingleOrDefault();
+            //var x = session.Athletes.Where(a => a.Id == athlete.Id).SingleOrDefault();
 
-            session.Athletes.Remove(x);
+            //session.Athletes.Remove(x);
 
-            db.SaveChanges();
+            //db.SaveChanges();
+            athleteRepository.SaveChanges();
 
             return RedirectToAction("Index");
         }
@@ -47,44 +61,49 @@ namespace Excel.Web.Controllers
         {
             DateTime saveNow = DateTime.Now.Date;
             var userId = User.Identity.GetUserId();
-            var appUser = db.Users.Where(u => u.Id == userId).SingleOrDefault();
-            if (appUser == null)
-            {
-                return new List<Session>();
-            }
-            var athlete = db.Athletes.Where(a => a.Id == appUser.Athlete.Id).SingleOrDefault();
+            var athlete = athleteRepository.GetAthleteByUserId(userId);
+            //var appUser = db.Users.Where(u => u.Id == userId).SingleOrDefault();
+            //if (appUser == null)
+            //{
+            //    return new List<Session>();
+            //}
+            //var athlete = db.Athletes.Where(a => a.Id == appUser.Athlete.Id).SingleOrDefault();
 
-            var q = from s in db.Sessions
-                where s.Day.Year >= saveNow.Year &&
-                    s.Day.Month >= saveNow.Month &&
-                    s.Day.Day >= saveNow.Day &&
-                    s.Athletes.Any(a => a.Id == athlete.Id)
-                select s;
+            //var q = from s in db.Sessions
+            //    where s.Day.Year >= saveNow.Year &&
+            //        s.Day.Month >= saveNow.Month &&
+            //        s.Day.Day >= saveNow.Day &&
+            //        s.Athletes.Any(a => a.Id == athlete.Id)
+            //    select s;
 
 
-            return q.ToList();
+            //return q.ToList();
+            return athleteRepository.GetFutureSessions(athlete.Id).ToList();
         }
 
         private int getPastSessionCount()
         {
-            DateTime saveNow = DateTime.Now.Date;
+            //DateTime saveNow = DateTime.Now.Date;
             var userId = User.Identity.GetUserId();
-            var appUser = db.Users.Where(u => u.Id == userId).SingleOrDefault();
-            if (appUser == null)
-            {
-                return 0;
-            }
-            var athlete = db.Athletes.Where(a => a.Id == appUser.Athlete.Id).SingleOrDefault();
-
-            var q = from s in db.Sessions
-                    where s.Day.Year <= saveNow.Year &&
-                        s.Day.Month <= saveNow.Month &&
-                        s.Day.Day < saveNow.Day &&
-                        s.Athletes.Any(a => a.Id == athlete.Id)
-                    select s;
+            var athlete = athleteRepository.GetAthleteByUserId(userId);
+            //var appUser = db.Users.Where(u => u.Id == userId).SingleOrDefault();
+            //if (appUser == null)
+            //{
+            //    return 0;
+            //}
+            //var athlete = db.Athletes.Where(a => a.Id == appUser.Athlete.Id).SingleOrDefault();
 
 
-            return q.Count();
+            //var q = from s in db.Sessions
+            //        where s.Day.Year <= saveNow.Year &&
+            //            s.Day.Month <= saveNow.Month &&
+            //            s.Day.Day < saveNow.Day &&
+            //            s.Athletes.Any(a => a.Id == athlete.Id)
+            //        select s;
+
+
+            //return q.Count();
+            return athleteRepository.GetPastSessions(athlete.Id).Count();
         }
 
     }
