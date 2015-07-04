@@ -16,6 +16,11 @@ namespace Excel.Web.Tests.Models
 
         public Exception ExceptionToThrow { get; set; }
 
+        public InMemoryAthleteRepository(List<Athlete> athletes)
+        {
+            db = athletes;
+        }
+
         public void SaveChanges(Athlete athleteToUpdate)
         {
 
