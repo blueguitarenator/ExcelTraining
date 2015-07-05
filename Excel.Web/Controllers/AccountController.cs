@@ -20,10 +20,19 @@ namespace Excel.Web.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private IdentityDb db = new IdentityDb();
+        //private IdentityDb db = new IdentityDb();
+        private IAthleteRepository athleteRepository;
+        public Func<string> GetUserId; //For testing
 
         public AccountController()
         {
+            athleteRepository = new AthleteRepository();
+            GetUserId = () => User.Identity.GetUserId();
+        }
+
+        public AccountController(IAthleteRepository db)
+        {
+            athleteRepository = db;
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
@@ -103,12 +112,11 @@ namespace Excel.Web.Controllers
 
         private void UpdateUserDefaults()
         {
-            string userId = User.Identity.GetUserId();
-            var appUser = db.Users.Where(u => u.Id == userId).SingleOrDefault();
-            var athlete = db.Athletes.Where(a => a.Id == appUser.Athlete.Id).SingleOrDefault();
+            string userId = GetUserId();
+            var athlete = athleteRepository.GetAthleteByUserId(userId);
             athlete.SelectedLocationId = athlete.LocationId;
             athlete.SelectedDate = DateTime.Now.Date;
-            db.SaveChanges();
+            athleteRepository.SaveChanges();
         }
 
         //
@@ -165,18 +173,20 @@ namespace Excel.Web.Controllers
 
         private void GetLocationSelectList()
         {
-            var content = from p in db.Locations
+            ViewBag.Locations = new SelectList(athleteRepository.GetLocations(), "Id", "Name");
 
-                          orderby p.Name
-                          select new { p.Id, p.Name };
+            //var content = from p in db.Locations
 
-            var x = content.ToList().Select(c => new SelectListItem
-            {
-                Text = c.Name,
-                Value = c.Id.ToString(),
+            //              orderby p.Name
+            //              select new { p.Id, p.Name };
 
-            }).ToList();
-            ViewBag.Locations = x;
+            //var x = content.ToList().Select(c => new SelectListItem
+            //{
+            //    Text = c.Name,
+            //    Value = c.Id.ToString(),
+
+            //}).ToList();
+            //ViewBag.Locations = x;
 
         }
 
@@ -469,7 +479,7 @@ namespace Excel.Web.Controllers
                     _signInManager.Dispose();
                     _signInManager = null;
                 }
-                db.Dispose();
+                athleteRepository.Dispose();
             }
 
             base.Dispose(disposing);

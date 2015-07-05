@@ -7,6 +7,8 @@ using System.Web;
 using Microsoft.AspNet.Identity;
 using System.Web.Mvc;
 using System.Security.Principal;
+using System.Data.Entity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Excel.Web.Models
 {
@@ -15,15 +17,43 @@ namespace Excel.Web.Models
         private IdentityDb db = new IdentityDb();
 
         //Athlete
+        public void GiveAdmin(Athlete athlete)
+        {
+            db.Entry(athlete).State = EntityState.Modified;
+            var store = new UserStore<ApplicationUser>(db);
+            var manager = new UserManager<ApplicationUser>(store);
+
+            var usr = from u in db.Users
+                      where u.Athlete.Id == athlete.Id
+                      select u;
+            manager.AddToRole(usr.First().Id, "admin");
+            db.SaveChanges();
+        }
+
+        public void RemoveAdmin(Athlete athlete)
+        {
+            db.Entry(athlete).State = EntityState.Modified;
+            var store = new UserStore<ApplicationUser>(db);
+            var manager = new UserManager<ApplicationUser>(store);
+
+            var usr = from u in db.Users
+                      where u.Athlete.Id == athlete.Id
+                      select u;
+            manager.RemoveFromRole(usr.First().Id, "admin");
+            db.SaveChanges();
+        }
+
         public void CreateNewAthlete(Athlete athleteToCreate)
         {
             db.Athletes.Add(athleteToCreate);
             db.SaveChanges();
         }
 
-        public void DeleteAthlete(int id)
+        public void DeleteAthlete(string id)
         {
-            var athleteToDelete = GetAthleteById(id);
+            var usr = db.Users.Find(id);
+            var athleteToDelete = GetAthleteById(usr.Athlete.Id);
+            db.Users.Remove(usr);
             db.Athletes.Remove(athleteToDelete);
             db.SaveChanges();
         }
@@ -128,6 +158,11 @@ namespace Excel.Web.Models
         public IEnumerable<Location> GetLocations()
         {
             return db.Locations;
+        }
+
+        public IdentityDb GetIdentityDb()
+        {
+            return db;
         }
 
         public int SaveChanges()

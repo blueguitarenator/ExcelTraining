@@ -18,14 +18,17 @@ namespace Excel.Web.Controllers
     public class AthleteController : Controller
     {
         private IAthleteRepository athleteRepository;
-        private IdentityDb db = new IdentityDb();
+
+        public AthleteController()
+        {
+            athleteRepository = new AthleteRepository();
+        }
 
         // GET: Athletes
         public ActionResult Index()
         {
             AthleteViewModel model = new AthleteViewModel();
-            model.Athletes = db.Athletes.ToList();
-            model.Locations = db.Locations.ToList();
+            model.Athletes = athleteRepository.GetAllAthletes().ToList();
             return View(model);
         }
 
@@ -36,7 +39,7 @@ namespace Excel.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Athlete athlete = db.Athletes.Find(id);
+            Athlete athlete = athleteRepository.GetAthleteById(id.Value);
             if (athlete == null)
             {
                 return HttpNotFound();
@@ -44,25 +47,6 @@ namespace Excel.Web.Controllers
 
             return View(athlete);
         }
-
-
-        // POST: Athletes/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create([Bind(Include = "Id,FirstName,LastName,Address,City,State,Zip,AthleteType,UserType")] Athlete athlete)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Athletes.Add(athlete);
-        //        db.SaveChanges();
-
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    return View(athlete);
-        //}
 
         // GET: Athletes/Edit/5
         public ActionResult Edit(int? id)
@@ -71,32 +55,14 @@ namespace Excel.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Athlete athlete = db.Athletes.Find(id);
+            Athlete athlete = athleteRepository.GetAthleteById(id.Value);
             if (athlete == null)
             {
                 return HttpNotFound();
             }
-            GetLocationSelectList();
-            
+            ViewBag.Locations = new SelectList(athleteRepository.GetLocations(), "Id", "Name", athlete.SelectedLocationId);
 
             return View(athlete);
-        }
-
-        private void GetLocationSelectList()
-        {
-            var content = from p in db.Locations
-                  
-                  orderby p.Name
-                  select new { p.Id, p.Name };
- 
-            var x = content.ToList().Select(c => new SelectListItem         
-                            {
-                               Text = c.Name,
-                               Value = c.Id.ToString(),
-                               
-                            }).ToList();
-             ViewBag.Locations = x;
- 
         }
 
         // POST: Athletes/Edit/5
@@ -104,23 +70,18 @@ namespace Excel.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,Address,City,State,Zip,AthleteType,UserType,LocationId")] Athlete athlete)
+        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,Address,City,State,Zip,AthleteType,UserType,LocationId,SelectedLocationId,SelectedDate")] Athlete athlete)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(athlete).State = EntityState.Modified;
                 if (athlete.UserType == UserTypes.Trainer)
                 {
-                    var store = new UserStore<ApplicationUser>(db);
-                    var manager = new UserManager<ApplicationUser>(store);
-                   
-                    var usr = from u in db.Users 
-                                    where u.Athlete.Id == athlete.Id 
-                                    select u;
-                    manager.AddToRole(usr.First().Id, "admin");
-                    
+                    athleteRepository.GiveAdmin(athlete);
                 }
-                db.SaveChanges();
+                else
+                {
+                    athleteRepository.RemoveAdmin(athlete);
+                }
                 return RedirectToAction("Index");
             }
             return View(athlete);
@@ -133,7 +94,7 @@ namespace Excel.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Athlete athlete = db.Athletes.Find(id);
+            Athlete athlete = athleteRepository.GetAthleteById(id.Value);
             if (athlete == null)
             {
                 return HttpNotFound();
@@ -146,9 +107,8 @@ namespace Excel.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Athlete athlete = db.Athletes.Find(id);
-            db.Athletes.Remove(athlete);
-            db.SaveChanges();
+            var userId = User.Identity.GetUserId();
+            athleteRepository.DeleteAthlete(userId);
             return RedirectToAction("Index");
         }
 
@@ -156,7 +116,7 @@ namespace Excel.Web.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                athleteRepository.Dispose();
             }
             base.Dispose(disposing);
         }

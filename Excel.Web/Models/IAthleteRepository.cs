@@ -1,4 +1,5 @@
 ﻿using Excel.Entities;
+using Excel.Web.DataContexts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,11 @@ namespace Excel.Web.Models
     {
         //Athlete - writers
         void CreateNewAthlete(Athlete athleteToCreate);
-        void DeleteAthlete(int id);
+        void DeleteAthlete(string id);
         void RemoveAthleteFromSession(int sessionId, int athleteId);
         void AddAthleteToSession(int sessionId, int athleteId);
+        void GiveAdmin(Athlete athlete);
+        void RemoveAdmin(Athlete athlete);
 
         //Athlete - readers
         Athlete GetAthleteById(int id);
@@ -32,6 +35,7 @@ namespace Excel.Web.Models
         //Location
         IEnumerable<Location> GetLocations();
 
+        IdentityDb GetIdentityDb();
         int SaveChanges();
         void Dispose();
     }
