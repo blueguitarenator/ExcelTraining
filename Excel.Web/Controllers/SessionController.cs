@@ -110,7 +110,8 @@ namespace Excel.Web.Controllers
             Session session = athleteRepository.GetSession(hour, dt, locationId);
             if (session == null)
             {
-                athleteRepository.Write_CreateSessions(dt, locationId);                
+                athleteRepository.Write_CreateSessions(dt, locationId);
+                session = athleteRepository.GetSession(hour, dt, locationId);
             }
             return session;
         }

@@ -11,7 +11,7 @@ namespace Excel.Web.Models
     {
         //Athlete - writers
         void CreateNewAthlete(Athlete athleteToCreate);
-        void DeleteAthlete(string id);
+        void DeleteAthlete(int id);
         void RemoveAthleteFromSession(int sessionId, int athleteId);
         void AddAthleteToSession(int sessionId, int athleteId);
         void GiveAdmin(Athlete athlete);

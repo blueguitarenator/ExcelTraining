@@ -49,11 +49,18 @@ namespace Excel.Web.Models
             db.SaveChanges();
         }
 
-        public void DeleteAthlete(string id)
+        public void DeleteAthlete(int id)
         {
-            var usr = db.Users.Find(id);
-            var athleteToDelete = GetAthleteById(usr.Athlete.Id);
-            db.Users.Remove(usr);
+            var athleteToDelete = GetAthleteById(id);
+            db.Entry(athleteToDelete).State = EntityState.Modified;
+            var store = new UserStore<ApplicationUser>(db);
+            var manager = new UserManager<ApplicationUser>(store);
+            
+            var usr = from u in db.Users
+                      where u.Athlete.Id == id
+                      select u;
+            manager.RemoveFromRole(usr.First().Id, "admin");
+            manager.Delete(usr.FirstOrDefault());
             db.Athletes.Remove(athleteToDelete);
             db.SaveChanges();
         }

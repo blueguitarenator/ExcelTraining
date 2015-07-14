@@ -107,8 +107,8 @@ namespace Excel.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            var userId = User.Identity.GetUserId();
-            athleteRepository.DeleteAthlete(userId);
+            //var userId = User.Identity.GetUserId();
+            athleteRepository.DeleteAthlete(id);
             return RedirectToAction("Index");
         }
 
