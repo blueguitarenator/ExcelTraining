@@ -10,6 +10,7 @@ using Excel.Entities;
 using Excel.Web.DataContexts;
 using Excel.Web.Models;
 using Microsoft.AspNet.Identity;
+using Excel.Web.Helpers;
 
 namespace Excel.Web.Controllers
 {
@@ -42,12 +43,19 @@ namespace Excel.Web.Controllers
 
             LoadGrid(sessionModel);
             loadLocationSelectList(sessionModel);
+            loadAthleteTypeSelectList(sessionModel);
             return View(sessionModel);
         }
 
         private void loadLocationSelectList(SessionModel sessionModel)
         {
             sessionModel.LocationSelectList = new SelectList(athleteRepository.GetLocations(), "Id", "Name", sessionModel.SelectedLocationId);
+        }
+
+        private void loadAthleteTypeSelectList(SessionModel sessionModel)
+        {
+            var athlete = getThisAthlete();
+            sessionModel.AthleteType = athlete.AthleteType;
         }
 
         public ActionResult ChangeDate(DateTime dt)
@@ -80,6 +88,14 @@ namespace Excel.Web.Controllers
         {
             var athlete = getThisAthlete();
             athlete.SelectedLocationId = locId;
+            athleteRepository.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult ChangeAthleteType(int athleteTypeId)
+        {
+            var athlete = getThisAthlete();
+            athlete.AthleteType = (AthleteTypes)athleteTypeId;
             athleteRepository.SaveChanges();
             return RedirectToAction("Index");
         }

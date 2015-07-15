@@ -167,6 +167,13 @@ namespace Excel.Web.Models
             return db.Locations;
         }
 
+        //UserTypes
+        public IEnumerable<AthleteTypes> GetAthleteTypes()
+        {
+            List<AthleteTypes> all = new List<AthleteTypes>() {AthleteTypes.PersonalTraining, AthleteTypes.SportsTraining};
+            return all.AsEnumerable();
+        }
+
         public IdentityDb GetIdentityDb()
         {
             return db;

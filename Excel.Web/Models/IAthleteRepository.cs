@@ -35,6 +35,9 @@ namespace Excel.Web.Models
         //Location
         IEnumerable<Location> GetLocations();
 
+        // Athlete Type
+        IEnumerable<AthleteTypes> GetAthleteTypes();
+
         IdentityDb GetIdentityDb();
         int SaveChanges();
         void Dispose();

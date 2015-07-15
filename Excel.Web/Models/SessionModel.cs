@@ -17,6 +17,9 @@ namespace Excel.Web.Models
         public int Hour { get; set; }
         public SelectList LocationSelectList { get; set; }
         public int SelectedLocationId { get; set; }
+        //public SelectList AthleteTypeSelectList { get; set; }
+        //public int SelectedAthleteTypeId { get; set; }
+        public AthleteTypes AthleteType{ get; set; }
 
         private List<Athlete> sixAmPersonalTraining;
         private List<Athlete> sevenAmPersonalTraining;
