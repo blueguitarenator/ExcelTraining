@@ -58,6 +58,24 @@ namespace Excel.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult Next()
+        {
+            var athlete = getThisAthlete();
+            athlete.SelectedDate = athlete.SelectedDate.AddDays(1);
+
+            athleteRepository.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Previous()
+        {
+            var athlete = getThisAthlete();
+            athlete.SelectedDate = athlete.SelectedDate.AddDays(-1);
+
+            athleteRepository.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
         public ActionResult ChangeLocation(int locId)
         {
             var athlete = getThisAthlete();

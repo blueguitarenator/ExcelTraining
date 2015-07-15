@@ -7,7 +7,10 @@
 <h2>Sessions</h2>
 <div class="row">
     <div class="col-md-4">
-        Date: <input type="text" id="jdatepicker" value=@Model.SessionDateTime>
+        <button type="button" onclick="Previous()">Previous</button> 
+        <input type="text" id="jdatepicker" value=@Model.SessionDateTime>
+        <button type="button" onclick="Next()">Next</button> 
+        <p>@Model.SessionDateTime.ToLongDateString()</p>
     </div>
 
     <div class="col-md-4">
@@ -27,6 +30,12 @@
 <script>
     function CallChangefunc(val) {
         window.location.href = "/Session/ChangeLocation?locId=" + val;
+    }
+    function Previous() {
+        window.location.href = "/Session/Previous";
+    }
+    function Next() {
+        window.location.href = "/Session/Next";
     }
 
     $(function () {
