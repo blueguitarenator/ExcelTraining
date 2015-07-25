@@ -10,6 +10,7 @@ using Excel.Entities;
 using Excel.Web.DataContexts;
 using Excel.Web.Models;
 using Microsoft.AspNet.Identity;
+using Excel.Web.Helpers;
 
 namespace Excel.Web.Controllers
 {
@@ -40,8 +41,19 @@ namespace Excel.Web.Controllers
             sessionModel.SessionDateTime = athlete.SelectedDate;
             sessionModel.SelectedLocationId = athlete.SelectedLocationId;
 
+            if (TempData["AthleteType"] != null && TempData["AthleteType"].Equals((int)AthleteTypes.SportsTraining))
+            {
+                sessionModel.AthleteType = AthleteTypes.SportsTraining;
+            }
+            else
+            {
+                sessionModel.AthleteType = AthleteTypes.PersonalTraining;
+            }
+            TempData.Clear();
+
             LoadGrid(sessionModel);
             loadLocationSelectList(sessionModel);
+
             return View(sessionModel);
         }
 
@@ -84,16 +96,65 @@ namespace Excel.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult ChangeAthleteType(int athleteTypeId)
+        {
+            TempData["AthleteType"] = athleteTypeId;
+            return RedirectToAction("Index");
+        }
+
         private void LoadGrid(SessionModel model)
         {
-            model.SixAmPersonalTraining = getSessionList(6, model.SessionDateTime, model.SelectedLocationId);
-            model.SevenAmPersonalTraining = getSessionList(7, model.SessionDateTime, model.SelectedLocationId);
-            model.EightAmPersonalTraining = getSessionList(8, model.SessionDateTime, model.SelectedLocationId);
-            model.NineAmPersonalTraining = getSessionList(9, model.SessionDateTime, model.SelectedLocationId);
-            model.TenAmPersonalTraining = getSessionList(10, model.SessionDateTime, model.SelectedLocationId);
-            model.FourPmPersonalTraining = getSessionList(16, model.SessionDateTime, model.SelectedLocationId);
-            model.FivePmPersonalTraining = getSessionList(17, model.SessionDateTime, model.SelectedLocationId);
-            model.SixPmPersonalTraining = getSessionList(18, model.SessionDateTime, model.SelectedLocationId);
+            model.SessionsWithAthletes = new SessionsWithAthletes();
+            model.SessionsWithAthletes.AthleteData = new List<AthleteData>();
+            model.SessionsWithAthletes.AthleteData.Add(getSessionsWithAthletes(model, 6));
+            model.SessionsWithAthletes.AthleteData.Add(getSessionsWithAthletes(model, 7));
+            model.SessionsWithAthletes.AthleteData.Add(getSessionsWithAthletes(model, 8));
+            model.SessionsWithAthletes.AthleteData.Add(getSessionsWithAthletes(model, 9));
+            model.SessionsWithAthletes.AthleteData.Add(getSessionsWithAthletes(model, 10));
+            model.SessionsWithAthletes.AthleteData.Add(getSessionsWithAthletes(model, 16));
+            model.SessionsWithAthletes.AthleteData.Add(getSessionsWithAthletes(model, 17));
+            model.SessionsWithAthletes.AthleteData.Add(getSessionsWithAthletes(model, 18));
+        }
+
+        private AthleteData getSessionsWithAthletes(SessionModel model, int hour)
+        {
+            AthleteData athleteData = new AthleteData();
+            athleteData.Athletes = new List<string>();
+            athleteData.Time = getTime(hour);
+            athleteData.DivId = getDivId(hour);
+            athleteData.Hour = hour;
+            for (int i = 0; i < 16; i++)
+            {
+                athleteData.Athletes.Add("open");
+            }
+            getSessionListNames(athleteData, hour, model.SessionDateTime, model.SelectedLocationId, model.AthleteType);
+            return athleteData;
+        }
+
+        private void getSessionListNames(AthleteData athleteData, int hour, DateTime dt, int locationId, AthleteTypes athleteType)
+        {
+            Session session = getOrCreateSession(hour, dt, locationId);
+            
+            IEnumerable<Athlete> data = null;
+            if (session.Athletes != null)
+            {
+                if (athleteType == AthleteTypes.PersonalTraining)
+                {
+                    IEnumerable<Athlete> personal = athleteRepository.GetPersonalTrainingAthletes(session.Id, locationId);
+                    for (int i = 0; i < personal.Count(); i++)
+                    {
+                        athleteData.Athletes[i] = personal.ElementAt(i).FirstName + " " + personal.ElementAt(i).LastName;
+                    }
+                }
+                else
+                {
+                    IEnumerable<Athlete> sports = athleteRepository.GetSportsTrainingAthletes(session.Id, locationId);
+                    for (int i = 0; i < sports.Count(); i++)
+                    {
+                        athleteData.Athletes[i] = sports.ElementAt(i).FirstName + " " + sports.ElementAt(i).LastName;
+                    }
+                }
+            }
         }
 
         private List<Athlete> getSessionList(int hour, DateTime dt, int locationId)
@@ -103,24 +164,10 @@ namespace Excel.Web.Controllers
             IEnumerable<Athlete> data = null;
             if (session.Athletes != null)
             {
-                data = athleteRepository.GetPersonalTrainingAthletes(session.Id);
+                data.Concat(athleteRepository.GetPersonalTrainingAthletes(session.Id, locationId));
+                data.Concat(athleteRepository.GetSportsTrainingAthletes(session.Id, locationId));
             }
-            int cnt = 0;
-            if (data != null)
-            {
-                cnt = data.Count();
-            }
-            List<Athlete> openSlots = new List<Athlete>();
-            for (int i = cnt; i < 16; i++)
-            {
-                openSlots.Add(new Athlete { LastName = "open" });
-            }
-            if (data != null)
-            {
-                data = data.Concat(openSlots);
-                return data.ToList();
-            }
-            return openSlots;
+            return data.ToList();
         }
 
         private Session getOrCreateSession(int hour, DateTime dt, int locationId)
@@ -134,28 +181,105 @@ namespace Excel.Web.Controllers
             return session;
         }
 
+        // GET: Sessions/Add/5
+        public PartialViewResult _OneSession(DateTime dt, int hour, int SelectedLocationId)
+        {
+            Athlete athlete = getThisAthlete();
+            Session session = athleteRepository.GetSession(hour, dt, SelectedLocationId);
+            athleteRepository.AddAthleteToSession(session.Id, athlete.Id);
+
+            AthleteData athleteData = new AthleteData();
+            athleteData.Athletes = new List<string>();
+            athleteData.Time = getTime(hour);
+            athleteData.DivId = getDivId(hour);
+            athleteData.Hour = hour;
+            for (int i = 0; i < 16; i++)
+            {
+                athleteData.Athletes.Add("open");
+            }
+            getSessionListNames(athleteData, hour, dt, SelectedLocationId, athlete.AthleteType);
+
+            return PartialView(athleteData);
+        }
+
         private Athlete getThisAthlete()
         {
             var userId = GetUserId();
             return athleteRepository.GetAthleteByUserId(userId);
         }
 
-        // GET: Sessions/Add/5
-        public PartialViewResult _OneSession(DateTime dt, int hour, int SelectedLocationId)
+        private string getDivId(int hour)
         {
-            Session session = athleteRepository.GetSession(hour, dt, SelectedLocationId);
-            athleteRepository.AddAthleteToSession(session.Id, getThisAthlete().Id);
-
-            IEnumerable<Athlete> athletes = session.Athletes.Where(a => a.UserType != UserTypes.Trainer);
-            List<Athlete> openSlots = new List<Athlete>();
-
-            athletes = athletes.Concat(openSlots);
-            int cnt = athletes.Count();
-            for (int i = cnt; i < 16; i++)
+            if (hour == 6)
             {
-                openSlots.Add(new Athlete { LastName = "open" });
+                return "SixAm";
             }
-            return PartialView(athletes);
+            if (hour == 7)
+            {
+                return "SevenAm";
+            }
+            if (hour == 8)
+            {
+                return "EightAm";
+            }
+            if (hour == 9)
+            {
+                return "NineAm";
+            }
+            if (hour == 10)
+            {
+                return "TenAm";
+            }
+            if (hour == 16)
+            {
+                return "FourPm";
+            }
+            if (hour == 17)
+            {
+                return "FivePm";
+            }
+            if (hour == 18)
+            {
+                return "SixPm";
+            }
+            return "";
+        }
+
+        private string getTime(int hour)
+        {
+            if (hour == 6)
+            {
+                return "6 AM";
+            }
+            if (hour == 7)
+            {
+                return "7 AM";
+            }
+            if (hour == 8)
+            {
+                return "8 AM";
+            }
+            if (hour == 9)
+            {
+                return "9 AM";
+            }
+            if (hour == 10)
+            {
+                return "10 AM";
+            }
+            if (hour == 16)
+            {
+                return "4 PM";
+            }
+            if (hour == 17)
+            {
+                return "5 PM";
+            }
+            if (hour == 18)
+            {
+                return "6 PM";
+            }
+            return "";
         }
 
         protected override void Dispose(bool disposing)
