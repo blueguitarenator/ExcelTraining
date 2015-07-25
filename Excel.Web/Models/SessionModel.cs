@@ -14,68 +14,15 @@ namespace Excel.Web.Models
         [Display(Name="Session Date:")]
         public DateTime SessionDateTime { get; set; }
 
-        public int Hour { get; set; }
         public SelectList LocationSelectList { get; set; }
         public int SelectedLocationId { get; set; }
-        //public SelectList AthleteTypeSelectList { get; set; }
-        //public int SelectedAthleteTypeId { get; set; }
         public AthleteTypes AthleteType{ get; set; }
 
-        private List<Athlete> sixAmPersonalTraining;
-        private List<Athlete> sevenAmPersonalTraining;
-        private List<Athlete> eightAmPersonalTraining;
-        private List<Athlete> nineAmPersonalTraining;
-        private List<Athlete> tenAmPersonalTraining;
-        private List<Athlete> fourPmPersonalTraining;
-        private List<Athlete> fivePmPersonalTraining;
-        private List<Athlete> sixPmPersonalTraining;
-
-        public List<Athlete> SixAmPersonalTraining
+        private SessionsWithAthletes allAthletes;
+        public SessionsWithAthletes SessionsWithAthletes
         {
-            get { return sixAmPersonalTraining; }
-            set { sixAmPersonalTraining = value; }
-        }
-
-        public List<Athlete> SevenAmPersonalTraining
-        {
-            get { return sevenAmPersonalTraining; }
-            set { sevenAmPersonalTraining = value; }
-        }
-
-        public List<Athlete> EightAmPersonalTraining
-        {
-            get { return eightAmPersonalTraining; }
-            set { eightAmPersonalTraining = value; }
-        }
-
-        public List<Athlete> NineAmPersonalTraining
-        {
-            get { return nineAmPersonalTraining; }
-            set { nineAmPersonalTraining = value; }
-        }
-
-        public List<Athlete> TenAmPersonalTraining
-        {
-            get { return tenAmPersonalTraining; }
-            set { tenAmPersonalTraining = value; }
-        }
-
-        public List<Athlete> FourPmPersonalTraining
-        {
-            get { return fourPmPersonalTraining; }
-            set { fourPmPersonalTraining = value; }
-        }
-
-        public List<Athlete> FivePmPersonalTraining
-        {
-            get { return fivePmPersonalTraining; }
-            set { fivePmPersonalTraining = value; }
-        }
-
-        public List<Athlete> SixPmPersonalTraining
-        {
-            get { return sixPmPersonalTraining; }
-            set { sixPmPersonalTraining = value; }
+            get { return allAthletes; }
+            set { allAthletes = value; }
         }
 
     }

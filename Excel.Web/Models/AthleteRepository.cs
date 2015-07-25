@@ -155,10 +155,16 @@ namespace Excel.Web.Models
             return q;
         }
 
-        public IEnumerable<Athlete> GetPersonalTrainingAthletes(int sessionId)
+        public IEnumerable<Athlete> GetPersonalTrainingAthletes(int sessionId, int locationId)
         {
             var session = GetSessionById(sessionId);
-            return session.Athletes.Where(a => a.AthleteType == AthleteTypes.PersonalTraining && a.UserType == UserTypes.Athlete);
+            return session.Athletes.Where(a => a.AthleteType == AthleteTypes.PersonalTraining && a.UserType == UserTypes.Athlete && a.LocationId == locationId);
+        }
+
+        public IEnumerable<Athlete> GetSportsTrainingAthletes(int sessionId, int locationId)
+        {
+            var session = GetSessionById(sessionId);
+            return session.Athletes.Where(a => a.AthleteType == AthleteTypes.SportsTraining && a.UserType == UserTypes.Athlete && a.LocationId == locationId);
         }
 
         //Locations
