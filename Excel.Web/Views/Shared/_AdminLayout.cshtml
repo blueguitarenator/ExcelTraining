@@ -22,6 +22,10 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Session", "Index", "Session")</li>
+                    <li>@Html.ActionLink("Athlete", "Index", "Athlete")</li>
+                    <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+                    <li>@Html.ActionLink("Admin", "Index", "Admin")</li>
+
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
