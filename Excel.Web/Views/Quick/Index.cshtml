@@ -1,0 +1,12 @@
+﻿@model Excel.Web.Models.QuickScheduleViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Quick Schedule</h2>
+@foreach (var item in Model.QuickAthletes)
+{
+    <p>@item.FirstName @item.LastName</p>
+}
+

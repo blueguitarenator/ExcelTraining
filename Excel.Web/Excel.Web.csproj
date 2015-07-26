@@ -194,6 +194,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\QuickController.cs" />
     <Compile Include="Controllers\SessionController.cs" />
     <Compile Include="DataContexts\IdentityDb.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
@@ -245,6 +246,7 @@
     <Compile Include="Models\IAthleteRepository.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\QuickScheduleViewModel.cs" />
     <Compile Include="Models\SessionModel.cs" />
     <Compile Include="Models\SessionsWithAthletes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -416,7 +418,6 @@
     <Content Include="Views\Athlete\Index.cshtml" />
     <Content Include="Views\Session\Index.cshtml" />
     <Content Include="Views\Dashboard\Index.cshtml" />
-    <Content Include="Views\Session\_SessionPartial.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
     <Content Include="Views\Session\_PersonalTrainingGrid.cshtml" />
     <Content Include="Views\Session\_OneSession.cshtml" />
@@ -427,6 +428,7 @@
     <Content Include="Views\Location\Edit.cshtml" />
     <Content Include="Views\Location\Index.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Quick\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
