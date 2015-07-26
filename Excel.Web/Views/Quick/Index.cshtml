@@ -5,8 +5,15 @@
 }
 
 <h2>Quick Schedule</h2> <h3> @Model.SessionTime - @Model.SessionDate</h3>
+
+@using (Html.BeginForm("Signup", "Quick"))
+{
+    @Html.TextBox("email")
+    <input type="submit" value="Signup" />
+}
+
+
 @foreach (var item in Model.QuickAthletes)
 {
     <p>@item.FirstName @item.LastName</p>
 }
-

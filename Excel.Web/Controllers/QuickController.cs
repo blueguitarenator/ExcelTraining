@@ -37,6 +37,16 @@ namespace Excel.Web.Controllers
             return View(quickScheduleViewModel);
         }
 
+        public ActionResult Signup(string email)
+        {
+            var saveNow = getNextSession();
+            var session = getOrCreateSession(saveNow.Hour, saveNow, getDardenne().Id);
+            var athlete = athleteRepository.GetAthleteByEmail(email);
+            athleteRepository.AddAthleteToSession(session.Id, athlete.Id);
+
+            return RedirectToAction("Index"); 
+        }
+
         private void setSessionTime(QuickScheduleViewModel model, DateTime nextSession)
         {
             model.SessionTime = nextSession.Hour.ToString() + ":00";
