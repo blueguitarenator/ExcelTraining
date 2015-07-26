@@ -10,6 +10,8 @@ namespace Excel.Web.Models
     public class QuickScheduleViewModel
     {
         private List<Athlete> quickAthletes;
+        public string SessionDate { get; set; }
+        public string SessionTime { get; set; }
 
         public List<Athlete> QuickAthletes
         {

@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Quick Schedule</h2>
+<h2>Quick Schedule</h2> <h3> @Model.SessionTime - @Model.SessionDate</h3>
 @foreach (var item in Model.QuickAthletes)
 {
     <p>@item.FirstName @item.LastName</p>
