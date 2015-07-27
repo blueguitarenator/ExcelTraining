@@ -63,7 +63,8 @@ namespace Excel.Web.Controllers
 
         private DateTime getNextSession()
         {
-            DateTime nextSession = DateTime.Now;
+            DateTime nextSession = getCentralStandardTimeNow();
+            
             bool isFuture = false;
             while (!isSessionTime(nextSession))
             {
@@ -77,12 +78,34 @@ namespace Excel.Web.Controllers
             return nextSession;
         }
 
+        private DateTime getCentralStandardTimeNow()
+        {
+            DateTime timeUtc = DateTime.UtcNow;
+            try
+            {
+                TimeZoneInfo cstZone = TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
+                DateTime cstTime = TimeZoneInfo.ConvertTimeFromUtc(timeUtc, cstZone);
+                Console.WriteLine("The date and time are {0} {1}.", cstTime,
+                                  cstZone.IsDaylightSavingTime(cstTime) ? cstZone.DaylightName : cstZone.StandardName);
+                return cstTime;
+            }
+            catch (TimeZoneNotFoundException)
+            {
+                Console.WriteLine("The registry does not define the Central Standard Time zone.");
+            }
+            catch (InvalidTimeZoneException)
+            {
+                Console.WriteLine("Registry data on the Central STandard Time zone has been corrupted.");
+            }
+            return timeUtc;
+        }
+
         private bool isSessionTime(DateTime nextSession)
         {
             return nextSession.DayOfWeek != DayOfWeek.Saturday &&
                 nextSession.DayOfWeek != DayOfWeek.Sunday &&
                 (nextSession.Hour > 5 && nextSession.Hour < 11 ||
-                nextSession.Hour > 15 && nextSession.Hour < 19);
+                nextSession.Hour > 15 && nextSession.Hour < 18);
         }
 
         private Location getDardenne()
