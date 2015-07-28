@@ -76,6 +76,16 @@ namespace Excel.Web.Models
             return db.Athletes.FirstOrDefault(d => d.Id == appUser.Athlete.Id);
         }
 
+        public Athlete GetAthleteByEmail(string email)
+        {
+            var appUser = db.Users.Where(u => u.Email == email).SingleOrDefault();
+            if (appUser != null)
+            {
+                return db.Athletes.FirstOrDefault(d => d.Id == appUser.Athlete.Id);
+            }
+            return null;
+        }
+
         public IEnumerable<Athlete> GetAllAthletes()
         {
             return db.Athletes.ToList();

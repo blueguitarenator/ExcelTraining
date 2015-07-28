@@ -31,12 +31,27 @@ namespace Excel.Web.Controllers
         // GET: Dashboard
         public ActionResult Index()
         {
+            if (checkForQuickSchedule())
+            {
+                return RedirectToAction("Index", "Quick");
+            }
             DashboardModel model = new DashboardModel();
 
             model.MySessions = getFutureSessions();
             model.TotalSession = getPastSessionCount();
 
             return View(model);
+        }
+
+        private bool checkForQuickSchedule()
+        {
+            var userId = GetUserId();
+            var athlete = athleteRepository.GetAthleteByUserId(userId);
+            if (athlete.FirstName == "Location" && athlete.LastName == "Dardenne")
+            {
+                return true;
+            }
+            return false;
         }
 
         public ActionResult RemoveFromSession(int sessionId)

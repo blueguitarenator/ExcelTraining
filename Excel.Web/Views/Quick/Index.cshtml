@@ -1,0 +1,21 @@
+﻿@model Excel.Web.Models.QuickScheduleViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Quick Schedule</h2> <h3> @Model.SessionTime - @Model.SessionDate</h3>
+
+@using (Html.BeginForm("Signup", "Quick"))
+{
+    @Html.TextBox("email")
+    <input type="submit" value="Signup" />
+}
+
+
+@foreach (var item in Model.QuickAthletes)
+{
+    <ul>
+        <li>@item.FirstName @item.LastName</li>
+    </ul>
+}

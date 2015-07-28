@@ -20,6 +20,7 @@ namespace Excel.Web.Models
         //Athlete - readers
         Athlete GetAthleteById(int id);
         Athlete GetAthleteByUserId(string id);
+        Athlete GetAthleteByEmail(string email);
         IEnumerable<Athlete> GetAllAthletes();
 
         //Session - readers
