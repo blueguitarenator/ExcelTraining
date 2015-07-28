@@ -42,8 +42,10 @@ namespace Excel.Web.Controllers
             var saveNow = getNextSession();
             var session = getOrCreateSession(saveNow.Hour, saveNow, getDardenne().Id);
             var athlete = athleteRepository.GetAthleteByEmail(email);
-            athleteRepository.AddAthleteToSession(session.Id, athlete.Id);
-
+            if (athlete != null)
+            {
+                athleteRepository.AddAthleteToSession(session.Id, athlete.Id);
+            }
             return RedirectToAction("Index"); 
         }
 
