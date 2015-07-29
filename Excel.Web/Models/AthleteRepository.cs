@@ -91,6 +91,11 @@ namespace Excel.Web.Models
             return db.Athletes.ToList();
         }
 
+        public IEnumerable<Athlete> GetAllTrainers()
+        {
+            return db.Athletes.ToList().Where(t => t.UserType == UserTypes.Trainer);
+        }
+
         public void RemoveAthleteFromSession(int sessionId, int athleteId)
         {
             var session = GetSessionById(sessionId);

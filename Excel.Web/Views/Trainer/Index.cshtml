@@ -1,7 +1,34 @@
-﻿
+﻿@model Excel.Web.Models.TrainerQueueViewModel
+
 @{
     ViewBag.Title = "Index";
 }
 
 <h2>Trainer Queue</h2>
+<h3> @Model.SessionTime - @Model.SessionDate</h3>
 
+<h4>Personal Training</h4>
+<div>
+    @Html.DropDownList("trainer", Model.PersonalTrainerSelectList,
+        new { @onchange = "CallAddPersonalTrainer(this.value)", @class = "form-control floatLable" })
+</div>
+
+@foreach (var item in Model.PersonalAthletes)
+{
+    <ul>
+        <li>@item.FirstName @item.LastName</li>
+    </ul>
+}
+
+
+<h4>Sports Training</h4>
+<div>
+    @Html.DropDownList("trainer", Model.SportsTrainerSelectList,
+        new { @onchange = "CallAddSportsTrainer(this.value)", @class = "form-control floatLable" })
+</div>
+@foreach (var item in Model.SportsAthletes)
+{
+    <ul>
+        <li>@item.FirstName @item.LastName</li>
+    </ul>
+}
