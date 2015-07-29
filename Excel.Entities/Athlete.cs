@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace Excel.Entities
 {
+
+
     public class Athlete
     {
         public int Id { get; set; }
@@ -41,7 +43,11 @@ namespace Excel.Entities
         public virtual ICollection<Session> Sessions { get; set; }
         public int SelectedLocationId { get; set; }
         public DateTime SelectedDate { get; set; }
-
+        
+        public string FullName
+        {
+            get {  return FirstName + " " +  LastName ;}
+        }
     }
 }
 // update-database -ConfigurationTypeName Excel.Web.DataContexts.ExcelMigrations.Configuration

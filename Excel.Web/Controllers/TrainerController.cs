@@ -42,12 +42,12 @@ namespace Excel.Web.Controllers
 
         private void LoadPersonalTrainerSelectList(TrainerQueueViewModel model)
         {
-            model.PersonalTrainerSelectList = new SelectList(athleteRepository.GetAllTrainers(), "Id", "LastName", model.PersonalTrainerId);
+            model.PersonalTrainerSelectList = new SelectList(athleteRepository.GetAllTrainers(), "Id", "FullName", model.PersonalTrainerId);
         }
 
         private void LoadSportsTrainerSelectList(TrainerQueueViewModel model)
         {
-            model.SportsTrainerSelectList = new SelectList(athleteRepository.GetAllTrainers(), "Id", "LastName", model.SportsTrainerId);
+            model.SportsTrainerSelectList = new SelectList(athleteRepository.GetAllTrainers(), "Id", "FullName", model.SportsTrainerId);
         }
     }
 }
