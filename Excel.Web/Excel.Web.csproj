@@ -196,6 +196,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\QuickController.cs" />
     <Compile Include="Controllers\SessionController.cs" />
+    <Compile Include="Controllers\TrainerController.cs" />
     <Compile Include="DataContexts\IdentityDb.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="Global.asax.cs">
@@ -246,9 +247,11 @@
     <Compile Include="Models\IAthleteRepository.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\QuickHelper.cs" />
     <Compile Include="Models\QuickScheduleViewModel.cs" />
     <Compile Include="Models\SessionModel.cs" />
     <Compile Include="Models\SessionsWithAthletes.cs" />
+    <Compile Include="Models\TrainerQueueViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -429,6 +432,7 @@
     <Content Include="Views\Location\Index.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Quick\Index.cshtml" />
+    <Content Include="Views\Trainer\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

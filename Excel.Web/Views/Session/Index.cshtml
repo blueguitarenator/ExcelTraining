@@ -16,13 +16,15 @@
     <div class="col-md-4">
         @Html.LabelFor(m => m.LocationSelectList, "Location", new { @class = "control-label ddlLabel sr-only" })
     </div>
-    @Html.DropDownList("loc", Model.LocationSelectList,
+    <div>
+        @Html.DropDownList("loc", Model.LocationSelectList,
         new { @onchange = "CallChangeLocation(this.value)", @class = "form-control floatLable" })
     </div>
 
 
     <div class="col-md-4">
-    @Html.LabelFor(m => m.AthleteType, htmlAttributes: new { @class = "control-label ddlLabel sr-only" })
+        @Html.LabelFor(m => m.AthleteType, htmlAttributes: new { @class = "control-label ddlLabel sr-only" })
+    </div>
     <div class="col-md-10">
         @Html.EnumDropDownListFor(model => model.AthleteType, htmlAttributes: new { @onchange = "CallChangeAthleteType(this.value)", @class = "form-control" })
     </div>

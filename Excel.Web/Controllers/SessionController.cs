@@ -157,22 +157,9 @@ namespace Excel.Web.Controllers
             }
         }
 
-        private List<Athlete> getSessionList(int hour, DateTime dt, int locationId)
-        {
-            Session session = getOrCreateSession(hour, dt, locationId);
-            
-            IEnumerable<Athlete> data = null;
-            if (session.Athletes != null)
-            {
-                data.Concat(athleteRepository.GetPersonalTrainingAthletes(session.Id, locationId));
-                data.Concat(athleteRepository.GetSportsTrainingAthletes(session.Id, locationId));
-            }
-            return data.ToList();
-        }
-
         private Session getOrCreateSession(int hour, DateTime dt, int locationId)
         {
-            Session session = athleteRepository.GetSession(hour, dt, locationId);
+            Session session = athleteRepository.GetSession(hour, dt.Date, locationId);
             if (session == null)
             {
                 athleteRepository.Write_CreateSessions(dt, locationId);
