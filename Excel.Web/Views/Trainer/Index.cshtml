@@ -32,3 +32,13 @@
         <li>@item.FirstName @item.LastName</li>
     </ul>
 }
+
+<script>
+    function CallAddPersonalTrainer(val) {
+        window.location.href = "/Trainer/ChangePersonalTrainer?trainerId=" + val;
+    }
+    function CallAddSportsTrainer(val) {
+        window.location.href = "/Trainer/ChangeSportsTrainer?trainerId=" + val;
+    }
+
+</script>
