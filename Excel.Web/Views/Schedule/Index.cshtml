@@ -1,0 +1,15 @@
+﻿@model Excel.Web.Models.ScheduleViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Schedules - Personal Training</h2>
+
+@foreach(var item in Model.DardennePersonalTrainingSchedule)
+{
+    <ul>
+        <li>@item.Hour </li>
+    </ul>
+}
+

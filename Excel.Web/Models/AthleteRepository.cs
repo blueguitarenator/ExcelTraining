@@ -195,6 +195,11 @@ namespace Excel.Web.Models
             return all.AsEnumerable();
         }
 
+        public IEnumerable<Schedule> GetDardenneSchedule(AthleteTypes athleteType)
+        {
+            return db.Schedules.Where(s => s.Location.Name.Contains("Dardenne") && s.AthleteType == athleteType);
+        }
+
         public IdentityDb GetIdentityDb()
         {
             return db;

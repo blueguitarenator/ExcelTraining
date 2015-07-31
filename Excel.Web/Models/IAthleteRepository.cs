@@ -41,6 +41,9 @@ namespace Excel.Web.Models
         // Athlete Type
         IEnumerable<AthleteTypes> GetAthleteTypes();
 
+        // Schedules
+        IEnumerable<Schedule> GetDardenneSchedule(AthleteTypes athleteType);
+
         IdentityDb GetIdentityDb();
         int SaveChanges();
         void Dispose();

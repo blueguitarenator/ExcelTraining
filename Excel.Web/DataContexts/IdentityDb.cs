@@ -14,6 +14,7 @@ namespace Excel.Web.DataContexts
         public DbSet<Athlete> Athletes { get; set; }
         public DbSet<Session> Sessions { get; set; }
         public DbSet<Location> Locations { get; set; }
+        public DbSet<Schedule> Schedules { get; set; }
 
         public IdentityDb()
             : base("DefaultConnection")
