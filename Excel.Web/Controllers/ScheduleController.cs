@@ -26,8 +26,8 @@ namespace Excel.Web.Controllers
         public ActionResult Index()
         {
             ScheduleViewModel model = new ScheduleViewModel();
-            model.DardennePersonalTrainingSchedule = athleteRepository.GetDardenneSchedule(Entities.AthleteTypes.PersonalTraining).ToList();
-            model.DardenneSportsTrainingSchedule = athleteRepository.GetDardenneSchedule(Entities.AthleteTypes.SportsTraining).ToList();
+            model.DardennePersonalTrainingSchedule = athleteRepository.GetDardenneSchedule(Entities.AthleteTypes.PersonalTraining);
+            model.DardenneSportsTrainingSchedule = athleteRepository.GetDardenneSchedule(Entities.AthleteTypes.SportsTraining);
 
             return View(model);
         }

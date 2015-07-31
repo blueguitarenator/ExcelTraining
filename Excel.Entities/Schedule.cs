@@ -22,5 +22,26 @@ namespace Excel.Entities
 
         [Required]
         public Location Location { get; set; }
+
+        public string HourDisplay
+        {
+            get { return FormatHour(Hour); }
+        }
+
+        private string FormatHour(int hour)
+        {
+            if (hour < 12)
+            {
+                return hour.ToString() + ":00 AM";
+            }
+            else if(hour == 12)
+            {
+                return "12:00 PM";
+            }
+            else
+            {
+                return (hour - 12).ToString() + ":00 PM";
+            }
+        }
     }
 }

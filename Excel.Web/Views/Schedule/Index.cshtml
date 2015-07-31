@@ -4,12 +4,26 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Schedules - Personal Training</h2>
+<h3>Schedules - Personal Training</h3>
 
-@foreach(var item in Model.DardennePersonalTrainingSchedule)
-{
-    <ul>
-        <li>@item.Hour </li>
-    </ul>
-}
+<ul>
+    @foreach (var item in Model.DardennePersonalTrainingSchedule)
+    {
+        <li>
+            @Html.CheckBoxFor(modelItem => item.IsAvailable)
+            @item.HourDisplay
+        </li>
+    }
+</ul>
 
+<h3>Schedules - Sports Training</h3>
+
+<ul>
+    @foreach (var item in Model.DardenneSportsTrainingSchedule)
+    {
+        <li>
+            @Html.CheckBoxFor(modelItem => item.IsAvailable)
+            @item.HourDisplay
+        </li>
+    }
+</ul>
