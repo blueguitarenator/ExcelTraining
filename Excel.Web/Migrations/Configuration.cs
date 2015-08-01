@@ -74,14 +74,23 @@ namespace Excel.Web.Migrations
 
             var sessions = new List<Session>
             {
-                new Session{Hour =6, Day =saveNow, Athletes=session6Athletes, LocationId = dardenne.Id},
-                new Session{Hour =7, Day =saveNow, Athletes=session7Athletes, LocationId = dardenne.Id},
-                new Session{Hour =8, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id},
-                new Session{Hour =9, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id},
-                new Session{Hour =10, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id},
-                new Session{Hour =16, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id},
-                new Session{Hour =17, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id},
-                new Session{Hour =18, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id},
+                new Session{Hour =6, Day =saveNow, Athletes=session6Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
+                new Session{Hour =7, Day =saveNow, Athletes=session7Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
+                new Session{Hour =8, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
+                new Session{Hour =9, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
+                new Session{Hour =10, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
+                new Session{Hour =16, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
+                new Session{Hour =17, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
+                new Session{Hour =18, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
+            };
+            sessions.ForEach(s => context.Sessions.AddOrUpdate(a => a.Hour, s));
+            var sessionsSports = new List<Session>
+            {
+                new Session{Hour =16, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
+                new Session{Hour =17, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
+                new Session{Hour =18, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
+                new Session{Hour =19, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
+                new Session{Hour =20, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
             };
             sessions.ForEach(s => context.Sessions.AddOrUpdate(a => a.Hour, s));
 

@@ -114,28 +114,38 @@ namespace Excel.Web.Models
         }
 
         // Sessions
-        public Session GetSession(int hour, DateTime dt, int locationId)
+        public Session GetSession(int hour, DateTime dt, int locationId, AthleteTypes athleteType)
         {
             Session session = db.Sessions.Where(
                 s => s.Hour == hour &&
                 s.Day.Year == dt.Year &&
                 s.Day.Month == dt.Month &&
                 s.Day.Day == dt.Day &&
-                s.LocationId == locationId).SingleOrDefault();
+                s.LocationId == locationId &&
+                s.AthleteType == athleteType).SingleOrDefault();
 
             return session;
         }
 
         public void Write_CreateSessions(DateTime dt, int locationId)
         {
-            db.Sessions.Add(new Session { Day = dt, Hour = 6, LocationId = locationId });
-            db.Sessions.Add(new Session { Day = dt, Hour = 7, LocationId = locationId });
-            db.Sessions.Add(new Session { Day = dt, Hour = 8, LocationId = locationId });
-            db.Sessions.Add(new Session { Day = dt, Hour = 9, LocationId = locationId });
-            db.Sessions.Add(new Session { Day = dt, Hour = 10, LocationId = locationId });
-            db.Sessions.Add(new Session { Day = dt, Hour = 16, LocationId = locationId });
-            db.Sessions.Add(new Session { Day = dt, Hour = 17, LocationId = locationId });
-            db.Sessions.Add(new Session { Day = dt, Hour = 18, LocationId = locationId });
+            IEnumerable<Schedule> personalTrainingSchedule = db.Schedules.Where(s => s.AthleteType == AthleteTypes.PersonalTraining);
+            foreach (var schedule in personalTrainingSchedule)
+            {
+                if (schedule.IsAvailable)
+                {
+                    db.Sessions.Add(new Session { Day = dt, Hour = schedule.Hour, LocationId = locationId, AthleteType = AthleteTypes.PersonalTraining });
+                }
+            }
+            IEnumerable<Schedule> sportsTrainingSchedule = db.Schedules.Where(s => s.AthleteType == AthleteTypes.SportsTraining);
+            foreach (var schedule in sportsTrainingSchedule)
+            {
+                if (schedule.IsAvailable)
+                {
+                    db.Sessions.Add(new Session { Day = dt, Hour = schedule.Hour, LocationId = locationId, AthleteType = AthleteTypes.SportsTraining });
+                }
+            }
+
             db.SaveChanges();
         }
 

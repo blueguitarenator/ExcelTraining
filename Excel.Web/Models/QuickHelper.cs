@@ -56,13 +56,13 @@ namespace Excel.Web.Models
             return null;
         }
             
-        public Session GetOrCreateSession(int hour, DateTime dt, int locationId, IAthleteRepository repo)
+        public Session GetOrCreateSession(int hour, DateTime dt, int locationId, AthleteTypes athleteType, IAthleteRepository repo)
         {
-            Session session = repo.GetSession(hour, dt, locationId);
+            Session session = repo.GetSession(hour, dt, locationId, athleteType);
             if (session == null)
             {
                 repo.Write_CreateSessions(dt, locationId);
-                session = repo.GetSession(hour, dt, locationId);
+                session = repo.GetSession(hour, dt, locationId, athleteType);
             }
             return session;
         }

@@ -33,7 +33,9 @@ namespace Excel.Web.Controllers
             quickScheduleViewModel.SessionDate = nextSession.ToLongDateString();
             quickScheduleViewModel.SessionTime = helper.GetSessionTimeString(nextSession);
             int locationId = helper.GetDardenne(athleteRepository).Id;
-            Session session = helper.GetOrCreateSession(nextSession.Hour, nextSession, locationId, athleteRepository);
+
+            // TODO rework to handle personal and sports
+            Session session = helper.GetOrCreateSession(nextSession.Hour, nextSession, locationId, AthleteTypes.PersonalTraining, athleteRepository);
             quickScheduleViewModel.QuickAthletes = athleteRepository.GetPersonalTrainingAthletes(session.Id, locationId).ToList();
             quickScheduleViewModel.QuickAthletes = quickScheduleViewModel.QuickAthletes.Concat(athleteRepository.GetSportsTrainingAthletes(session.Id, locationId)).ToList();
             return View(quickScheduleViewModel);
@@ -42,8 +44,8 @@ namespace Excel.Web.Controllers
         public ActionResult Signup(string email)
         {
             var saveNow = helper.GetNextSession();
-            var session = helper.GetOrCreateSession(saveNow.Hour, saveNow, helper.GetDardenne(athleteRepository).Id, athleteRepository);
             var athlete = athleteRepository.GetAthleteByEmail(email);
+            var session = helper.GetOrCreateSession(saveNow.Hour, saveNow, helper.GetDardenne(athleteRepository).Id, athlete.AthleteType, athleteRepository);
             if (athlete != null)
             {
                 athleteRepository.AddAthleteToSession(session.Id, athlete.Id);

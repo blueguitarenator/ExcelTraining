@@ -244,6 +244,10 @@
     <Compile Include="Migrations\201507310005192_AddSchedule.Designer.cs">
       <DependentUpon>201507310005192_AddSchedule.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201507312357227_AddAthleteTypeToSession.cs" />
+    <Compile Include="Migrations\201507312357227_AddAthleteTypeToSession.Designer.cs">
+      <DependentUpon>201507312357227_AddAthleteTypeToSession.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AthleteRepository.cs" />
@@ -487,6 +491,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201507310005192_AddSchedule.resx">
       <DependentUpon>201507310005192_AddSchedule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507312357227_AddAthleteTypeToSession.resx">
+      <DependentUpon>201507312357227_AddAthleteTypeToSession.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
