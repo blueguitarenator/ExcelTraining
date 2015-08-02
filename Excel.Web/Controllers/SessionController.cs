@@ -106,12 +106,26 @@ namespace Excel.Web.Controllers
         {
             model.SessionsWithAthletes = new SessionsWithAthletes();
             model.SessionsWithAthletes.AthleteData = new List<AthleteData>();
-            List<Schedule> personalTrainingSchedule = athleteRepository.GetDardenneSchedule(AthleteTypes.PersonalTraining).ToList();
-            foreach (var schedule in personalTrainingSchedule)
+            if (model.AthleteType == AthleteTypes.PersonalTraining)
             {
-                if (schedule.IsAvailable)
+                List<Schedule> personalTrainingSchedule = athleteRepository.GetDardenneSchedule(AthleteTypes.PersonalTraining).ToList();
+                foreach (var schedule in personalTrainingSchedule)
                 {
-                    model.SessionsWithAthletes.AthleteData.Add(getSessionsWithAthletes(model, schedule.Hour));
+                    if (schedule.IsAvailable)
+                    {
+                        model.SessionsWithAthletes.AthleteData.Add(getSessionsWithAthletes(model, schedule.Hour));
+                    }
+                }
+            }
+            else
+            {
+                List<Schedule> sportsTrainingSchedule = athleteRepository.GetDardenneSchedule(AthleteTypes.SportsTraining).ToList();
+                foreach (var schedule in sportsTrainingSchedule)
+                {
+                    if (schedule.IsAvailable)
+                    {
+                        model.SessionsWithAthletes.AthleteData.Add(getSessionsWithAthletes(model, schedule.Hour));
+                    }
                 }
             }
         }
@@ -216,6 +230,26 @@ namespace Excel.Web.Controllers
             {
                 return "TenAm";
             }
+            if (hour == 11)
+            {
+                return "ElevenAm";
+            }
+            if (hour == 12)
+            {
+                return "TwelvePm";
+            }
+            if (hour == 13)
+            {
+                return "OnePm";
+            }
+            if (hour == 14)
+            {
+                return "TwoPm";
+            }
+            if (hour == 15)
+            {
+                return "ThreePm";
+            }
             if (hour == 16)
             {
                 return "FourPm";
@@ -227,6 +261,18 @@ namespace Excel.Web.Controllers
             if (hour == 18)
             {
                 return "SixPm";
+            }
+            if (hour == 19)
+            {
+                return "SevenPm";
+            }
+            if (hour == 20)
+            {
+                return "EightPm";
+            }
+            if (hour == 21)
+            {
+                return "NinePm";
             }
             return "";
         }
@@ -264,6 +310,18 @@ namespace Excel.Web.Controllers
             if (hour == 18)
             {
                 return "6 PM";
+            }
+            if (hour == 19)
+            {
+                return "7 PM";
+            }
+            if (hour == 20)
+            {
+                return "8 PM";
+            }
+            if (hour == 21)
+            {
+                return "9 PM";
             }
             return "";
         }

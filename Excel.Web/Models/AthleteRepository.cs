@@ -138,24 +138,37 @@ namespace Excel.Web.Models
 
         public void Write_CreateSessions(DateTime dt, int locationId)
         {
-            IEnumerable<Schedule> personalTrainingSchedule = db.Schedules.Where(s => s.AthleteType == AthleteTypes.PersonalTraining);
+            List<Schedule> personalTrainingSchedule = db.Schedules.Where(s => s.AthleteType == AthleteTypes.PersonalTraining).ToList();
             foreach (var schedule in personalTrainingSchedule)
             {
                 if (schedule.IsAvailable)
                 {
-                    db.Sessions.Add(new Session { Day = dt, Hour = schedule.Hour, LocationId = locationId, AthleteType = AthleteTypes.PersonalTraining });
+                    var session = new Session { Day = dt, Hour = schedule.Hour, LocationId = locationId, AthleteType = AthleteTypes.PersonalTraining };
+                    if (!doesExist(session, AthleteTypes.PersonalTraining))
+                    {
+                        db.Sessions.Add(new Session { Day = dt, Hour = schedule.Hour, LocationId = locationId, AthleteType = AthleteTypes.PersonalTraining });
+                    }
                 }
             }
-            IEnumerable<Schedule> sportsTrainingSchedule = db.Schedules.Where(s => s.AthleteType == AthleteTypes.SportsTraining);
+            List<Schedule> sportsTrainingSchedule = db.Schedules.Where(s => s.AthleteType == AthleteTypes.SportsTraining).ToList();
             foreach (var schedule in sportsTrainingSchedule)
             {
                 if (schedule.IsAvailable)
                 {
-                    db.Sessions.Add(new Session { Day = dt, Hour = schedule.Hour, LocationId = locationId, AthleteType = AthleteTypes.SportsTraining });
+                    var session = new Session { Day = dt, Hour = schedule.Hour, LocationId = locationId, AthleteType = AthleteTypes.SportsTraining };
+                    if (!doesExist(session, AthleteTypes.SportsTraining))
+                    {
+                        db.Sessions.Add(session);
+                    }
                 }
             }
 
             db.SaveChanges();
+        }
+
+        private bool doesExist(Session session, AthleteTypes athleteType)
+        {
+            return GetSession(session.Hour, session.Day, session.LocationId, athleteType) != null;
         }
 
         public Session GetSessionById(int id)
