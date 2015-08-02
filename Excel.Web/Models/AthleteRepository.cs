@@ -14,7 +14,17 @@ namespace Excel.Web.Models
 {
     public class AthleteRepository : IAthleteRepository
     {
-        private IdentityDb db = new IdentityDb();
+        private IdentityDb db;
+
+        public AthleteRepository()
+        {
+            db = new IdentityDb();
+        }
+
+        public AthleteRepository(DbContext db)
+        {
+            this.db = db as IdentityDb;
+        }
 
         //Athlete
         public void GiveAdmin(Athlete athlete)
@@ -88,19 +98,18 @@ namespace Excel.Web.Models
 
         public IEnumerable<Athlete> GetAllAthletes()
         {
-            return db.Athletes.ToList();
+            return db.Athletes.Where(a => a.UserType == UserTypes.Athlete);
         }
 
         public IEnumerable<Athlete> GetAllTrainers()
         {
-            return db.Athletes.ToList().Where(t => t.UserType == UserTypes.Trainer);
+            return db.Athletes.Where(t => t.UserType == UserTypes.Trainer);
         }
 
         public void RemoveAthleteFromSession(int sessionId, int athleteId)
         {
             var session = GetSessionById(sessionId);
-            var athlete = GetAthleteById(athleteId);
-            var x = session.Athletes.Where(a => a.Id == athlete.Id).SingleOrDefault();
+            var x = session.Athletes.Where(a => a.Id == athleteId).SingleOrDefault();
 
             session.Athletes.Remove(x);
         }
@@ -157,14 +166,8 @@ namespace Excel.Web.Models
         public IEnumerable<Session> GetFutureSessions(int athleteId)
         {
             DateTime saveNow = DateTime.Now.Date;
-
-            var q = from s in db.Sessions
-                    where s.Day.Year >= saveNow.Year &&
-                        s.Day.Month >= saveNow.Month &&
-                        s.Day.Day >= saveNow.Day &&
-                        s.Athletes.Any(a => a.Id == athleteId)
-                    select s;
-            return q;
+            return db.Sessions.Where(s => s.Athletes.Any(a => a.Id == athleteId) && s.Day.Year >= saveNow.Year &&
+                s.Day.Month >= saveNow.Month && s.Day.Day >= saveNow.Day);
         }
 
         public IEnumerable<Session> GetPastSessions(int athleteId)
