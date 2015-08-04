@@ -36,6 +36,7 @@ namespace Excel.Web.Controllers
             Excel.Entities.Session personalTrainingSession = helper.GetOrCreateSession(nextSession.Hour, nextSession, locationId, Entities.AthleteTypes.PersonalTraining, athleteRepository);
             if (personalTrainingSession != null)
             {
+                model.PersonalTrainerId = athleteRepository.GetSesssionTrainer(personalTrainingSession.Id).Id;
                 model.PersonalTrainingSessionId = personalTrainingSession.Id;
                 model.PersonalAthletes = athleteRepository.GetPersonalTrainingAthletes(personalTrainingSession.Id, locationId).ToList();
             }
@@ -46,6 +47,7 @@ namespace Excel.Web.Controllers
             Excel.Entities.Session sportsTrainingSession = helper.GetOrCreateSession(nextSession.Hour, nextSession, locationId, Entities.AthleteTypes.SportsTraining, athleteRepository);
             if (sportsTrainingSession != null)
             {
+                model.SportsTrainerId = athleteRepository.GetSesssionTrainer(sportsTrainingSession.Id).Id;
                 model.SportsTrainingSessionId = sportsTrainingSession.Id;
                 model.SportsAthletes = athleteRepository.GetSportsTrainingAthletes(sportsTrainingSession.Id, locationId).ToList();
             }
@@ -53,31 +55,22 @@ namespace Excel.Web.Controllers
             {
                 model.SportsAthletes = new List<Athlete>();
             }
-            // TODO:
-            // set view model selected trainer - personal and sport
+
+            model.SportsTrainerId = 0;
             LoadPersonalTrainerSelectList(model);
             LoadSportsTrainerSelectList(model);
             return View(model);
         }
 
-        public ActionResult ChangePersonalTrainer(int trainerId, int session)
+        public ActionResult ChangeTrainer(int trainerId, int session)
         {
             var trainer = athleteRepository.GetSesssionTrainer(session);
-            // TODO:
-            // get session
-            // remove any trainer
-            // add this trainer
-            // save changes
-            return RedirectToAction("Index");
-        }
-        public ActionResult ChangeSportsTrainer(int trainerId, int session)
-        {
-            var trainer = athleteRepository.GetSesssionTrainer(session);
-            // TODO:
-            // get session
-            // remove any trainer
-            // add this trainer
-            // save changes
+            if (trainer != null)
+            {
+                athleteRepository.RemoveAthleteFromSession(session, trainerId);
+            }
+            athleteRepository.AddAthleteToSession(session, trainerId);
+
             return RedirectToAction("Index");
         }
         

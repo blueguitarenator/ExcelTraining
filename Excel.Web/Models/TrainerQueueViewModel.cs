@@ -18,7 +18,7 @@ namespace Excel.Web.Models
         public SelectList PersonalTrainerSelectList { get; set; }
         public int PersonalTrainerId { get; set; }
         public SelectList SportsTrainerSelectList { get; set; }
-        public Athlete SportsTrainerId { get; set; }
+        public int SportsTrainerId { get; set; }
 
         private List<Athlete> personalAthletes;
         private List<Athlete> sportsAthletes;
