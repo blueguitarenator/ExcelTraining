@@ -208,6 +208,12 @@ namespace Excel.Web.Models
             return session.Athletes.Where(a => a.AthleteType == AthleteTypes.SportsTraining && a.UserType == UserTypes.Athlete && a.LocationId == locationId);
         }
 
+        public Athlete GetSesssionTrainer(int sessionId)
+        {
+            var session = GetSessionById(sessionId);
+            return session.Athletes.Where(a => a.UserType == UserTypes.Trainer).FirstOrDefault();
+        }
+
         //Locations
         public IEnumerable<Location> GetLocations()
         {

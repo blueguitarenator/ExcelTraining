@@ -1,4 +1,5 @@
-﻿using Excel.Web.Models;
+﻿using Excel.Entities;
+using Excel.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,9 +34,25 @@ namespace Excel.Web.Controllers
             model.SessionTime = helper.GetSessionTimeString(nextSession);
             int locationId = helper.GetDardenne(athleteRepository).Id;
             Excel.Entities.Session personalTrainingSession = helper.GetOrCreateSession(nextSession.Hour, nextSession, locationId, Entities.AthleteTypes.PersonalTraining, athleteRepository);
-            model.PersonalAthletes = athleteRepository.GetPersonalTrainingAthletes(personalTrainingSession.Id, locationId).ToList();
+            if (personalTrainingSession != null)
+            {
+                model.PersonalTrainingSessionId = personalTrainingSession.Id;
+                model.PersonalAthletes = athleteRepository.GetPersonalTrainingAthletes(personalTrainingSession.Id, locationId).ToList();
+            }
+            else
+            {
+                model.PersonalAthletes = new List<Athlete>();
+            }
             Excel.Entities.Session sportsTrainingSession = helper.GetOrCreateSession(nextSession.Hour, nextSession, locationId, Entities.AthleteTypes.SportsTraining, athleteRepository);
-            model.SportsAthletes = athleteRepository.GetSportsTrainingAthletes(sportsTrainingSession.Id, locationId).ToList();
+            if (sportsTrainingSession != null)
+            {
+                model.SportsTrainingSessionId = sportsTrainingSession.Id;
+                model.SportsAthletes = athleteRepository.GetSportsTrainingAthletes(sportsTrainingSession.Id, locationId).ToList();
+            }
+            else
+            {
+                model.SportsAthletes = new List<Athlete>();
+            }
             // TODO:
             // set view model selected trainer - personal and sport
             LoadPersonalTrainerSelectList(model);
@@ -43,8 +60,9 @@ namespace Excel.Web.Controllers
             return View(model);
         }
 
-        public ActionResult ChangePersonalTrainer(int trainerId)
+        public ActionResult ChangePersonalTrainer(int trainerId, int session)
         {
+            var trainer = athleteRepository.GetSesssionTrainer(session);
             // TODO:
             // get session
             // remove any trainer
@@ -52,8 +70,9 @@ namespace Excel.Web.Controllers
             // save changes
             return RedirectToAction("Index");
         }
-        public ActionResult ChangeSportsTrainer(int trainerId)
+        public ActionResult ChangeSportsTrainer(int trainerId, int session)
         {
+            var trainer = athleteRepository.GetSesssionTrainer(session);
             // TODO:
             // get session
             // remove any trainer
@@ -64,12 +83,18 @@ namespace Excel.Web.Controllers
         
         private void LoadPersonalTrainerSelectList(TrainerQueueViewModel model)
         {
-            model.PersonalTrainerSelectList = new SelectList(athleteRepository.GetAllTrainers(), "Id", "FullName", model.PersonalTrainerId);
+            Athlete notSet = new Athlete { Id = 0, FirstName = "not", LastName = "set" };
+            List<Athlete> allTrainers = new List<Athlete> { notSet };
+            IEnumerable<Athlete> allPlusNotSet = allTrainers.Concat(athleteRepository.GetAllTrainers().ToList());
+            model.PersonalTrainerSelectList = new SelectList(allPlusNotSet, "Id", "FullName", model.PersonalTrainerId);
         }
 
         private void LoadSportsTrainerSelectList(TrainerQueueViewModel model)
         {
-            model.SportsTrainerSelectList = new SelectList(athleteRepository.GetAllTrainers(), "Id", "FullName", model.SportsTrainerId);
+            Athlete notSet = new Athlete { Id = 0, FirstName = "not", LastName = "set" };
+            List<Athlete> allTrainers = new List<Athlete> { notSet };
+            IEnumerable<Athlete> allPlusNotSet = allTrainers.Concat(athleteRepository.GetAllTrainers().ToList());
+            model.SportsTrainerSelectList = new SelectList(allPlusNotSet, "Id", "FullName", model.SportsTrainerId);
         }
     }
 }

@@ -31,6 +31,7 @@ namespace Excel.Web.Models
         Session GetSession(int hour, DateTime dt, int locationId, AthleteTypes athleteType);
         IEnumerable<Athlete> GetPersonalTrainingAthletes(int sessionId, int locationId);
         IEnumerable<Athlete> GetSportsTrainingAthletes(int sessionId, int locationId);
+        Athlete GetSesssionTrainer(int sessionId);
 
         //Session - writers
         void Write_CreateSessions(DateTime dt, int locationId);

@@ -8,6 +8,7 @@
 <h3> @Model.SessionTime - @Model.SessionDate</h3>
 
 <h4>Personal Training</h4>
+@Html.HiddenFor(m => m.PersonalTrainingSessionId, new { id = "personal" })
 <div>
     @Html.DropDownList("trainer", Model.PersonalTrainerSelectList,
         new { @onchange = "CallAddPersonalTrainer(this.value)", @class = "form-control floatLable" })
@@ -22,6 +23,7 @@
 
 
 <h4>Sports Training</h4>
+@Html.HiddenFor(m => m.SportsTrainingSessionId, new { id = "sports" })
 <div>
     @Html.DropDownList("trainer", Model.SportsTrainerSelectList,
         new { @onchange = "CallAddSportsTrainer(this.value)", @class = "form-control floatLable" })
@@ -35,10 +37,10 @@
 
 <script>
     function CallAddPersonalTrainer(val) {
-        window.location.href = "/Trainer/ChangePersonalTrainer?trainerId=" + val;
+        window.location.href = "/Trainer/ChangePersonalTrainer?trainerId=" + val + "&session=" + document.getElementById('personal').value;
     }
     function CallAddSportsTrainer(val) {
-        window.location.href = "/Trainer/ChangeSportsTrainer?trainerId=" + val;
+        window.location.href = "/Trainer/ChangeSportsTrainer?trainerId=" + val + "&session=" + document.getElementById('sports').value;
     }
 
 </script>

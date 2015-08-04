@@ -12,6 +12,9 @@ namespace Excel.Web.Models
         public string SessionDate { get; set; }
         public string SessionTime { get; set; }
 
+        public int PersonalTrainingSessionId { get; set; }
+        public int SportsTrainingSessionId { get; set; }
+
         public SelectList PersonalTrainerSelectList { get; set; }
         public int PersonalTrainerId { get; set; }
         public SelectList SportsTrainerSelectList { get; set; }
