@@ -36,14 +36,14 @@ namespace Excel.Web.Tests.Controllers
             var controller = CreateSessionController(mockRepo.Object);
             mockRepo.Setup(x => x.GetAthleteByUserId("1")).Returns(athlete);
             mockRepo.Setup(x => x.GetLocations()).Returns(locations);
-            mockRepo.Setup(x => x.GetSession(6, saveNow, 1)).Returns(sessions[0]);
-            mockRepo.Setup(x => x.GetSession(7, saveNow, 1)).Returns(sessions[1]);
-            mockRepo.Setup(x => x.GetSession(8, saveNow, 1)).Returns(sessions[2]);
-            mockRepo.Setup(x => x.GetSession(9, saveNow, 1)).Returns(sessions[3]);
-            mockRepo.Setup(x => x.GetSession(10, saveNow, 1)).Returns(sessions[4]);
-            mockRepo.Setup(x => x.GetSession(16, saveNow, 1)).Returns(sessions[5]);
-            mockRepo.Setup(x => x.GetSession(17, saveNow, 1)).Returns(sessions[6]);
-            mockRepo.Setup(x => x.GetSession(18, saveNow, 1)).Returns(sessions[7]);
+            mockRepo.Setup(x => x.GetSession(6, saveNow, 1, AthleteTypes.PersonalTraining)).Returns(sessions[0]);
+            mockRepo.Setup(x => x.GetSession(7, saveNow, 1, AthleteTypes.PersonalTraining)).Returns(sessions[1]);
+            mockRepo.Setup(x => x.GetSession(8, saveNow, 1, AthleteTypes.PersonalTraining)).Returns(sessions[2]);
+            mockRepo.Setup(x => x.GetSession(9, saveNow, 1, AthleteTypes.PersonalTraining)).Returns(sessions[3]);
+            mockRepo.Setup(x => x.GetSession(10, saveNow, 1, AthleteTypes.PersonalTraining)).Returns(sessions[4]);
+            mockRepo.Setup(x => x.GetSession(16, saveNow, 1, AthleteTypes.PersonalTraining)).Returns(sessions[5]);
+            mockRepo.Setup(x => x.GetSession(17, saveNow, 1, AthleteTypes.PersonalTraining)).Returns(sessions[6]);
+            mockRepo.Setup(x => x.GetSession(18, saveNow, 1, AthleteTypes.PersonalTraining)).Returns(sessions[7]);
             mockRepo.Setup(x => x.GetPersonalTrainingAthletes(1, 1)).Returns(athletes);
 
             var result = controller.Index() as ViewResult;

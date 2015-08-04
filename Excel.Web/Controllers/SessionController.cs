@@ -106,14 +106,28 @@ namespace Excel.Web.Controllers
         {
             model.SessionsWithAthletes = new SessionsWithAthletes();
             model.SessionsWithAthletes.AthleteData = new List<AthleteData>();
-            model.SessionsWithAthletes.AthleteData.Add(getSessionsWithAthletes(model, 6));
-            model.SessionsWithAthletes.AthleteData.Add(getSessionsWithAthletes(model, 7));
-            model.SessionsWithAthletes.AthleteData.Add(getSessionsWithAthletes(model, 8));
-            model.SessionsWithAthletes.AthleteData.Add(getSessionsWithAthletes(model, 9));
-            model.SessionsWithAthletes.AthleteData.Add(getSessionsWithAthletes(model, 10));
-            model.SessionsWithAthletes.AthleteData.Add(getSessionsWithAthletes(model, 16));
-            model.SessionsWithAthletes.AthleteData.Add(getSessionsWithAthletes(model, 17));
-            model.SessionsWithAthletes.AthleteData.Add(getSessionsWithAthletes(model, 18));
+            if (model.AthleteType == AthleteTypes.PersonalTraining)
+            {
+                List<Schedule> personalTrainingSchedule = athleteRepository.GetDardenneSchedule(AthleteTypes.PersonalTraining).ToList();
+                foreach (var schedule in personalTrainingSchedule)
+                {
+                    if (schedule.IsAvailable)
+                    {
+                        model.SessionsWithAthletes.AthleteData.Add(getSessionsWithAthletes(model, schedule.Hour));
+                    }
+                }
+            }
+            else
+            {
+                List<Schedule> sportsTrainingSchedule = athleteRepository.GetDardenneSchedule(AthleteTypes.SportsTraining).ToList();
+                foreach (var schedule in sportsTrainingSchedule)
+                {
+                    if (schedule.IsAvailable)
+                    {
+                        model.SessionsWithAthletes.AthleteData.Add(getSessionsWithAthletes(model, schedule.Hour));
+                    }
+                }
+            }
         }
 
         private AthleteData getSessionsWithAthletes(SessionModel model, int hour)
@@ -133,9 +147,8 @@ namespace Excel.Web.Controllers
 
         private void getSessionListNames(AthleteData athleteData, int hour, DateTime dt, int locationId, AthleteTypes athleteType)
         {
-            Session session = getOrCreateSession(hour, dt, locationId);
+            Session session = getOrCreateSession(hour, dt, locationId, athleteType);
             
-            IEnumerable<Athlete> data = null;
             if (session.Athletes != null)
             {
                 if (athleteType == AthleteTypes.PersonalTraining)
@@ -157,13 +170,13 @@ namespace Excel.Web.Controllers
             }
         }
 
-        private Session getOrCreateSession(int hour, DateTime dt, int locationId)
+        private Session getOrCreateSession(int hour, DateTime dt, int locationId, AthleteTypes athleteType)
         {
-            Session session = athleteRepository.GetSession(hour, dt.Date, locationId);
+            Session session = athleteRepository.GetSession(hour, dt.Date, locationId, athleteType);
             if (session == null)
             {
                 athleteRepository.Write_CreateSessions(dt, locationId);
-                session = athleteRepository.GetSession(hour, dt, locationId);
+                session = athleteRepository.GetSession(hour, dt, locationId, athleteType);
             }
             return session;
         }
@@ -172,7 +185,7 @@ namespace Excel.Web.Controllers
         public PartialViewResult _OneSession(DateTime dt, int hour, int SelectedLocationId)
         {
             Athlete athlete = getThisAthlete();
-            Session session = athleteRepository.GetSession(hour, dt, SelectedLocationId);
+            Session session = athleteRepository.GetSession(hour, dt, SelectedLocationId, athlete.AthleteType);
             athleteRepository.AddAthleteToSession(session.Id, athlete.Id);
 
             AthleteData athleteData = new AthleteData();
@@ -217,6 +230,26 @@ namespace Excel.Web.Controllers
             {
                 return "TenAm";
             }
+            if (hour == 11)
+            {
+                return "ElevenAm";
+            }
+            if (hour == 12)
+            {
+                return "TwelvePm";
+            }
+            if (hour == 13)
+            {
+                return "OnePm";
+            }
+            if (hour == 14)
+            {
+                return "TwoPm";
+            }
+            if (hour == 15)
+            {
+                return "ThreePm";
+            }
             if (hour == 16)
             {
                 return "FourPm";
@@ -228,6 +261,18 @@ namespace Excel.Web.Controllers
             if (hour == 18)
             {
                 return "SixPm";
+            }
+            if (hour == 19)
+            {
+                return "SevenPm";
+            }
+            if (hour == 20)
+            {
+                return "EightPm";
+            }
+            if (hour == 21)
+            {
+                return "NinePm";
             }
             return "";
         }
@@ -265,6 +310,18 @@ namespace Excel.Web.Controllers
             if (hour == 18)
             {
                 return "6 PM";
+            }
+            if (hour == 19)
+            {
+                return "7 PM";
+            }
+            if (hour == 20)
+            {
+                return "8 PM";
+            }
+            if (hour == 21)
+            {
+                return "9 PM";
             }
             return "";
         }

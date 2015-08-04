@@ -11,9 +11,10 @@ namespace Excel.Web.DataContexts
 {
     public class IdentityDb : IdentityDbContext<ApplicationUser>
     {
-        public DbSet<Athlete> Athletes { get; set; }
-        public DbSet<Session> Sessions { get; set; }
-        public DbSet<Location> Locations { get; set; }
+        virtual public DbSet<Athlete> Athletes { get; set; }
+        virtual public DbSet<Session> Sessions { get; set; }
+        virtual public DbSet<Location> Locations { get; set; }
+        virtual public DbSet<Schedule> Schedules { get; set; }
 
         public IdentityDb()
             : base("DefaultConnection")

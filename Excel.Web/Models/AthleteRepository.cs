@@ -14,7 +14,17 @@ namespace Excel.Web.Models
 {
     public class AthleteRepository : IAthleteRepository
     {
-        private IdentityDb db = new IdentityDb();
+        private IdentityDb db;
+
+        public AthleteRepository()
+        {
+            db = new IdentityDb();
+        }
+
+        public AthleteRepository(DbContext db)
+        {
+            this.db = db as IdentityDb;
+        }
 
         //Athlete
         public void GiveAdmin(Athlete athlete)
@@ -88,19 +98,18 @@ namespace Excel.Web.Models
 
         public IEnumerable<Athlete> GetAllAthletes()
         {
-            return db.Athletes.ToList();
+            return db.Athletes.Where(a => a.UserType == UserTypes.Athlete);
         }
 
         public IEnumerable<Athlete> GetAllTrainers()
         {
-            return db.Athletes.ToList().Where(t => t.UserType == UserTypes.Trainer);
+            return db.Athletes.Where(t => t.UserType == UserTypes.Trainer);
         }
 
         public void RemoveAthleteFromSession(int sessionId, int athleteId)
         {
             var session = GetSessionById(sessionId);
-            var athlete = GetAthleteById(athleteId);
-            var x = session.Athletes.Where(a => a.Id == athlete.Id).SingleOrDefault();
+            var x = session.Athletes.Where(a => a.Id == athleteId).SingleOrDefault();
 
             session.Athletes.Remove(x);
         }
@@ -114,29 +123,52 @@ namespace Excel.Web.Models
         }
 
         // Sessions
-        public Session GetSession(int hour, DateTime dt, int locationId)
+        public Session GetSession(int hour, DateTime dt, int locationId, AthleteTypes athleteType)
         {
             Session session = db.Sessions.Where(
                 s => s.Hour == hour &&
                 s.Day.Year == dt.Year &&
                 s.Day.Month == dt.Month &&
                 s.Day.Day == dt.Day &&
-                s.LocationId == locationId).SingleOrDefault();
+                s.LocationId == locationId &&
+                s.AthleteType == athleteType).SingleOrDefault();
 
             return session;
         }
 
         public void Write_CreateSessions(DateTime dt, int locationId)
         {
-            db.Sessions.Add(new Session { Day = dt, Hour = 6, LocationId = locationId });
-            db.Sessions.Add(new Session { Day = dt, Hour = 7, LocationId = locationId });
-            db.Sessions.Add(new Session { Day = dt, Hour = 8, LocationId = locationId });
-            db.Sessions.Add(new Session { Day = dt, Hour = 9, LocationId = locationId });
-            db.Sessions.Add(new Session { Day = dt, Hour = 10, LocationId = locationId });
-            db.Sessions.Add(new Session { Day = dt, Hour = 16, LocationId = locationId });
-            db.Sessions.Add(new Session { Day = dt, Hour = 17, LocationId = locationId });
-            db.Sessions.Add(new Session { Day = dt, Hour = 18, LocationId = locationId });
+            List<Schedule> personalTrainingSchedule = db.Schedules.Where(s => s.AthleteType == AthleteTypes.PersonalTraining).ToList();
+            foreach (var schedule in personalTrainingSchedule)
+            {
+                if (schedule.IsAvailable)
+                {
+                    var session = new Session { Day = dt, Hour = schedule.Hour, LocationId = locationId, AthleteType = AthleteTypes.PersonalTraining };
+                    if (!doesExist(session, AthleteTypes.PersonalTraining))
+                    {
+                        db.Sessions.Add(new Session { Day = dt, Hour = schedule.Hour, LocationId = locationId, AthleteType = AthleteTypes.PersonalTraining });
+                    }
+                }
+            }
+            List<Schedule> sportsTrainingSchedule = db.Schedules.Where(s => s.AthleteType == AthleteTypes.SportsTraining).ToList();
+            foreach (var schedule in sportsTrainingSchedule)
+            {
+                if (schedule.IsAvailable)
+                {
+                    var session = new Session { Day = dt, Hour = schedule.Hour, LocationId = locationId, AthleteType = AthleteTypes.SportsTraining };
+                    if (!doesExist(session, AthleteTypes.SportsTraining))
+                    {
+                        db.Sessions.Add(session);
+                    }
+                }
+            }
+
             db.SaveChanges();
+        }
+
+        private bool doesExist(Session session, AthleteTypes athleteType)
+        {
+            return GetSession(session.Hour, session.Day, session.LocationId, athleteType) != null;
         }
 
         public Session GetSessionById(int id)
@@ -147,14 +179,8 @@ namespace Excel.Web.Models
         public IEnumerable<Session> GetFutureSessions(int athleteId)
         {
             DateTime saveNow = DateTime.Now.Date;
-
-            var q = from s in db.Sessions
-                    where s.Day.Year >= saveNow.Year &&
-                        s.Day.Month >= saveNow.Month &&
-                        s.Day.Day >= saveNow.Day &&
-                        s.Athletes.Any(a => a.Id == athleteId)
-                    select s;
-            return q;
+            return db.Sessions.Where(s => s.Athletes.Any(a => a.Id == athleteId) && s.Day.Year >= saveNow.Year &&
+                s.Day.Month >= saveNow.Month && s.Day.Day >= saveNow.Day);
         }
 
         public IEnumerable<Session> GetPastSessions(int athleteId)
@@ -195,6 +221,20 @@ namespace Excel.Web.Models
             return all.AsEnumerable();
         }
 
+        // Schedules
+        public IEnumerable<Schedule> GetDardenneSchedule(AthleteTypes athleteType)
+        {
+            return db.Schedules.Where(s => s.Location.Name.Contains("Dardenne") && s.AthleteType == athleteType);
+        }
+
+        public void SetScheduleStatus(int scheduleId, bool status)
+        {
+            Schedule schedule = db.Schedules.Where(s => s.Id == scheduleId).FirstOrDefault();
+            schedule.IsAvailable = status;
+            schedule.Location = GetLocations().Where(s => s.Name.Contains("Dardenne")).FirstOrDefault();
+            DoSaveChanges();
+        }
+
         public IdentityDb GetIdentityDb()
         {
             return db;
@@ -202,7 +242,32 @@ namespace Excel.Web.Models
 
         public int SaveChanges()
         {
-            return db.SaveChanges();
+            return DoSaveChanges();
+        }
+
+        private int DoSaveChanges()
+        {
+            try
+            {
+                return db.SaveChanges();
+            }
+            catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+            {
+                Exception raise = dbEx;
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        string message = string.Format("{0}:{1}",
+                            validationErrors.Entry.Entity.ToString(),
+                            validationError.ErrorMessage);
+                        // raise a new exception nesting
+                        // the current instance as InnerException
+                        raise = new InvalidOperationException(message, raise);
+                    }
+                }
+                throw raise;
+            }
         }
 
         public void Dispose()

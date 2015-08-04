@@ -32,9 +32,10 @@ namespace Excel.Web.Controllers
             model.SessionDate = nextSession.ToLongDateString();
             model.SessionTime = helper.GetSessionTimeString(nextSession);
             int locationId = helper.GetDardenne(athleteRepository).Id;
-            Excel.Entities.Session session = helper.GetOrCreateSession(nextSession.Hour, nextSession, locationId, athleteRepository);
-            model.PersonalAthletes = athleteRepository.GetPersonalTrainingAthletes(session.Id, locationId).ToList();
-            model.SportsAthletes = athleteRepository.GetSportsTrainingAthletes(session.Id, locationId).ToList();
+            Excel.Entities.Session personalTrainingSession = helper.GetOrCreateSession(nextSession.Hour, nextSession, locationId, Entities.AthleteTypes.PersonalTraining, athleteRepository);
+            model.PersonalAthletes = athleteRepository.GetPersonalTrainingAthletes(personalTrainingSession.Id, locationId).ToList();
+            Excel.Entities.Session sportsTrainingSession = helper.GetOrCreateSession(nextSession.Hour, nextSession, locationId, Entities.AthleteTypes.SportsTraining, athleteRepository);
+            model.SportsAthletes = athleteRepository.GetSportsTrainingAthletes(sportsTrainingSession.Id, locationId).ToList();
             // TODO:
             // set view model selected trainer - personal and sport
             LoadPersonalTrainerSelectList(model);

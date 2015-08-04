@@ -28,7 +28,7 @@ namespace Excel.Web.Models
         IEnumerable<Session> GetFutureSessions(int athleteId);
         IEnumerable<Session> GetPastSessions(int athleteId);
         Session GetSessionById(int id);
-        Session GetSession(int hour, DateTime dt, int locationId);
+        Session GetSession(int hour, DateTime dt, int locationId, AthleteTypes athleteType);
         IEnumerable<Athlete> GetPersonalTrainingAthletes(int sessionId, int locationId);
         IEnumerable<Athlete> GetSportsTrainingAthletes(int sessionId, int locationId);
 
@@ -40,6 +40,12 @@ namespace Excel.Web.Models
 
         // Athlete Type
         IEnumerable<AthleteTypes> GetAthleteTypes();
+
+        // Schedules - reader
+        IEnumerable<Schedule> GetDardenneSchedule(AthleteTypes athleteType);
+
+        // Schedules - writers
+        void SetScheduleStatus(int scheduleId, bool status);
 
         IdentityDb GetIdentityDb();
         int SaveChanges();

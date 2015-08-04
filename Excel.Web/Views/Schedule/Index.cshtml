@@ -1,0 +1,38 @@
+﻿@model Excel.Web.Models.ScheduleViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h3>Schedules - Personal Training1</h3>
+
+<ul>
+    @foreach (var item in Model.DardennePersonalTrainingSchedule)
+    {
+        <li>
+            @Html.CheckBoxFor(modelItem => item.IsAvailable, new Dictionary<string, object> { { "onclick", "setPersonalTrainingSchedule.call(this," + item.Hour + ")" } })
+            @item.HourDisplay
+        </li>
+    }
+</ul>
+
+<h3>Schedules - Sports Training</h3>
+
+<ul>
+    @foreach (var item in Model.DardenneSportsTrainingSchedule)
+    {
+        <li>
+            @Html.CheckBoxFor(modelItem => item.IsAvailable, new Dictionary<string, object> { { "onclick", "setSportsTrainingSchedule.call(this," + item.Hour + ")" } })
+            @item.HourDisplay
+        </li>
+    }
+</ul>
+
+<script type="text/javascript">
+    function setPersonalTrainingSchedule(hour) {
+        window.location.href = "/Schedule/ChangePersonalStatus?ischecked=" + this.checked + "&hour=" + hour;
+    }
+    function setSportsTrainingSchedule(hour) {
+        window.location.href = "/Schedule/ChangeSportsStatus?ischecked=" + this.checked + "&hour=" + hour;
+    }
+</script>
