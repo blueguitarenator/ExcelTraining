@@ -1,4 +1,5 @@
-﻿using Excel.Web.Models;
+﻿using Excel.Entities;
+using Excel.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,5 +32,32 @@ namespace Excel.Web.Controllers
 
             return View(model);
         }
+
+        public ActionResult ChangePersonalStatus(bool ischecked, int hour)
+        {
+            var schedules = athleteRepository.GetDardenneSchedule(AthleteTypes.PersonalTraining).ToList();
+            foreach(var schedule in schedules)
+            {
+                if (schedule.Hour == hour)
+                {
+                    athleteRepository.SetScheduleStatus(schedule.Id, ischecked);
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult ChangeSportsStatus(bool ischecked, int hour)
+        {
+            var schedules = athleteRepository.GetDardenneSchedule(AthleteTypes.SportsTraining).ToList();
+            foreach (var schedule in schedules)
+            {
+                if (schedule.Hour == hour)
+                {
+                    athleteRepository.SetScheduleStatus(schedule.Id, ischecked);
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
     }
 }

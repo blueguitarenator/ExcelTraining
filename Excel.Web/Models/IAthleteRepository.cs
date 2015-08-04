@@ -41,8 +41,11 @@ namespace Excel.Web.Models
         // Athlete Type
         IEnumerable<AthleteTypes> GetAthleteTypes();
 
-        // Schedules
+        // Schedules - reader
         IEnumerable<Schedule> GetDardenneSchedule(AthleteTypes athleteType);
+
+        // Schedules - writers
+        void SetScheduleStatus(int scheduleId, bool status);
 
         IdentityDb GetIdentityDb();
         int SaveChanges();

@@ -21,7 +21,7 @@ namespace Excel.Entities
         public AthleteTypes AthleteType { get; set; }
 
         [Required]
-        public Location Location { get; set; }
+        virtual public Location Location { get; set; }
 
         public string HourDisplay
         {
