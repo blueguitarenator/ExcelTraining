@@ -34,9 +34,11 @@ namespace Excel.Web.Controllers
             model.SessionTime = helper.GetSessionTimeString(nextSession);
             int locationId = helper.GetDardenne(athleteRepository).Id;
             Excel.Entities.Session personalTrainingSession = helper.GetOrCreateSession(nextSession.Hour, nextSession, locationId, Entities.AthleteTypes.PersonalTraining, athleteRepository);
+            model.PersonalTrainingSessionId = 0;
+            model.SportsTrainerId = 0;
             if (personalTrainingSession != null)
             {
-                model.PersonalTrainerId = athleteRepository.GetSesssionTrainer(personalTrainingSession.Id).Id;
+                model.PersonalTrainerId = GetPersonalTrainerId(personalTrainingSession.Id);
                 model.PersonalTrainingSessionId = personalTrainingSession.Id;
                 model.PersonalAthletes = athleteRepository.GetPersonalTrainingAthletes(personalTrainingSession.Id, locationId).ToList();
             }
@@ -47,7 +49,7 @@ namespace Excel.Web.Controllers
             Excel.Entities.Session sportsTrainingSession = helper.GetOrCreateSession(nextSession.Hour, nextSession, locationId, Entities.AthleteTypes.SportsTraining, athleteRepository);
             if (sportsTrainingSession != null)
             {
-                model.SportsTrainerId = athleteRepository.GetSesssionTrainer(sportsTrainingSession.Id).Id;
+                model.SportsTrainerId = GetPersonalTrainerId(sportsTrainingSession.Id);
                 model.SportsTrainingSessionId = sportsTrainingSession.Id;
                 model.SportsAthletes = athleteRepository.GetSportsTrainingAthletes(sportsTrainingSession.Id, locationId).ToList();
             }
@@ -60,6 +62,16 @@ namespace Excel.Web.Controllers
             LoadPersonalTrainerSelectList(model);
             LoadSportsTrainerSelectList(model);
             return View(model);
+        }
+
+        private int GetPersonalTrainerId(int sessionId)
+        {
+            var trainer = athleteRepository.GetSesssionTrainer(sessionId);
+            if (trainer != null)
+            {
+                return trainer.Id;
+            }
+            return 0;
         }
 
         public ActionResult ChangeTrainer(int trainerId, int session)
