@@ -7,13 +7,13 @@ namespace Excel.Web.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.1-30610")]
-    public sealed partial class RemoveTrainerFromSession : IMigrationMetadata
+    public sealed partial class Initial : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(RemoveTrainerFromSession));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Initial));
         
         string IMigrationMetadata.Id
         {
-            get { return "201506092225533_RemoveTrainerFromSession"; }
+            get { return "201508092032488_Initial"; }
         }
         
         string IMigrationMetadata.Source

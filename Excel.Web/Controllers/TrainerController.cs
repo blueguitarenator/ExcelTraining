@@ -27,6 +27,7 @@ namespace Excel.Web.Controllers
         // GET: Trainer
         public ActionResult Index()
         {
+            Response.AddHeader("Refresh", "15");
             TrainerQueueViewModel model = new TrainerQueueViewModel();
 
             DateTime nextSession = helper.GetNextSession();
@@ -40,18 +41,18 @@ namespace Excel.Web.Controllers
             {
                 model.PersonalTrainerId = GetPersonalTrainerId(personalTrainingSession.Id);
                 model.PersonalTrainingSessionId = personalTrainingSession.Id;
-                model.PersonalAthletes = athleteRepository.GetPersonalTrainingAthletes(personalTrainingSession.Id, locationId).ToList();
+                model.PersonalAthletes = athleteRepository.GetPersonalTrainingAthletes(personalTrainingSession.Id).ToList();
             }
             else
             {
                 model.PersonalAthletes = new List<Athlete>();
             }
-            Excel.Entities.Session sportsTrainingSession = helper.GetOrCreateSession(nextSession.Hour, nextSession, locationId, Entities.AthleteTypes.SportsTraining, athleteRepository);
+            Session sportsTrainingSession = helper.GetOrCreateSession(nextSession.Hour, nextSession, locationId, AthleteTypes.SportsTraining, athleteRepository);
             if (sportsTrainingSession != null)
             {
                 model.SportsTrainerId = GetPersonalTrainerId(sportsTrainingSession.Id);
                 model.SportsTrainingSessionId = sportsTrainingSession.Id;
-                model.SportsAthletes = athleteRepository.GetSportsTrainingAthletes(sportsTrainingSession.Id, locationId).ToList();
+                model.SportsAthletes = athleteRepository.GetSportsTrainingAthletes(sportsTrainingSession.Id).ToList();
             }
             else
             {

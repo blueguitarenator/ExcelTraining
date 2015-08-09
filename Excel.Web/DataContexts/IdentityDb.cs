@@ -4,6 +4,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Web;
 
@@ -13,6 +14,7 @@ namespace Excel.Web.DataContexts
     {
         virtual public DbSet<Athlete> Athletes { get; set; }
         virtual public DbSet<Session> Sessions { get; set; }
+        virtual public DbSet<SessionAthlete> SessionAthletes { get; set; }
         virtual public DbSet<Location> Locations { get; set; }
         virtual public DbSet<Schedule> Schedules { get; set; }
 
@@ -25,6 +27,13 @@ namespace Excel.Web.DataContexts
         {
             modelBuilder.HasDefaultSchema("identity");
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+
+            modelBuilder.Entity<Session>()
+            .HasRequired(s => s.Location)
+            .WithMany()
+            .WillCascadeOnDelete(false);
+
         }
 
         public static IdentityDb Create()

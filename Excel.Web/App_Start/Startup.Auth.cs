@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
@@ -15,6 +16,9 @@ namespace Excel.Web
         // For more information on configuring authentication, please visit http://go.microsoft.com/fwlink/?LinkId=301864
         public void ConfigureAuth(IAppBuilder app)
         {
+            //var ctx = new IdentityDb();
+            //var count = ctx.Users.Count();
+
             // Configure the db context, user manager and signin manager to use a single instance per request
             app.CreatePerOwinContext(IdentityDb.Create);
             //app.CreatePerOwinContext(ExcelDb.Create);

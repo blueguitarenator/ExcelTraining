@@ -44,7 +44,7 @@ namespace Excel.Web.Tests.Controllers
             mockRepo.Setup(x => x.GetSession(16, saveNow, 1, AthleteTypes.PersonalTraining)).Returns(sessions[5]);
             mockRepo.Setup(x => x.GetSession(17, saveNow, 1, AthleteTypes.PersonalTraining)).Returns(sessions[6]);
             mockRepo.Setup(x => x.GetSession(18, saveNow, 1, AthleteTypes.PersonalTraining)).Returns(sessions[7]);
-            mockRepo.Setup(x => x.GetPersonalTrainingAthletes(1, 1)).Returns(athletes);
+            mockRepo.Setup(x => x.GetPersonalTrainingAthletes(1)).Returns(athletes);
 
             var result = controller.Index() as ViewResult;
 
@@ -59,15 +59,20 @@ namespace Excel.Web.Tests.Controllers
 
         private List<Session> CreateSessions(DateTime saveNow, List<Athlete> athletes)
         {
-            var sessions = new List<Session>() {
-                new Session(){Id = 1, Hour = 6, Day = saveNow, Athletes = athletes},
-                new Session(){Id = 2, Hour = 7, Day = saveNow, Athletes = athletes},
-                new Session(){Id = 3, Hour = 8, Day = saveNow, Athletes = athletes},
-                new Session(){Id = 4, Hour = 9, Day = saveNow, Athletes = athletes},
-                new Session(){Id = 5, Hour = 10, Day = saveNow, Athletes = athletes},
-                new Session(){Id = 6, Hour = 16, Day = saveNow, Athletes = athletes},
-                new Session(){Id = 7, Hour = 17, Day = saveNow, Athletes = athletes},
-                new Session(){Id = 8, Hour = 18, Day = saveNow, Athletes = athletes}
+            var dardenne = new Location { Id = 1, Name = "Dardenne Prairie" };
+            var s6 = new Session { Hour = 6, Day = saveNow, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining };
+            Athlete paul = new Athlete { FirstName = "Paul", LastName = "McCartney", Address = "123 Main", City = "Cottleville", State = "MO", Zip = "63367", AthleteType = AthleteTypes.PersonalTraining, UserType = UserTypes.Athlete, Location = dardenne, SelectedDate = saveNow };
+            var s6Athlete1 = new SessionAthlete { Athlete = paul, Session = s6, Confirmed = false };
+            //List<SessionAthlete> sixAmAthletes = new List<SessionAthlete> { s6Athlete1 };
+            var sessions = new List<Session>() {s6
+//                new Session(){Id = 1, Hour = 6, Day = saveNow, SessionAthletes = sixAmAthletes},
+//                new Session(){Id = 2, Hour = 7, Day = saveNow, Athletes = athletes},
+//                new Session(){Id = 3, Hour = 8, Day = saveNow, Athletes = athletes},
+//                new Session(){Id = 4, Hour = 9, Day = saveNow, Athletes = athletes},
+//                new Session(){Id = 5, Hour = 10, Day = saveNow, Athletes = athletes},
+//                new Session(){Id = 6, Hour = 16, Day = saveNow, Athletes = athletes},
+//                new Session(){Id = 7, Hour = 17, Day = saveNow, Athletes = athletes},
+//                new Session(){Id = 8, Hour = 18, Day = saveNow, Athletes = athletes}
             };
             return sessions;
         }

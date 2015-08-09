@@ -109,29 +109,29 @@ namespace Excel.Web.Models
         public void RemoveAthleteFromSession(int sessionId, int athleteId)
         {
             var session = GetSessionById(sessionId);
-            var x = session.Athletes.Where(a => a.Id == athleteId).SingleOrDefault();
+            var x = session.SessionAthletes.SingleOrDefault(a => a.AthleteId == athleteId);
 
-            session.Athletes.Remove(x);
+            session.SessionAthletes.Remove(x);
         }
 
         public void AddAthleteToSession(int sessionId, int athleteId)
         {
             var session = GetSessionById(sessionId);
             var athlete = GetAthleteById(athleteId);
-            session.Athletes.Add(athlete);
+            var sessionAthlete = new SessionAthlete {Athlete = athlete, Session = session, Confirmed = false};
+            db.SessionAthletes.Add(sessionAthlete);
             db.SaveChanges();
         }
 
         // Sessions
         public Session GetSession(int hour, DateTime dt, int locationId, AthleteTypes athleteType)
         {
-            Session session = db.Sessions.Where(
-                s => s.Hour == hour &&
+            Session session = db.Sessions.SingleOrDefault(s => s.Hour == hour &&
                 s.Day.Year == dt.Year &&
                 s.Day.Month == dt.Month &&
                 s.Day.Day == dt.Day &&
                 s.LocationId == locationId &&
-                s.AthleteType == athleteType).SingleOrDefault();
+                s.AthleteType == athleteType);
 
             return session;
         }
@@ -144,7 +144,7 @@ namespace Excel.Web.Models
                 if (schedule.IsAvailable)
                 {
                     var session = new Session { Day = dt, Hour = schedule.Hour, LocationId = locationId, AthleteType = AthleteTypes.PersonalTraining };
-                    if (!doesExist(session, AthleteTypes.PersonalTraining))
+                    if (!DoesExist(session, AthleteTypes.PersonalTraining))
                     {
                         db.Sessions.Add(new Session { Day = dt, Hour = schedule.Hour, LocationId = locationId, AthleteType = AthleteTypes.PersonalTraining });
                     }
@@ -156,7 +156,7 @@ namespace Excel.Web.Models
                 if (schedule.IsAvailable)
                 {
                     var session = new Session { Day = dt, Hour = schedule.Hour, LocationId = locationId, AthleteType = AthleteTypes.SportsTraining };
-                    if (!doesExist(session, AthleteTypes.SportsTraining))
+                    if (!DoesExist(session, AthleteTypes.SportsTraining))
                     {
                         db.Sessions.Add(session);
                     }
@@ -166,52 +166,58 @@ namespace Excel.Web.Models
             db.SaveChanges();
         }
 
-        private bool doesExist(Session session, AthleteTypes athleteType)
+        private bool DoesExist(Session session, AthleteTypes athleteType)
         {
             return GetSession(session.Hour, session.Day, session.LocationId, athleteType) != null;
         }
 
         public Session GetSessionById(int id)
         {
-            return db.Sessions.Where(s => s.Id == id).FirstOrDefault();
+            return db.Sessions.FirstOrDefault(s => s.Id == id);
         }
 
         public IEnumerable<Session> GetFutureSessions(int athleteId)
         {
             DateTime saveNow = DateTime.Now.Date;
-            return db.Sessions.Where(s => s.Athletes.Any(a => a.Id == athleteId) && s.Day.Year >= saveNow.Year &&
-                s.Day.Month >= saveNow.Month && s.Day.Day >= saveNow.Day);
+//            return db.Sessions.Where(s => s.Athletes.Any(a => a.Id == athleteId) && s.Day.Year >= saveNow.Year &&
+//                s.Day.Month >= saveNow.Month && s.Day.Day >= saveNow.Day);
+
+            return db.SessionAthletes
+                .Where(sa => sa.AthleteId == athleteId)
+                .Select(sa => sa.Session).Where(s => s.Day.Year >= saveNow.Year &&
+                    s.Day.Month >= saveNow.Month && s.Day.Day >= saveNow.Day);
         }
 
         public IEnumerable<Session> GetPastSessions(int athleteId)
         {
             DateTime saveNow = DateTime.Now.Date;
-            var q = from s in db.Sessions
-                    where s.Day.Year <= saveNow.Year &&
+            return db.SessionAthletes
+                .Where(sa => sa.AthleteId == athleteId)
+                .Select(sa => sa.Session).Where(s => s.Day.Year <= saveNow.Year &&
                         s.Day.Month <= saveNow.Month &&
-                        s.Day.Day < saveNow.Day &&
-                        s.Athletes.Any(a => a.Id == athleteId)
-                    select s;
+                        s.Day.Day < saveNow.Day);
 
-            return q;
         }
 
-        public IEnumerable<Athlete> GetPersonalTrainingAthletes(int sessionId, int locationId)
+        public IEnumerable<Athlete> GetPersonalTrainingAthletes(int sessionId)
         {
-            var session = GetSessionById(sessionId);
-            return session.Athletes.Where(a => a.AthleteType == AthleteTypes.PersonalTraining && a.UserType == UserTypes.Athlete && a.LocationId == locationId);
+            return db.SessionAthletes.Where(sa => sa.SessionId == sessionId && sa.Confirmed == false)
+                .Select(sa => sa.Athlete)
+                .Where(a => a.AthleteType == AthleteTypes.PersonalTraining && a.UserType == UserTypes.Athlete);
         }
 
-        public IEnumerable<Athlete> GetSportsTrainingAthletes(int sessionId, int locationId)
+        public IEnumerable<Athlete> GetSportsTrainingAthletes(int sessionId)
         {
-            var session = GetSessionById(sessionId);
-            return session.Athletes.Where(a => a.AthleteType == AthleteTypes.SportsTraining && a.UserType == UserTypes.Athlete && a.LocationId == locationId);
+            return db.SessionAthletes.Where(sa => sa.SessionId == sessionId && sa.Confirmed == false)
+                .Select(sa => sa.Athlete)
+                .Where(a => a.AthleteType == AthleteTypes.SportsTraining && a.UserType == UserTypes.Athlete);
         }
 
         public Athlete GetSesssionTrainer(int sessionId)
         {
-            var session = GetSessionById(sessionId);
-            return session.Athletes.Where(a => a.UserType == UserTypes.Trainer).FirstOrDefault();
+            return db.SessionAthletes
+                    .Where(sa => sa.SessionId == sessionId)
+                    .Select(sa => sa.Athlete).FirstOrDefault(a => a.UserType == UserTypes.Trainer);
         }
 
         //Locations

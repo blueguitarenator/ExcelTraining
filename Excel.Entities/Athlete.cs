@@ -39,14 +39,12 @@ namespace Excel.Entities
 
         public virtual int LocationId { get; set; }
         public virtual Location Location { get; set; }
-        public virtual ICollection<Session> Sessions { get; set; }
+        public virtual ICollection<SessionAthlete> SessionAthletes { get; set; }
+
         public int SelectedLocationId { get; set; }
         public DateTime SelectedDate { get; set; }
         
-        public string FullName
-        {
-            get {  return FirstName + " " +  LastName ;}
-        }
+        public string FullName => FirstName + " " +  LastName;
     }
 }
 // update-database -ConfigurationTypeName Excel.Web.DataContexts.ExcelMigrations.Configuration

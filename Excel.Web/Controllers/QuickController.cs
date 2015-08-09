@@ -36,8 +36,8 @@ namespace Excel.Web.Controllers
 
             // TODO rework to handle personal and sports
             Session session = helper.GetOrCreateSession(nextSession.Hour, nextSession, locationId, AthleteTypes.PersonalTraining, athleteRepository);
-            quickScheduleViewModel.QuickAthletes = athleteRepository.GetPersonalTrainingAthletes(session.Id, locationId).ToList();
-            quickScheduleViewModel.QuickAthletes = quickScheduleViewModel.QuickAthletes.Concat(athleteRepository.GetSportsTrainingAthletes(session.Id, locationId)).ToList();
+            quickScheduleViewModel.QuickAthletes = athleteRepository.GetPersonalTrainingAthletes(session.Id).ToList();
+            quickScheduleViewModel.QuickAthletes = quickScheduleViewModel.QuickAthletes.Concat(athleteRepository.GetSportsTrainingAthletes(session.Id)).ToList();
             return View(quickScheduleViewModel);
         }
 

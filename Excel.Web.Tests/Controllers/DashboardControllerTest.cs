@@ -39,11 +39,13 @@ namespace Excel.Web.Tests.Controllers
             var athlete = new Athlete() { Id = 1, FirstName = "Rich", LastName = "Johnson" };
             List<Athlete> athletes = new List<Athlete>();
             athletes.Add(athlete);
-            var session = new Session() { Id = 1, Hour = 6, LocationId = 1, Athletes = athletes };
+            var session = new Session() { Id = 1, Hour = 6, LocationId = 1 };
+            var sessionAthlete = new SessionAthlete { Session = session, Athlete = athlete, Confirmed = true };
             var mockRepo = new Mock<IAthleteRepository>();
             var controller = CreateDashboardController(mockRepo.Object);
             mockRepo.Setup(x => x.GetAthleteByUserId("1")).Returns(athlete);
             mockRepo.Setup(x => x.GetSessionById(1)).Returns(session);
+          //  mockRepo.Setup(x => x)
 
             var result = controller.RemoveFromSession(session.Id) as RedirectToRouteResult;
 

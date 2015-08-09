@@ -154,11 +154,11 @@ namespace Excel.Web.Controllers
         {
             Session session = GetOrCreateSession(hour, dt, locationId, athleteType);
             
-            if (session.Athletes != null)
+            if (session.SessionAthletes != null)
             {
                 if (athleteType == AthleteTypes.PersonalTraining)
                 {
-                    IEnumerable<Athlete> personal = athleteRepository.GetPersonalTrainingAthletes(session.Id, locationId);
+                    IEnumerable<Athlete> personal = athleteRepository.GetPersonalTrainingAthletes(session.Id);
                     for (int i = 0; i < personal.Count(); i++)
                     {
                         athleteData.Athletes[i] = personal.ElementAt(i).FirstName + " " + personal.ElementAt(i).LastName;
@@ -166,7 +166,7 @@ namespace Excel.Web.Controllers
                 }
                 else
                 {
-                    IEnumerable<Athlete> sports = athleteRepository.GetSportsTrainingAthletes(session.Id, locationId);
+                    IEnumerable<Athlete> sports = athleteRepository.GetSportsTrainingAthletes(session.Id);
                     for (int i = 0; i < sports.Count(); i++)
                     {
                         athleteData.Athletes[i] = sports.ElementAt(i).FirstName + " " + sports.ElementAt(i).LastName;

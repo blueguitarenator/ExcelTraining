@@ -17,7 +17,7 @@ namespace Excel.Web.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
             AutomaticMigrationDataLossAllowed = true;
         }
 
@@ -68,31 +68,59 @@ namespace Excel.Web.Migrations
             ApplicationUser r = new ApplicationUser { Email = "ringo@msn.com", UserName = "ringo@msn.com", Athlete = ringo };
             manager.Create(r, "123434");
 
-            var session6Athletes = new List<Athlete> { george, john, kenny};
-            var session7Athletes = new List<Athlete> { john, paul, kenny};
-            var session8Athletes = new List<Athlete> { george, ringo, kenny};
+            var s6 = new Session { Hour = 6, Day = saveNow, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining };
+            var s7 = new Session { Hour = 7, Day = saveNow, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining };
+            var s8 = new Session { Hour = 8, Day = saveNow, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining };
+            var s9 = new Session { Hour = 9, Day = saveNow, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining };
+            var s10 = new Session { Hour = 10, Day = saveNow, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining };
+            //var s6Athlete1 = new SessionAthlete {Athlete = george, Session = s6, Confirmed = false};
+            //var s6Athlete2 = new SessionAthlete {Athlete = paul, Session = s6, Confirmed = false};
+            //var s7Athlete1 = new SessionAthlete {Athlete = john, Session = s7, Confirmed = false};
+            //var s7Athlete2 = new SessionAthlete {Athlete = ringo, Session = s7, Confirmed = false};
+            //var s8Athlete1 = new SessionAthlete {Athlete = ringo, Session = s8, Confirmed = false};
+            //var s9Athlete1 = new SessionAthlete {Athlete = george, Session = s9, Confirmed = false};
+            //var s10Athlete1 = new SessionAthlete {Athlete = george, Session = s10, Confirmed = false};
 
-            var sessions = new List<Session>
+            var sessionAthletes = new List<SessionAthlete>
             {
-                new Session{Hour =6, Day =saveNow, Athletes=session6Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
-                new Session{Hour =7, Day =saveNow, Athletes=session7Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
-                new Session{Hour =8, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
-                new Session{Hour =9, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
-                new Session{Hour =10, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
-                new Session{Hour =16, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
-                new Session{Hour =17, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
-                new Session{Hour =18, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
+                new SessionAthlete {Athlete = george, Session = s6, Confirmed = false},
+                new SessionAthlete {Athlete = paul, Session = s6, Confirmed = false},
+                new SessionAthlete {Athlete = john, Session = s7, Confirmed = false},
+                new SessionAthlete {Athlete = ringo, Session = s8, Confirmed = false},
+                new SessionAthlete {Athlete = ringo, Session = s8, Confirmed = false},
+                new SessionAthlete {Athlete = george, Session = s9, Confirmed = false}
+
             };
-            sessions.ForEach(s => context.Sessions.AddOrUpdate(a => a.Hour, s));
-            var sessionsSports = new List<Session>
-            {
-                new Session{Hour =16, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
-                new Session{Hour =17, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
-                new Session{Hour =18, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
-                new Session{Hour =19, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
-                new Session{Hour =20, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
-            };
-            sessions.ForEach(s => context.Sessions.AddOrUpdate(a => a.Hour, s));
+            sessionAthletes.ForEach(s => context.SessionAthletes.AddOrUpdate(a => a.Athlete, s));
+
+            //List<SessionAthlete> sixAmAthletes = new List<SessionAthlete>{s6Athlete1, s6Athlete2};
+            //List<SessionAthlete> sevenAmAthletes = new List<SessionAthlete>{s7Athlete1, s7Athlete2};
+            //List<SessionAthlete> eightAmAthletes = new List<SessionAthlete>{s8Athlete1};
+            //List<SessionAthlete> nineAmAthletes = new List<SessionAthlete>{s9Athlete1};
+            //List<SessionAthlete> tenAmAthletes = new List<SessionAthlete>{s10Athlete1};
+            //List<SessionAthlete> empty = new List<SessionAthlete>();
+
+            //var sessions = new List<Session>
+            //{
+            //    new Session{Hour =6, Day =saveNow, SessionAthletes =sixAmAthletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
+            //    new Session{Hour =7, Day =saveNow, SessionAthletes=sevenAmAthletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
+            //    new Session{Hour =8, Day =saveNow, SessionAthletes=eightAmAthletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
+            //    new Session{Hour =9, Day =saveNow, SessionAthletes=nineAmAthletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
+            //    new Session{Hour =10, Day =saveNow, SessionAthletes=tenAmAthletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
+            //    new Session{Hour =16, Day =saveNow, SessionAthletes=empty, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
+            //    new Session{Hour =17, Day =saveNow, SessionAthletes=empty, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
+            //    new Session{Hour =18, Day =saveNow, SessionAthletes=empty, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
+            //};
+            //sessions.ForEach(s => context.Sessions.AddOrUpdate(a => a.Hour, s));
+            //var sessionsSports = new List<Session>
+            //{
+            //    new Session{Hour =16, Day =saveNow, SessionAthletes=empty, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
+            //    new Session{Hour =17, Day =saveNow, SessionAthletes=empty, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
+            //    new Session{Hour =18, Day =saveNow, SessionAthletes=empty, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
+            //    new Session{Hour =19, Day =saveNow, SessionAthletes=empty, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
+            //    new Session{Hour =20, Day =saveNow, SessionAthletes=empty, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
+            //};
+            //sessionsSports.ForEach(s => context.Sessions.AddOrUpdate(a => a.Hour, s));
 
             var schedulesPersonalTraining = new List<Schedule>
             {
