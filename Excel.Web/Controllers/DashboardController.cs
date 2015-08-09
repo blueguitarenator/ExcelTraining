@@ -31,19 +31,19 @@ namespace Excel.Web.Controllers
         // GET: Dashboard
         public ActionResult Index()
         {
-            if (checkForQuickSchedule())
+            if (CheckForQuickSchedule())
             {
                 return RedirectToAction("Index", "Quick");
             }
             DashboardModel model = new DashboardModel();
 
-            model.MySessions = getFutureSessions();
-            model.TotalSession = getPastSessionCount();
+            model.MySessions = GetFutureSessions();
+            model.TotalSession = GetPastSessionCount();
 
             return View(model);
         }
 
-        private bool checkForQuickSchedule()
+        private bool CheckForQuickSchedule()
         {
             var userId = GetUserId();
             var athlete = athleteRepository.GetAthleteByUserId(userId);
@@ -76,14 +76,14 @@ namespace Excel.Web.Controllers
             base.Dispose(disposing);
         }
 
-        private List<Session> getFutureSessions()
+        private List<Session> GetFutureSessions()
         {
             var userId = GetUserId();
             var athlete = athleteRepository.GetAthleteByUserId(userId);
             return athleteRepository.GetFutureSessions(athlete.Id).ToList();
         }
 
-        private int getPastSessionCount()
+        private int GetPastSessionCount()
         {
             var userId = GetUserId();
             var athlete = athleteRepository.GetAthleteByUserId(userId);
