@@ -19,35 +19,51 @@ namespace Excel.Web.Migrations
                         State = c.String(nullable: false, maxLength: 255),
                         Zip = c.String(nullable: false, maxLength: 255),
                         AthleteType = c.Int(nullable: false),
+                        UserType = c.Int(nullable: false),
+                        LocationId = c.Int(nullable: false),
+                        SelectedLocationId = c.Int(nullable: false),
+                        SelectedDate = c.DateTime(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("identity.Locations", t => t.LocationId, cascadeDelete: false)
+                .Index(t => t.LocationId);
+            
+            CreateTable(
+                "identity.Locations",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(nullable: false, maxLength: 255),
                     })
                 .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "identity.SessionAthletes",
+                c => new
+                    {
+                        AthleteId = c.Int(nullable: false),
+                        SessionId = c.Int(nullable: false),
+                        Confirmed = c.Boolean(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.AthleteId, t.SessionId })
+                .ForeignKey("identity.Athletes", t => t.AthleteId, cascadeDelete: true)
+                .ForeignKey("identity.Sessions", t => t.SessionId, cascadeDelete: true)
+                .Index(t => t.AthleteId)
+                .Index(t => t.SessionId);
             
             CreateTable(
                 "identity.Sessions",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
+                        LocationId = c.Int(nullable: false),
                         Hour = c.Int(nullable: false),
                         Day = c.DateTime(nullable: false),
-                        Trainer_Id = c.Int(),
+                        AthleteType = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("identity.Trainers", t => t.Trainer_Id)
-                .Index(t => t.Trainer_Id);
-            
-            CreateTable(
-                "identity.Trainers",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        FirstName = c.String(nullable: false, maxLength: 255),
-                        LastName = c.String(nullable: false, maxLength: 255),
-                        Address = c.String(nullable: false, maxLength: 255),
-                        City = c.String(nullable: false, maxLength: 255),
-                        State = c.String(nullable: false, maxLength: 255),
-                        Zip = c.String(nullable: false, maxLength: 255),
-                    })
-                .PrimaryKey(t => t.Id);
+                .ForeignKey("identity.Locations", t => t.LocationId, cascadeDelete: false)
+                .Index(t => t.LocationId);
             
             CreateTable(
                 "identity.AspNetRoles",
@@ -71,6 +87,20 @@ namespace Excel.Web.Migrations
                 .ForeignKey("identity.AspNetUsers", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId)
                 .Index(t => t.RoleId);
+            
+            CreateTable(
+                "identity.Schedules",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Hour = c.Int(nullable: false),
+                        IsAvailable = c.Boolean(nullable: false),
+                        AthleteType = c.Int(nullable: false),
+                        Location_Id = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("identity.Locations", t => t.Location_Id, cascadeDelete: true)
+                .Index(t => t.Location_Id);
             
             CreateTable(
                 "identity.AspNetUsers",
@@ -120,19 +150,6 @@ namespace Excel.Web.Migrations
                 .ForeignKey("identity.AspNetUsers", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId);
             
-            CreateTable(
-                "identity.SessionAthletes",
-                c => new
-                    {
-                        Session_Id = c.Int(nullable: false),
-                        Athlete_Id = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => new { t.Session_Id, t.Athlete_Id })
-                .ForeignKey("identity.Sessions", t => t.Session_Id, cascadeDelete: true)
-                .ForeignKey("identity.Athletes", t => t.Athlete_Id, cascadeDelete: true)
-                .Index(t => t.Session_Id)
-                .Index(t => t.Athlete_Id);
-            
         }
         
         public override void Down()
@@ -141,28 +158,33 @@ namespace Excel.Web.Migrations
             DropForeignKey("identity.AspNetUserLogins", "UserId", "identity.AspNetUsers");
             DropForeignKey("identity.AspNetUserClaims", "UserId", "identity.AspNetUsers");
             DropForeignKey("identity.AspNetUsers", "Athlete_Id", "identity.Athletes");
+            DropForeignKey("identity.Schedules", "Location_Id", "identity.Locations");
             DropForeignKey("identity.AspNetUserRoles", "RoleId", "identity.AspNetRoles");
-            DropForeignKey("identity.Sessions", "Trainer_Id", "identity.Trainers");
-            DropForeignKey("identity.SessionAthletes", "Athlete_Id", "identity.Athletes");
-            DropForeignKey("identity.SessionAthletes", "Session_Id", "identity.Sessions");
-            DropIndex("identity.SessionAthletes", new[] { "Athlete_Id" });
-            DropIndex("identity.SessionAthletes", new[] { "Session_Id" });
+            DropForeignKey("identity.SessionAthletes", "SessionId", "identity.Sessions");
+            DropForeignKey("identity.Sessions", "LocationId", "identity.Locations");
+            DropForeignKey("identity.SessionAthletes", "AthleteId", "identity.Athletes");
+            DropForeignKey("identity.Athletes", "LocationId", "identity.Locations");
             DropIndex("identity.AspNetUserLogins", new[] { "UserId" });
             DropIndex("identity.AspNetUserClaims", new[] { "UserId" });
             DropIndex("identity.AspNetUsers", new[] { "Athlete_Id" });
             DropIndex("identity.AspNetUsers", "UserNameIndex");
+            DropIndex("identity.Schedules", new[] { "Location_Id" });
             DropIndex("identity.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("identity.AspNetUserRoles", new[] { "UserId" });
             DropIndex("identity.AspNetRoles", "RoleNameIndex");
-            DropIndex("identity.Sessions", new[] { "Trainer_Id" });
-            DropTable("identity.SessionAthletes");
+            DropIndex("identity.Sessions", new[] { "LocationId" });
+            DropIndex("identity.SessionAthletes", new[] { "SessionId" });
+            DropIndex("identity.SessionAthletes", new[] { "AthleteId" });
+            DropIndex("identity.Athletes", new[] { "LocationId" });
             DropTable("identity.AspNetUserLogins");
             DropTable("identity.AspNetUserClaims");
             DropTable("identity.AspNetUsers");
+            DropTable("identity.Schedules");
             DropTable("identity.AspNetUserRoles");
             DropTable("identity.AspNetRoles");
-            DropTable("identity.Trainers");
             DropTable("identity.Sessions");
+            DropTable("identity.SessionAthletes");
+            DropTable("identity.Locations");
             DropTable("identity.Athletes");
         }
     }

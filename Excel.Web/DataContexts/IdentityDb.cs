@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
-using Excel.Web.Migrations;
 
 namespace Excel.Web.DataContexts
 {
@@ -16,6 +15,8 @@ namespace Excel.Web.DataContexts
         virtual public DbSet<Session> Sessions { get; set; }
         virtual public DbSet<Location> Locations { get; set; }
         virtual public DbSet<Schedule> Schedules { get; set; }
+        virtual public DbSet<SessionAthlete> SessionAthletes { get; set; }
+
 
         public IdentityDb()
             : base("DefaultConnection")
@@ -26,6 +27,7 @@ namespace Excel.Web.DataContexts
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema("identity");
+            modelBuilder.Entity<SessionAthlete>().HasKey(e => new {e.AthleteId, e.SessionId});
             base.OnModelCreating(modelBuilder);
         }
 

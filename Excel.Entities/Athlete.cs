@@ -37,9 +37,10 @@ namespace Excel.Entities
         [Required]
         public UserTypes UserType { get; set; }
 
+        public virtual ICollection<SessionAthlete> SessionAthletes { get; set; } 
         public virtual int LocationId { get; set; }
         public virtual Location Location { get; set; }
-        public virtual ICollection<Session> Sessions { get; set; }
+        //public virtual ICollection<Session> Sessions { get; set; }
         public int SelectedLocationId { get; set; }
         public DateTime SelectedDate { get; set; }
         
