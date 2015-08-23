@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using Excel.Web.Migrations;
 
 namespace Excel.Web.DataContexts
 {
@@ -19,6 +20,7 @@ namespace Excel.Web.DataContexts
         public IdentityDb()
             : base("DefaultConnection")
         {
+            //Database.SetInitializer<DbContext>(new MigrateDatabaseToLatestVersion<DbContext, Configuration>());
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
