@@ -28,6 +28,7 @@ namespace Excel.Entities
         [Required]
         public AthleteTypes AthleteType { get; set; }
         
-        public virtual ICollection<Athlete> Athletes { get; set; }
+        //public virtual ICollection<Athlete> Athletes { get; set; }
+        public virtual ICollection<SessionAthlete> SessionAthletes { get; set; }
     }
 }

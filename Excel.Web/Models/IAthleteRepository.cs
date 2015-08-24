@@ -16,6 +16,7 @@ namespace Excel.Web.Models
         void AddAthleteToSession(int sessionId, int athleteId);
         void GiveAdmin(Athlete athlete);
         void RemoveAdmin(Athlete athlete);
+        void ConfirmAthlete(int sessionId, int athleteId);
 
         //Athlete - readers
         Athlete GetAthleteById(int id);
@@ -23,6 +24,7 @@ namespace Excel.Web.Models
         Athlete GetAthleteByEmail(string email);
         IEnumerable<Athlete> GetAllAthletes();
         IEnumerable<Athlete> GetAllTrainers();
+        bool IsAthleteConfirmed(int sessionId, int athleteId);
 
         //Session - readers
         IEnumerable<Session> GetFutureSessions(int athleteId);
@@ -44,6 +46,7 @@ namespace Excel.Web.Models
 
         // Schedules - reader
         IEnumerable<Schedule> GetDardenneSchedule(AthleteTypes athleteType);
+        
 
         // Schedules - writers
         void SetScheduleStatus(int scheduleId, bool status);
@@ -51,5 +54,6 @@ namespace Excel.Web.Models
         IdentityDb GetIdentityDb();
         int SaveChanges();
         void Dispose();
+        
     }
 }

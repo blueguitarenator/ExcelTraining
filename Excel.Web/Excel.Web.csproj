@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -204,49 +205,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\EnumHelpers.cs" />
-    <Compile Include="Migrations\201506082329025_Initial.cs" />
-    <Compile Include="Migrations\201506082329025_Initial.Designer.cs">
-      <DependentUpon>201506082329025_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201506090133380_AddUserType.cs" />
-    <Compile Include="Migrations\201506090133380_AddUserType.Designer.cs">
-      <DependentUpon>201506090133380_AddUserType.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201506092225533_RemoveTrainerFromSession.cs" />
-    <Compile Include="Migrations\201506092225533_RemoveTrainerFromSession.Designer.cs">
-      <DependentUpon>201506092225533_RemoveTrainerFromSession.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201506232305126_AddLocation.cs" />
-    <Compile Include="Migrations\201506232305126_AddLocation.Designer.cs">
-      <DependentUpon>201506232305126_AddLocation.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201506240021044_AddLocationObjectToAthlete.cs" />
-    <Compile Include="Migrations\201506240021044_AddLocationObjectToAthlete.Designer.cs">
-      <DependentUpon>201506240021044_AddLocationObjectToAthlete.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201506271837099_AddLocationToSession.cs" />
-    <Compile Include="Migrations\201506271837099_AddLocationToSession.Designer.cs">
-      <DependentUpon>201506271837099_AddLocationToSession.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201507020212363_AddAthleteSelectedLocationId.cs" />
-    <Compile Include="Migrations\201507020212363_AddAthleteSelectedLocationId.Designer.cs">
-      <DependentUpon>201507020212363_AddAthleteSelectedLocationId.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201507020230344_AddAthleteSelectedDate.cs" />
-    <Compile Include="Migrations\201507020230344_AddAthleteSelectedDate.Designer.cs">
-      <DependentUpon>201507020230344_AddAthleteSelectedDate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201507022044275_AddLocationToSession1.cs" />
-    <Compile Include="Migrations\201507022044275_AddLocationToSession1.Designer.cs">
-      <DependentUpon>201507022044275_AddLocationToSession1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201507310005192_AddSchedule.cs" />
-    <Compile Include="Migrations\201507310005192_AddSchedule.Designer.cs">
-      <DependentUpon>201507310005192_AddSchedule.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201507312357227_AddAthleteTypeToSession.cs" />
-    <Compile Include="Migrations\201507312357227_AddAthleteTypeToSession.Designer.cs">
-      <DependentUpon>201507312357227_AddAthleteTypeToSession.cs</DependentUpon>
+    <Compile Include="Migrations\201508231418579_Initial.cs" />
+    <Compile Include="Migrations\201508231418579_Initial.Designer.cs">
+      <DependentUpon>201508231418579_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -462,38 +423,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201506082329025_Initial.resx">
-      <DependentUpon>201506082329025_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201506090133380_AddUserType.resx">
-      <DependentUpon>201506090133380_AddUserType.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201506092225533_RemoveTrainerFromSession.resx">
-      <DependentUpon>201506092225533_RemoveTrainerFromSession.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201506232305126_AddLocation.resx">
-      <DependentUpon>201506232305126_AddLocation.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201506240021044_AddLocationObjectToAthlete.resx">
-      <DependentUpon>201506240021044_AddLocationObjectToAthlete.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201506271837099_AddLocationToSession.resx">
-      <DependentUpon>201506271837099_AddLocationToSession.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201507020212363_AddAthleteSelectedLocationId.resx">
-      <DependentUpon>201507020212363_AddAthleteSelectedLocationId.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201507020230344_AddAthleteSelectedDate.resx">
-      <DependentUpon>201507020230344_AddAthleteSelectedDate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201507022044275_AddLocationToSession1.resx">
-      <DependentUpon>201507022044275_AddLocationToSession1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201507310005192_AddSchedule.resx">
-      <DependentUpon>201507310005192_AddSchedule.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201507312357227_AddAthleteTypeToSession.resx">
-      <DependentUpon>201507312357227_AddAthleteTypeToSession.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201508231418579_Initial.resx">
+      <DependentUpon>201508231418579_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
@@ -510,7 +441,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>53103</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

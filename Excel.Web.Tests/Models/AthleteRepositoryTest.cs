@@ -73,23 +73,23 @@ namespace Excel.Web.Tests.Models
             Assert.AreEqual(6, session.Hour);
         }
 
-        [TestMethod]
-        public void testRemoveAthleteFromSession()
-        {
-            var theSession = sessions.Where(s => s.Id == 1).FirstOrDefault();
-            Assert.IsTrue(theSession.Athletes.Contains(paul));
-            testObject.RemoveAthleteFromSession(1, paul.Id);
-            Assert.IsFalse(theSession.Athletes.Contains(paul));
-        }
+        //[TestMethod]
+        //public void testRemoveAthleteFromSession()
+        //{
+        //    var theSession = sessions.Where(s => s.Id == 1).FirstOrDefault();
+        //    Assert.IsTrue(theSession.Athletes.Contains(paul));
+        //    testObject.RemoveAthleteFromSession(1, paul.Id);
+        //    Assert.IsFalse(theSession.Athletes.Contains(paul));
+        //}
 
-        [TestMethod]
-        public void testAddAthleteToSession()
-        {
-            var theSession = sessions.Where(s => s.Id == 1).FirstOrDefault();
-            Assert.AreEqual(3, theSession.Athletes.Count());
-            testObject.AddAthleteToSession(theSession.Id, ringo.Id);
-            Assert.AreEqual(4, theSession.Athletes.Count());
-        }
+        //[TestMethod]
+        //public void testAddAthleteToSession()
+        //{
+        //    var theSession = sessions.Where(s => s.Id == 1).FirstOrDefault();
+        //    Assert.AreEqual(3, theSession.Athletes.Count());
+        //    testObject.AddAthleteToSession(theSession.Id, ringo.Id);
+        //    Assert.AreEqual(4, theSession.Athletes.Count());
+        //}
 
         // TODO:  keep back filling : )
 
@@ -121,17 +121,17 @@ namespace Excel.Web.Tests.Models
             var session7Athletes = new List<Athlete> { paul, john, george};
             var session8Athletes = new List<Athlete> { paul, john, george};
 
-            sessions = new List<Session>
-            {
-                new Session{ Id = 1, Hour =6, Day =saveNow, Athletes=session6Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
-                new Session{ Id = 2, Hour =7, Day =saveNow, Athletes=session7Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
-                new Session{ Id = 3, Hour =8, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
-                new Session{ Id = 4, Hour =16, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
-                new Session{ Id = 5, Hour =17, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
-                new Session{ Id = 6, Hour =18, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
-                new Session{ Id = 7, Hour =19, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
-                new Session{ Id = 8, Hour =20, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
-            }.AsQueryable();
+            //sessions = new List<Session>
+            //{
+            //    new Session{ Id = 1, Hour =6, Day =saveNow, Athletes=session6Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
+            //    new Session{ Id = 2, Hour =7, Day =saveNow, Athletes=session7Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
+            //    new Session{ Id = 3, Hour =8, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
+            //    new Session{ Id = 4, Hour =16, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
+            //    new Session{ Id = 5, Hour =17, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
+            //    new Session{ Id = 6, Hour =18, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
+            //    new Session{ Id = 7, Hour =19, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
+            //    new Session{ Id = 8, Hour =20, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
+            //}.AsQueryable();
 
             var schedules = new List<Schedule>
             {

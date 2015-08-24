@@ -4,6 +4,8 @@
     ViewBag.Title = "Index";
 }
 
+@Html.HiddenFor(model => model.SessionId);
+
 <h2>Quick Schedule</h2> <h3> @Model.SessionTime - @Model.SessionDate</h3>
 
 @using (Html.BeginForm("Signup", "Quick"))
@@ -12,10 +14,24 @@
     <input type="submit" value="Signup" />
 }
 
+<ul>
+    @foreach (var item in Model.QuickAthletes)
+    {
+        var x = item.Athlete.FirstName + " " + item.Athlete.LastName;
 
-@foreach (var item in Model.QuickAthletes)
-{
-    <ul>
-        <li>@item.FirstName @item.LastName</li>
-    </ul>
-}
+
+        <li>
+            @Html.ActionLink(x, "Confirm", "Quick", new {athleteId = item.Athlete.Id, sessionId = Model.SessionId}, null)
+            @if (item.IsConfirmed)
+            {
+                <span>CONFIRMED</span>
+            }
+            else
+            {
+                <span>Unconfirmed</span>
+            }
+        </li>
+
+    }
+
+</ul>

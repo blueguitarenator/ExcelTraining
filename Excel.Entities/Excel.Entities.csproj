@@ -46,6 +46,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schedule.cs" />
     <Compile Include="Session.cs" />
+    <Compile Include="SessionAthlete.cs" />
     <Compile Include="Trainer.cs" />
   </ItemGroup>
   <ItemGroup>
