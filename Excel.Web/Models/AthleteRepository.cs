@@ -106,6 +106,22 @@ namespace Excel.Web.Models
             return db.Athletes.Where(t => t.UserType == UserTypes.Trainer);
         }
 
+        public void ConfirmAthlete(int sessionId, int athleteId)
+        {
+            var firstOrDefault = db.SessionAthletes.FirstOrDefault(sa => sa.SessionId == sessionId && sa.AthleteId == athleteId);
+            if (firstOrDefault != null)
+            {
+                firstOrDefault.Confirmed = true;
+                db.SaveChanges();
+            }
+        }
+
+        public bool IsAthleteConfirmed(int sessionId, int athleteId)
+        {
+            var firstOrDefault = db.SessionAthletes.FirstOrDefault(sa => sa.SessionId == sessionId && sa.AthleteId == athleteId);
+            return firstOrDefault != null && firstOrDefault.Confirmed;
+        }
+
         public void RemoveAthleteFromSession(int sessionId, int athleteId)
         {
             var q = db.SessionAthletes.FirstOrDefault(sa => sa.SessionId == sessionId && sa.AthleteId == athleteId);
@@ -116,6 +132,7 @@ namespace Excel.Web.Models
         {
             var sessionAthlete = new SessionAthlete {SessionId = sessionId, AthleteId = athleteId, Confirmed = false};
             db.SessionAthletes.Add(sessionAthlete);
+            db.SaveChanges();
         }
 
         // Sessions
