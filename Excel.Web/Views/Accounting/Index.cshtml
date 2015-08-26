@@ -7,8 +7,8 @@
 
 @foreach (var item in Model.PersonalTrainingSessionsWithAthletes)
 {
-    @item.Hour
-    @item.Date
+    <h4>Hour @item.Hour - @item.Date</h4>
+
     <ul>
         @foreach (var foo in item.Athletes)
         {
@@ -16,5 +16,6 @@
         }
 
     </ul>
+    <br/>
 }
 

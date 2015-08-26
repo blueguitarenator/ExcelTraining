@@ -32,6 +32,7 @@ namespace Excel.Web.Models
         Session GetSessionById(int id);
         Session GetSession(int hour, DateTime dt, int locationId, AthleteTypes athleteType);
         IEnumerable<Athlete> GetPersonalTrainingAthletes(int sessionId, int locationId);
+        IEnumerable<Athlete> GetConfirmedPersonalTrainingAthletes(int sessionId, int locationId);
         IEnumerable<Athlete> GetSportsTrainingAthletes(int sessionId, int locationId);
         Athlete GetSesssionTrainer(int sessionId);
         IEnumerable<Session> GetAllSessions();

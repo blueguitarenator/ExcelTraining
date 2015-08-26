@@ -138,7 +138,8 @@ namespace Excel.Web.Models
         // Sessions
         public IEnumerable<Session> GetAllSessions()
         {
-            return db.Sessions;
+            DateTime saveNow = DateTime.Now.Date;
+            return db.Sessions.Where(s => s.Day <= saveNow).OrderByDescending(s => s.Day);
         }
 
         public Session GetSession(int hour, DateTime dt, int locationId, AthleteTypes athleteType)
@@ -214,6 +215,11 @@ namespace Excel.Web.Models
                     s => s.SessionAthletes.Any(sa => sa.AthleteId == athleteId) && s.Day.Year <= saveNow.Year &&
                          s.Day.Month <= saveNow.Month &&
                          s.Day.Day < saveNow.Day);
+        }
+
+        public IEnumerable<Athlete> GetConfirmedPersonalTrainingAthletes(int sessionId, int locationId)
+        {
+            return db.Athletes.Where(a => a.AthleteType == AthleteTypes.PersonalTraining && a.SessionAthletes.Any(sa => sa.SessionId == sessionId && sa.Confirmed));
         }
 
         public IEnumerable<Athlete> GetPersonalTrainingAthletes(int sessionId, int locationId)

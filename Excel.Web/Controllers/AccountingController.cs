@@ -32,11 +32,14 @@ namespace Excel.Web.Controllers
             List<Session> sessions = athleteRepository.GetAllSessions().ToList();
             foreach (var session in sessions)
             {
-                SingleSession singleSession = new SingleSession();
-                singleSession.Athletes = athleteRepository.GetPersonalTrainingAthletes(session.Id, 1).ToList();
-                singleSession.Hour = session.Hour;
-                singleSession.Date = session.Day.ToLongDateString();
-                allPersonalTrainingSessionAthletes.Add(singleSession);
+                if (session.SessionAthletes.Count > 0)
+                {
+                    SingleSession singleSession = new SingleSession();
+                    singleSession.Athletes = athleteRepository.GetConfirmedPersonalTrainingAthletes(session.Id, 1).ToList();
+                    singleSession.Hour = session.Hour;
+                    singleSession.Date = session.Day.ToLongDateString();
+                    allPersonalTrainingSessionAthletes.Add(singleSession);
+                }
             }
             model.PersonalTrainingSessionsWithAthletes = allPersonalTrainingSessionAthletes;
             return View(model);
