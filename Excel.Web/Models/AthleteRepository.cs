@@ -136,6 +136,11 @@ namespace Excel.Web.Models
         }
 
         // Sessions
+        public IEnumerable<Session> GetAllSessions()
+        {
+            return db.Sessions;
+        }
+
         public Session GetSession(int hour, DateTime dt, int locationId, AthleteTypes athleteType)
         {
             Session session = db.Sessions.SingleOrDefault(s => s.Hour == hour &&

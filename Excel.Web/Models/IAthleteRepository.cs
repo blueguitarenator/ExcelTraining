@@ -34,6 +34,8 @@ namespace Excel.Web.Models
         IEnumerable<Athlete> GetPersonalTrainingAthletes(int sessionId, int locationId);
         IEnumerable<Athlete> GetSportsTrainingAthletes(int sessionId, int locationId);
         Athlete GetSesssionTrainer(int sessionId);
+        IEnumerable<Session> GetAllSessions();
+
 
         //Session - writers
         void Write_CreateSessions(DateTime dt, int locationId);
@@ -54,6 +56,6 @@ namespace Excel.Web.Models
         IdentityDb GetIdentityDb();
         int SaveChanges();
         void Dispose();
-        
+
     }
 }
