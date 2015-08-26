@@ -79,7 +79,7 @@ namespace Excel.Web.Controllers
             var trainer = athleteRepository.GetSesssionTrainer(session);
             if (trainer != null)
             {
-                athleteRepository.RemoveAthleteFromSession(session, trainerId);
+                athleteRepository.RemoveAthleteFromSession(session, trainer.Id);
             }
             athleteRepository.AddAthleteToSession(session, trainerId);
 
