@@ -30,6 +30,7 @@ namespace Excel.Web.Controllers
             List<SingleSession> allPersonalTrainingSessionAthletes = new List<SingleSession>();
             AccountingViewModel model = new AccountingViewModel();
             List<Session> sessions = athleteRepository.GetAllSessions().ToList();
+            RemoveUnconfirmed(sessions);
             foreach (var session in sessions)
             {
                 if (session.SessionAthletes.Count > 0)
@@ -43,6 +44,21 @@ namespace Excel.Web.Controllers
             }
             model.PersonalTrainingSessionsWithAthletes = allPersonalTrainingSessionAthletes;
             return View(model);
+        }
+
+        private void RemoveUnconfirmed(List<Session> sessions)
+        {
+            foreach (var session in sessions)
+            {
+                List<SessionAthlete> athletes = session.SessionAthletes.ToList();
+                foreach (var sessionAthlete in athletes)
+                {
+                    if (!sessionAthlete.Confirmed)
+                    {
+                        athleteRepository.RemoveAthleteFromSession(session.Id, sessionAthlete.AthleteId);
+                    }
+                }
+            }
         }
     }
 }

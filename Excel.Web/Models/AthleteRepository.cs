@@ -98,7 +98,7 @@ namespace Excel.Web.Models
 
         public IEnumerable<Athlete> GetAllAthletes()
         {
-            return db.Athletes.Where(a => a.UserType == UserTypes.Athlete);
+            return db.Athletes.Where(a => a.UserType == UserTypes.Athlete).OrderBy(a => a.LastName);
         }
 
         public IEnumerable<Athlete> GetAllTrainers()

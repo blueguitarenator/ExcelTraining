@@ -23,12 +23,12 @@ namespace Excel.Web.Models
             return sessionTime;
         }
 
-        public DateTime GetNextSession()
+        public DateTime GetNextSession(IAthleteRepository repo)
         {
             DateTime nextSession = GetCentralStandardTimeNow();
 
             bool isFuture = false;
-            while (!isSessionTime(nextSession))
+            while (!isSessionTime(nextSession, repo))
             {
                 isFuture = true;
                 nextSession = nextSession.AddHours(1);
@@ -40,15 +40,50 @@ namespace Excel.Web.Models
             return nextSession;
         }
 
+        public DateTime GetNextSession(DateTime session, IAthleteRepository repo)
+        {
+            DateTime nextSession = session.AddHours(1);
+
+            bool isFuture = false;
+            while (!isSessionTime(nextSession, repo))
+            {
+                isFuture = true;
+                nextSession = nextSession.AddHours(1);
+            }
+            //if (!isFuture && nextSession.Minute > 15)
+            //{
+            //    nextSession = nextSession.AddHours(1);
+            //}
+            return nextSession;
+        }
+
+        public DateTime GetPreviousSession(DateTime session, IAthleteRepository repo)
+        {
+            DateTime nextSession = session.AddHours(-1);
+
+            bool isPast = false;
+            while (!isSessionTime(nextSession, repo))
+            {
+                isPast = true;
+                nextSession = nextSession.AddHours(-1);
+            }
+            //if (!isPast && nextSession.Minute > 15)
+            //{
+            //    nextSession = nextSession.AddHours(1);
+            //}
+            return nextSession;
+        }
+
         public Location GetDardenne(IAthleteRepository repo)
         {
             IEnumerable<Location> locationList = repo.GetLocations();
-            Location loc = locationList.ElementAt(0);
+            var enumerable = locationList as IList<Location> ?? locationList.ToList();
+            Location loc = enumerable.ElementAt(0);
             if (loc.Name.Contains("Dardenne"))
             {
                 return loc;
             }
-            loc = locationList.ElementAt(1);
+            loc = enumerable.ElementAt(1);
             if (loc.Name.Contains("Dardenne"))
             {
                 return loc;
@@ -89,12 +124,26 @@ namespace Excel.Web.Models
             return timeUtc;
         }
 
-        private bool isSessionTime(DateTime nextSession)
+        private bool isSessionTime(DateTime nextSession, IAthleteRepository repo)
         {
-            return nextSession.DayOfWeek != DayOfWeek.Saturday &&
-                nextSession.DayOfWeek != DayOfWeek.Sunday &&
-                (nextSession.Hour > 5 && nextSession.Hour < 11 ||
-                nextSession.Hour > 15 && nextSession.Hour < 18);
+            List<Schedule> schedules = repo.GetDardenneSchedule(AthleteTypes.PersonalTraining).ToList();
+            bool status = nextSession.DayOfWeek != DayOfWeek.Saturday &&
+                          nextSession.DayOfWeek != DayOfWeek.Sunday;
+            if (status)
+            {
+                foreach (var schedule in schedules)
+                {
+                    if (schedule.IsAvailable && schedule.Hour == nextSession.Hour)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+            //return nextSession.DayOfWeek != DayOfWeek.Saturday &&
+            //    nextSession.DayOfWeek != DayOfWeek.Sunday &&
+            //    (nextSession.Hour > 5 && nextSession.Hour < 11 ||
+            //    nextSession.Hour > 15 && nextSession.Hour < 18);
         }
     }
 }

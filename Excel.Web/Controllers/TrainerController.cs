@@ -28,12 +28,25 @@ namespace Excel.Web.Controllers
         public ActionResult Index()
         {
             TrainerQueueViewModel model = new TrainerQueueViewModel();
-
-            DateTime nextSession = helper.GetNextSession();
-            model.SessionDate = nextSession.ToLongDateString();
-            model.SessionTime = helper.GetSessionTimeString(nextSession);
+            DateTime sessionDate;
+            if (Session["SessionDate"] == null)
+            {
+                sessionDate = helper.GetNextSession(athleteRepository);
+                Session["SessionDate"] = sessionDate;
+            }
+            else
+            {
+                sessionDate = (DateTime)Session["SessionDate"];
+            }
+            model.SessionDate = sessionDate.ToLongDateString();
+            model.SessionTime = helper.GetSessionTimeString(sessionDate);
             int locationId = helper.GetDardenne(athleteRepository).Id;
-            Excel.Entities.Session personalTrainingSession = helper.GetOrCreateSession(nextSession.Hour, nextSession, locationId, Entities.AthleteTypes.PersonalTraining, athleteRepository);
+            
+            Session personalTrainingSession = helper.GetOrCreateSession(sessionDate.Hour, sessionDate, locationId, Entities.AthleteTypes.PersonalTraining, athleteRepository);
+            //Session["SessionHour"] = personalTrainingSession.Hour;
+            //Session["SessionDate"] = personalTrainingSession.Day;
+            
+
             model.PersonalTrainingSessionId = 0;
             model.SportsTrainerId = 0;
             if (personalTrainingSession != null)
@@ -46,7 +59,7 @@ namespace Excel.Web.Controllers
             {
                 model.PersonalAthletes = new List<Athlete>();
             }
-            Excel.Entities.Session sportsTrainingSession = helper.GetOrCreateSession(nextSession.Hour, nextSession, locationId, Entities.AthleteTypes.SportsTraining, athleteRepository);
+            Session sportsTrainingSession = helper.GetOrCreateSession(sessionDate.Hour, sessionDate, locationId, Entities.AthleteTypes.SportsTraining, athleteRepository);
             if (sportsTrainingSession != null)
             {
                 model.SportsTrainerId = GetPersonalTrainerId(sportsTrainingSession.Id);
@@ -62,6 +75,20 @@ namespace Excel.Web.Controllers
             LoadPersonalTrainerSelectList(model);
             LoadSportsTrainerSelectList(model);
             return View(model);
+        }
+
+        public ActionResult Next()
+        {
+            DateTime session = (DateTime)Session["SessionDate"];
+            Session["SessionDate"] = helper.GetNextSession(session, athleteRepository);
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Previous()
+        {
+            DateTime session = (DateTime)Session["SessionDate"];
+            Session["SessionDate"] = helper.GetPreviousSession(session, athleteRepository);
+            return RedirectToAction("Index");
         }
 
         private int GetPersonalTrainerId(int sessionId)

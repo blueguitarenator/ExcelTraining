@@ -29,7 +29,7 @@ namespace Excel.Web.Controllers
         {
             QuickScheduleViewModel quickScheduleViewModel = new QuickScheduleViewModel();
 
-            DateTime nextSession = helper.GetNextSession();
+            DateTime nextSession = helper.GetNextSession(athleteRepository);
             quickScheduleViewModel.SessionDate = nextSession.ToLongDateString();
             quickScheduleViewModel.SessionTime = helper.GetSessionTimeString(nextSession);
             int locationId = helper.GetDardenne(athleteRepository).Id;
@@ -55,7 +55,7 @@ namespace Excel.Web.Controllers
             var athlete = athleteRepository.GetAthleteByEmail(email);
             if (athlete != null)
             {
-                var saveNow = helper.GetNextSession();
+                var saveNow = helper.GetNextSession(athleteRepository);
                 var session = helper.GetOrCreateSession(saveNow.Hour, saveNow, helper.GetDardenne(athleteRepository).Id,
                     athlete.AthleteType, athleteRepository);
                 athleteRepository.AddAthleteToSession(session.Id, athlete.Id);
