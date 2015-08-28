@@ -201,9 +201,7 @@ namespace Excel.Web.Models
 
             return
                 db.Sessions.Where(
-                    s => s.SessionAthletes.Any(sa => sa.AthleteId == athleteId) && s.Day.Year >= saveNow.Year &&
-                         s.Day.Month >= saveNow.Month &&
-                         s.Day.Day >= saveNow.Day);
+                    s => s.SessionAthletes.Any(sa => sa.AthleteId == athleteId) && s.Day >= saveNow);
         }
 
         public IEnumerable<Session> GetPastSessions(int athleteId)
@@ -212,9 +210,7 @@ namespace Excel.Web.Models
             
             return
                 db.Sessions.Where(
-                    s => s.SessionAthletes.Any(sa => sa.AthleteId == athleteId) && s.Day.Year <= saveNow.Year &&
-                         s.Day.Month <= saveNow.Month &&
-                         s.Day.Day < saveNow.Day);
+                    s => s.SessionAthletes.Any(sa => sa.AthleteId == athleteId) && s.Day <= saveNow);
         }
 
         public IEnumerable<Athlete> GetConfirmedPersonalTrainingAthletes(int sessionId, int locationId)
