@@ -189,6 +189,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AccountingController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AthleteController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
@@ -210,6 +211,7 @@
       <DependentUpon>201508231418579_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\AccountingViewModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AthleteRepository.cs" />
     <Compile Include="Models\AthleteViewModel.cs" />
@@ -405,6 +407,7 @@
     <Content Include="Views\Quick\Index.cshtml" />
     <Content Include="Views\Trainer\Index.cshtml" />
     <Content Include="Views\Schedule\Index.cshtml" />
+    <Content Include="Views\Accounting\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

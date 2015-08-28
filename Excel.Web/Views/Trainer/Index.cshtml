@@ -6,13 +6,16 @@
 
 <h2>Trainer Queue</h2>
 <h3> @Model.SessionTime - @Model.SessionDate</h3>
+<button type="button" onclick="Previous()">Previous</button>
+<button type="button" onclick="Next()">Next</button>
 
 <h4>Personal Training</h4>
 @Html.HiddenFor(m => m.PersonalTrainingSessionId, new { id = "personal" })
 <div>
     @Html.DropDownList("trainer", Model.PersonalTrainerSelectList,
-        new { @onchange = "CallAddPersonalTrainer(this.value)", @class = "form-control floatLable" })
+        new {@onchange = "CallAddPersonalTrainer(this.value)", @class = "form-control floatLable"})
 </div>
+<br/>
 
 @foreach (var item in Model.PersonalAthletes)
 {
@@ -21,13 +24,14 @@
     </ul>
 }
 
-
+<br/>
 <h4>Sports Training</h4>
 @Html.HiddenFor(m => m.SportsTrainingSessionId, new { id = "sports" })
 <div>
     @Html.DropDownList("trainer", Model.SportsTrainerSelectList,
-        new { @onchange = "CallAddSportsTrainer(this.value)", @class = "form-control floatLable" })
+        new {@onchange = "CallAddSportsTrainer(this.value)", @class = "form-control floatLable"})
 </div>
+<br/>
 @foreach (var item in Model.SportsAthletes)
 {
     <ul>
@@ -42,5 +46,10 @@
     function CallAddSportsTrainer(val) {
         window.location.href = "/Trainer/ChangeTrainer?trainerId=" + val + "&session=" + document.getElementById('sports').value;
     }
-
+    function Previous() {
+        window.location.href = "/Trainer/Previous";
+    }
+    function Next() {
+        window.location.href = "/Trainer/Next";
+    }
 </script>

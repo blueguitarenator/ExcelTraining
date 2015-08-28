@@ -6,14 +6,17 @@
 
 @Html.HiddenFor(model => model.SessionId);
 
-<h2>Quick Schedule</h2> <h3> @Model.SessionTime - @Model.SessionDate</h3>
+<h2>Quick Schedule</h2>
+
+<h3> @Model.SessionTime - @Model.SessionDate</h3>
 
 @using (Html.BeginForm("Signup", "Quick"))
 {
     @Html.TextBox("email")
     <input type="submit" value="Signup" />
 }
-
+<br/>
+<br/>
 <ul>
     @foreach (var item in Model.QuickAthletes)
     {
@@ -31,6 +34,8 @@
                 <span>Unconfirmed</span>
             }
         </li>
+        <br/>
+        <br/>
 
     }
 

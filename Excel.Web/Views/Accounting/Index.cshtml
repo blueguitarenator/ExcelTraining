@@ -1,0 +1,21 @@
+﻿@model Excel.Web.Models.AccountingViewModel
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Accounting</h2>
+
+@foreach (var item in Model.PersonalTrainingSessionsWithAthletes)
+{
+    <h4>Hour @item.Hour - @item.Date</h4>
+
+    <ul>
+        @foreach (var foo in item.Athletes)
+        {
+            <li>@foo.FirstName @foo.LastName</li>
+        }
+
+    </ul>
+    <br/>
+}
+
