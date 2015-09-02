@@ -20,12 +20,17 @@ namespace Excel.Web.Tests.Models
         private Mock<IdentityDb> mockContext;
         private Mock<DbSet<Athlete>> mockSetAthlete;
         private Mock<DbSet<Session>> mockSetSession;
+        private Mock<DbSet<Location>> mockSetLocation;
+        private Mock<DbSet<Schedule>> mockSetSchedule;
+        private Mock<DbSet<SessionAthlete>> mockSetSessionAthlete;
 
         private Athlete paul;
         private Athlete john;
         private Athlete george;
         private Athlete ringo;
 
+        private Session aug18_6, aug18_7, aug18_8, aug18_9, aug18_10, aug18_16, aug18_17, aug18_18, aug18_19;
+        private Session aug19_6, aug19_7, aug19_8, aug19_9, aug19_10, aug19_16, aug19_17, aug19_18, aug19_19;
         IQueryable<Session> sessions;
 
         [TestInitialize]
@@ -73,14 +78,6 @@ namespace Excel.Web.Tests.Models
             Assert.AreEqual(6, session.Hour);
         }
 
-        //[TestMethod]
-        //public void testRemoveAthleteFromSession()
-        //{
-        //    var theSession = sessions.Where(s => s.Id == 1).FirstOrDefault();
-        //    Assert.IsTrue(theSession.Athletes.Contains(paul));
-        //    testObject.RemoveAthleteFromSession(1, paul.Id);
-        //    Assert.IsFalse(theSession.Athletes.Contains(paul));
-        //}
 
         //[TestMethod]
         //public void testAddAthleteToSession()
@@ -101,37 +98,50 @@ namespace Excel.Web.Tests.Models
                 new Location {Name = "Mid Rivers"}
             }.AsQueryable();
             Location dardenne = locations.ElementAt(0);
-            DateTime saveNow = DateTime.Now.Date;
+            DateTime aug18 = new DateTime(2015, 08, 18);
+            DateTime aug19 = new DateTime(2015, 08, 19);
             var athletes = new List<Athlete> 
             { 
-                new Athlete { Id = 1, FirstName = "Kenny", LastName = "Ball", Address = "444 Primrose", City = "Dardenne", State = "MO", Zip = "63368", UserType = UserTypes.Trainer, Location = dardenne, SelectedDate = saveNow }, 
-                new Athlete { Id = 2, FirstName = "Rich", LastName = "Schwepker", Address = "444 Primrose", City = "Dardenne", State = "MO", Zip = "63368", UserType = UserTypes.Trainer, Location = dardenne, SelectedDate = saveNow }, 
-                new Athlete { Id = 3, FirstName = "Erin", LastName = "Sitz", Address = "444 Primrose", City = "Dardenne", State = "MO", Zip = "63368", UserType = UserTypes.Trainer, Location = dardenne, SelectedDate = saveNow }, 
-                new Athlete { Id = 111, FirstName = "Paul", LastName = "McCartney", Address = "444 Primrose", City = "Dardenne", State = "MO", Zip = "63368", UserType = UserTypes.Athlete, Location = dardenne, SelectedDate = saveNow }, 
-                new Athlete { Id = 222, FirstName = "John", LastName = "Lennon", Address = "444 Primrose", City = "Dardenne", State = "MO", Zip = "63368", UserType = UserTypes.Athlete, Location = dardenne, SelectedDate = saveNow }, 
-                new Athlete { Id = 333, FirstName = "George", LastName = "Harrison", Address = "444 Primrose", City = "Dardenne", State = "MO", Zip = "63368", UserType = UserTypes.Athlete, Location = dardenne, SelectedDate = saveNow }, 
-                new Athlete { Id = 444, FirstName = "Ringo", LastName = "Starr", Address = "444 Primrose", City = "Dardenne", State = "MO", Zip = "63368", UserType = UserTypes.Athlete, Location = dardenne, SelectedDate = saveNow }, 
+                new Athlete { Id = 1, FirstName = "Kenny", LastName = "Ball", Address = "444 Primrose", City = "Dardenne", State = "MO", Zip = "63368", UserType = UserTypes.Trainer, Location = dardenne, SelectedDate = aug18 }, 
+                new Athlete { Id = 2, FirstName = "Rich", LastName = "Schwepker", Address = "444 Primrose", City = "Dardenne", State = "MO", Zip = "63368", UserType = UserTypes.Trainer, Location = dardenne, SelectedDate = aug18 }, 
+                new Athlete { Id = 3, FirstName = "Erin", LastName = "Sitz", Address = "444 Primrose", City = "Dardenne", State = "MO", Zip = "63368", UserType = UserTypes.Trainer, Location = dardenne, SelectedDate = aug18 }, 
+                new Athlete { Id = 111, FirstName = "Paul", LastName = "McCartney", Address = "444 Primrose", City = "Dardenne", State = "MO", Zip = "63368", UserType = UserTypes.Athlete, Location = dardenne, SelectedDate = aug18 }, 
+                new Athlete { Id = 222, FirstName = "John", LastName = "Lennon", Address = "444 Primrose", City = "Dardenne", State = "MO", Zip = "63368", UserType = UserTypes.Athlete, Location = dardenne, SelectedDate = aug18 }, 
+                new Athlete { Id = 333, FirstName = "George", LastName = "Harrison", Address = "444 Primrose", City = "Dardenne", State = "MO", Zip = "63368", UserType = UserTypes.Athlete, Location = dardenne, SelectedDate = aug18 }, 
+                new Athlete { Id = 444, FirstName = "Ringo", LastName = "Starr", Address = "444 Primrose", City = "Dardenne", State = "MO", Zip = "63368", UserType = UserTypes.Athlete, Location = dardenne, SelectedDate = aug18 }, 
             }.AsQueryable();
             paul = athletes.ElementAt(3);
             john = athletes.ElementAt(4);
             george = athletes.ElementAt(5);
             ringo = athletes.ElementAt(6);
 
-            var session6Athletes = new List<Athlete> { paul, john, george};
-            var session7Athletes = new List<Athlete> { paul, john, george};
-            var session8Athletes = new List<Athlete> { paul, john, george};
+            sessions = MakeListOne(aug18, dardenne);
+            sessions = sessions.Concat(MakeListTwo(aug19, dardenne));
 
             //sessions = new List<Session>
             //{
-            //    new Session{ Id = 1, Hour =6, Day =saveNow, Athletes=session6Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
-            //    new Session{ Id = 2, Hour =7, Day =saveNow, Athletes=session7Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
-            //    new Session{ Id = 3, Hour =8, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
-            //    new Session{ Id = 4, Hour =16, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
-            //    new Session{ Id = 5, Hour =17, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
-            //    new Session{ Id = 6, Hour =18, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
-            //    new Session{ Id = 7, Hour =19, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
-            //    new Session{ Id = 8, Hour =20, Day =saveNow, Athletes=session8Athletes, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
+            //    new Session{ Id = 1, Hour =6, Day =aug18, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
+            //    new Session{ Id = 2, Hour =7, Day =aug18, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
+            //    new Session{ Id = 3, Hour =8, Day =aug18, LocationId = dardenne.Id, AthleteType = AthleteTypes.PersonalTraining},
+            //    new Session{ Id = 4, Hour =16, Day =aug18, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
+            //    new Session{ Id = 5, Hour =17, Day =aug18, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
+            //    new Session{ Id = 6, Hour =18, Day =aug18, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
+            //    new Session{ Id = 7, Hour =19, Day =aug18, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
+            //    new Session{ Id = 8, Hour =20, Day =aug18, LocationId = dardenne.Id, AthleteType = AthleteTypes.SportsTraining},
             //}.AsQueryable();
+
+            var paulSession1 = new SessionAthlete { SessionId = aug18_6.Id, AthleteId = paul.Id };
+            var paulSession2 = new SessionAthlete { SessionId = aug19_6.Id, AthleteId = paul.Id };
+            var johnSession1 = new SessionAthlete { SessionId = aug18_6.Id, AthleteId = paul.Id };
+            var johnSession2 = new SessionAthlete { SessionId = aug19_6.Id, AthleteId = paul.Id };
+            var allSessionAthletes = new List<SessionAthlete>
+            {
+                paulSession1,
+                paulSession2,
+                johnSession1,
+                johnSession2
+            }.AsQueryable();
+
 
             var schedules = new List<Schedule>
             {
@@ -190,7 +200,7 @@ namespace Excel.Web.Tests.Models
             mockSetSession.As<IQueryable<Session>>().Setup(m => m.GetEnumerator())
                    .Returns(sessions.GetEnumerator());
             // Session
-            var mockSetLocation = new Mock<DbSet<Location>>();
+            mockSetLocation = new Mock<DbSet<Location>>();
             mockSetLocation.As<IQueryable<Location>>().Setup(m => m.Provider)
                    .Returns(locations.Provider);
             mockSetLocation.As<IQueryable<Location>>().Setup(m => m.Expression)
@@ -199,8 +209,18 @@ namespace Excel.Web.Tests.Models
                    .Returns(locations.ElementType);
             mockSetLocation.As<IQueryable<Location>>().Setup(m => m.GetEnumerator())
                    .Returns(locations.GetEnumerator());
+            // SessionAthlete
+            mockSetSessionAthlete = new Mock<DbSet<SessionAthlete>>();
+            mockSetSessionAthlete.As<IQueryable<SessionAthlete>>().Setup(m => m.Provider)
+                   .Returns(allSessionAthletes.Provider);
+            mockSetSessionAthlete.As<IQueryable<SessionAthlete>>().Setup(m => m.Expression)
+                   .Returns(allSessionAthletes.Expression);
+            mockSetSessionAthlete.As<IQueryable<SessionAthlete>>().Setup(m => m.ElementType)
+                   .Returns(allSessionAthletes.ElementType);
+            mockSetSessionAthlete.As<IQueryable<SessionAthlete>>().Setup(m => m.GetEnumerator())
+                   .Returns(allSessionAthletes.GetEnumerator());
             // Schedule
-            var mockSetSchedule = new Mock<DbSet<Schedule>>();
+            mockSetSchedule = new Mock<DbSet<Schedule>>();
             mockSetSchedule.As<IQueryable<Schedule>>().Setup(m => m.Provider)
                    .Returns(schedules.Provider);
             mockSetSchedule.As<IQueryable<Schedule>>().Setup(m => m.Expression)
@@ -217,5 +237,165 @@ namespace Excel.Web.Tests.Models
             mockContext.Setup(c => c.Schedules).Returns(mockSetSchedule.Object);
             return new AthleteRepository(mockContext.Object);
         }
+
+        private IQueryable<Session> MakeListOne(DateTime aug18, Location dardenne)
+        {
+            aug18_6 = new Session
+            {
+                Id = 1,
+                Hour = 6,
+                Day = aug18,
+                LocationId = dardenne.Id,
+                AthleteType = AthleteTypes.PersonalTraining
+            };
+            aug18_7 = new Session
+            {
+                Id = 2,
+                Hour = 7,
+                Day = aug18,
+                LocationId = dardenne.Id,
+                AthleteType = AthleteTypes.PersonalTraining
+            };
+            aug18_8 = new Session
+            {
+                Id = 3,
+                Hour = 8,
+                Day = aug18,
+                LocationId = dardenne.Id,
+                AthleteType = AthleteTypes.PersonalTraining
+            };
+            aug18_9 = new Session
+            {
+                Id = 4,
+                Hour = 9,
+                Day = aug18,
+                LocationId = dardenne.Id,
+                AthleteType = AthleteTypes.PersonalTraining
+            };
+            aug18_10 = new Session
+            {
+                Id = 5,
+                Hour = 10,
+                Day = aug18,
+                LocationId = dardenne.Id,
+                AthleteType = AthleteTypes.PersonalTraining
+            };
+            aug18_16 = new Session
+            {
+                Id = 6,
+                Hour = 16,
+                Day = aug18,
+                LocationId = dardenne.Id,
+                AthleteType = AthleteTypes.PersonalTraining
+            };
+            aug18_17 = new Session
+            {
+                Id = 7,
+                Hour = 17,
+                Day = aug18,
+                LocationId = dardenne.Id,
+                AthleteType = AthleteTypes.PersonalTraining
+            };
+            aug18_18 = new Session
+            {
+                Id = 8,
+                Hour = 18,
+                Day = aug18,
+                LocationId = dardenne.Id,
+                AthleteType = AthleteTypes.PersonalTraining
+            };
+            aug18_19 = new Session
+            {
+                Id = 9,
+                Hour = 19,
+                Day = aug18,
+                LocationId = dardenne.Id,
+                AthleteType = AthleteTypes.PersonalTraining
+            };
+
+            IList<Session> myList = new List<Session> { aug18_6, aug18_7, aug18_8, aug18_9, aug18_10, aug18_16, aug18_17, aug18_18, aug18_19 };
+            return myList.AsQueryable();
+        }
+
+        private IQueryable<Session> MakeListTwo(DateTime aug19, Location dardenne)
+        {
+            aug19_6 = new Session
+            {
+                Id = 1,
+                Hour = 6,
+                Day = aug19,
+                LocationId = dardenne.Id,
+                AthleteType = AthleteTypes.PersonalTraining
+            };
+            aug19_7 = new Session
+            {
+                Id = 2,
+                Hour = 7,
+                Day = aug19,
+                LocationId = dardenne.Id,
+                AthleteType = AthleteTypes.PersonalTraining
+            };
+            aug19_8 = new Session
+            {
+                Id = 3,
+                Hour = 8,
+                Day = aug19,
+                LocationId = dardenne.Id,
+                AthleteType = AthleteTypes.PersonalTraining
+            };
+            aug19_9 = new Session
+            {
+                Id = 4,
+                Hour = 9,
+                Day = aug19,
+                LocationId = dardenne.Id,
+                AthleteType = AthleteTypes.PersonalTraining
+            };
+            aug19_10 = new Session
+            {
+                Id = 5,
+                Hour = 10,
+                Day = aug19,
+                LocationId = dardenne.Id,
+                AthleteType = AthleteTypes.PersonalTraining
+            };
+            aug19_16 = new Session
+            {
+                Id = 6,
+                Hour = 16,
+                Day = aug19,
+                LocationId = dardenne.Id,
+                AthleteType = AthleteTypes.PersonalTraining
+            };
+            aug19_17 = new Session
+            {
+                Id = 7,
+                Hour = 17,
+                Day = aug19,
+                LocationId = dardenne.Id,
+                AthleteType = AthleteTypes.PersonalTraining
+            };
+            aug19_18 = new Session
+            {
+                Id = 8,
+                Hour = 18,
+                Day = aug19,
+                LocationId = dardenne.Id,
+                AthleteType = AthleteTypes.PersonalTraining
+            };
+            aug19_19 = new Session
+            {
+                Id = 9,
+                Hour = 19,
+                Day = aug19,
+                LocationId = dardenne.Id,
+                AthleteType = AthleteTypes.PersonalTraining
+            };
+
+            IList<Session> myList = new List<Session> {aug19_6, aug19_7, aug19_8, aug19_9, aug19_10, aug19_16, aug19_17, aug19_18, aug19_19};
+            return myList.AsQueryable();
+        }
+
+ 
     }
 }

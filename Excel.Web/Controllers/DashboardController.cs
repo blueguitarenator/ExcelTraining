@@ -56,13 +56,11 @@ namespace Excel.Web.Controllers
 
         public ActionResult RemoveFromSession(int sessionId)
         {
-            DashboardModel model = new DashboardModel();
             var userId = GetUserId();
             var athlete = athleteRepository.GetAthleteByUserId(userId);
 
             var session = athleteRepository.GetSessionById(sessionId);
             athleteRepository.RemoveAthleteFromSession(session.Id, athlete.Id);
-            athleteRepository.SaveChanges();
 
             return RedirectToAction("Index");
         }

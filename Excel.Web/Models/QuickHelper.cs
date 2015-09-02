@@ -25,18 +25,23 @@ namespace Excel.Web.Models
 
         public DateTime GetNextSession(IAthleteRepository repo)
         {
-            DateTime nextSession = GetCentralStandardTimeNow();
+            //DateTime nextSession = GetCentralStandardTimeNow();
+            DateTime nextSession = new DateTime(2015, 9, 1, 5, 45, 0);
+            if (nextSession.Minute > 15)
+            {
+                nextSession = nextSession.AddHours(1);
+            }
 
-            bool isFuture = false;
+            //bool isFuture = false;
             while (!isSessionTime(nextSession, repo))
             {
-                isFuture = true;
+                //isFuture = true;
                 nextSession = nextSession.AddHours(1);
             }
-            if (!isFuture && nextSession.Minute > 15)
-            {
-                nextSession = nextSession.AddHours(1);
-            }
+            //if (!isFuture && nextSession.Minute > 15)
+            //{
+            //    nextSession = nextSession.AddHours(1);
+            //}
             return nextSession;
         }
 

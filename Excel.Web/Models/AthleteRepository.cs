@@ -126,6 +126,7 @@ namespace Excel.Web.Models
         {
             var q = db.SessionAthletes.FirstOrDefault(sa => sa.SessionId == sessionId && sa.AthleteId == athleteId);
             db.SessionAthletes.Remove(q);
+            db.SaveChanges();
         }
 
         public void AddAthleteToSession(int sessionId, int athleteId)

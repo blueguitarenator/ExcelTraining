@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace Excel.Web.Controllers
 {
+    [Authorize]
     public class QuickController : Controller
     {
         private IAthleteRepository athleteRepository;
