@@ -39,8 +39,16 @@ namespace Excel.Web.Controllers
 
             model.MySessions = GetFutureSessions();
             model.TotalSession = GetPastSessionCount();
+            model.History = GetHistory();
 
             return View(model);
+        }
+
+        private List<Session> GetHistory()
+        {
+            var userId = GetUserId();
+            var athlete = athleteRepository.GetAthleteByUserId(userId);
+            return athleteRepository.GetPastSessions(athlete.Id).ToList();
         }
 
         private bool CheckForQuickSchedule()

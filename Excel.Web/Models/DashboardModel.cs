@@ -8,6 +8,7 @@ namespace Excel.Web.Models
 {
     public class DashboardModel
     {
+        private List<Session> history; 
         private List<Session> mySessions;
 
         public int TotalSession { get; set; }
@@ -16,6 +17,11 @@ namespace Excel.Web.Models
         {
             get { return mySessions; }
             set { mySessions = value; }
+        }
+        public List<Session> History
+        {
+            get { return history; }
+            set { history = value; }
         }
     }
 }
