@@ -10,30 +10,62 @@
 <div class="table-responsive">
     <table class="table table-striped ">
         <thead>
-            <tr>
-                <th>Remove</th>
-                <th>Hour</th>
-                <th>Date</th>
-                <th>Location</th>
-            </tr>
+        <tr>
+            <th>Remove</th>
+            <th>Hour</th>
+            <th>Date</th>
+            <th>Location</th>
+        </tr>
         </thead>
         <tbody id="upcomingSessions">
-            @foreach (var s in Model.MySessions)
-            {
-                <tr>
-                    <td>
-                        @Html.ActionLink("Remove", "RemoveFromSession",
-                            new { sessionId = s.Id },
-                            new AjaxOptions { UpdateTargetId = "upcomingSessions" })
-                    </td>
-                    <td>@s.Hour</td>
-                    <td>@s.Day.Date.ToLongDateString()</td>
-                    <td>@s.Location.Name</td>
+        @foreach (var s in Model.MySessions)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink("Remove", "RemoveFromSession",
+                        new {sessionId = s.Id},
+                        new AjaxOptions {UpdateTargetId = "upcomingSessions"})
+                </td>
+                <td>@s.Hour</td>
+                <td>@s.Day.Date.ToLongDateString()</td>
+                <td>@s.Location.Name</td>
             </tr>
-            }
-        </tbody>    
+        }
+        </tbody>
     </table>
 
     <h2>Total Sessions: @Model.TotalSession</h2>
 </div>
 
+<div id="calendar_basic" style="width: 1000px; height: 350px;"></div>
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+      google.load("visualization", "1.1", {packages:["calendar"]});
+      google.setOnLoadCallback(drawChart);
+
+      function drawChart() {  
+
+           var dataTable = new google.visualization.DataTable();
+           dataTable.addColumn({ type: 'date', id: 'Date' });
+           dataTable.addColumn({ type: 'number', id: 'Won/Loss' });
+           dataTable.addRow([new Date(2015, 1, 1), 0]);
+            @foreach (var item in Model.History)
+            {
+                <text>
+                dataTable.addRow([new Date(@item.Day.Year, @item.Day.Month-1, @item.Day.Day), 1]);
+                </text>
+            }
+
+           var chart = new google.visualization.Calendar(document.getElementById('calendar_basic'));
+
+           var options = {
+             title: "Excel Attendance",
+             calendar: {
+                 cellSize: 10
+             },
+           };
+
+           chart.draw(dataTable, options);
+        }
+</script>

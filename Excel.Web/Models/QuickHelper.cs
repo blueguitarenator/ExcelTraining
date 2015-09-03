@@ -25,23 +25,16 @@ namespace Excel.Web.Models
 
         public DateTime GetNextSession(IAthleteRepository repo)
         {
-            //DateTime nextSession = GetCentralStandardTimeNow();
-            DateTime nextSession = new DateTime(2015, 9, 1, 5, 45, 0);
+            DateTime nextSession = GetCentralStandardTimeNow();
             if (nextSession.Minute > 15)
             {
                 nextSession = nextSession.AddHours(1);
             }
 
-            //bool isFuture = false;
             while (!isSessionTime(nextSession, repo))
             {
-                //isFuture = true;
                 nextSession = nextSession.AddHours(1);
             }
-            //if (!isFuture && nextSession.Minute > 15)
-            //{
-            //    nextSession = nextSession.AddHours(1);
-            //}
             return nextSession;
         }
 
@@ -49,16 +42,10 @@ namespace Excel.Web.Models
         {
             DateTime nextSession = session.AddHours(1);
 
-            bool isFuture = false;
             while (!isSessionTime(nextSession, repo))
             {
-                isFuture = true;
                 nextSession = nextSession.AddHours(1);
             }
-            //if (!isFuture && nextSession.Minute > 15)
-            //{
-            //    nextSession = nextSession.AddHours(1);
-            //}
             return nextSession;
         }
 
@@ -66,16 +53,10 @@ namespace Excel.Web.Models
         {
             DateTime nextSession = session.AddHours(-1);
 
-            bool isPast = false;
             while (!isSessionTime(nextSession, repo))
             {
-                isPast = true;
                 nextSession = nextSession.AddHours(-1);
             }
-            //if (!isPast && nextSession.Minute > 15)
-            //{
-            //    nextSession = nextSession.AddHours(1);
-            //}
             return nextSession;
         }
 
