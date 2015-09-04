@@ -11,6 +11,8 @@ namespace Excel.Web.Models
         private List<Session> history; 
         private List<Session> mySessions;
 
+        public String Motd { get; set; }
+
         public int TotalSession { get; set; }
 
         public List<Session> MySessions

@@ -40,6 +40,11 @@ namespace Excel.Web.Controllers
             model.MySessions = GetFutureSessions();
             model.TotalSession = GetPastSessionCount();
             model.History = GetHistory();
+            var motd = athleteRepository.GetMotd();
+            if (motd != null)
+            {
+                model.Motd = motd.Message;
+            }
 
             return View(model);
         }

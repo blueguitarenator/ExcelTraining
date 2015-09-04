@@ -54,6 +54,10 @@ namespace Excel.Web.Models
         // Schedules - writers
         void SetScheduleStatus(int scheduleId, bool status);
 
+        // Motd
+        void SetMotd(Motd motd);
+        Motd GetMotd();
+
         IdentityDb GetIdentityDb();
         int SaveChanges();
         void Dispose();

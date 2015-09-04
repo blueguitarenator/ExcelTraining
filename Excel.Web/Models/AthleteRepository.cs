@@ -264,6 +264,33 @@ namespace Excel.Web.Models
             DoSaveChanges();
         }
 
+        // MOTD
+        public void SetMotd(Motd msg)
+        {
+            var motd = db.Motd.First();
+            motd.Message = msg.Message;
+            motd.ExpireDateTime = msg.ExpireDateTime;
+            db.SaveChanges();
+        }
+
+        public Motd GetMotd()
+        {
+            var motd = db.Motd.FirstOrDefault();
+            if (motd != null)
+            {
+                var expire = motd.ExpireDateTime;
+                var saveNow = DateTime.Now;
+                if (saveNow > expire)
+                {
+                    motd.Message = "";
+                    db.SaveChanges();
+                    return null;
+                }
+                return motd;
+            }
+            return null;
+        }
+
         public IdentityDb GetIdentityDb()
         {
             return db;

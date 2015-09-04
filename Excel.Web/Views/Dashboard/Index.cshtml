@@ -5,6 +5,11 @@
     ViewBag.Title = "My Dashboard";
 }
 
+@if (!String.IsNullOrEmpty(@Model.Motd))
+{
+    <h4>-- @Model.Motd --</h4>
+}
+
 <h2>My Upcoming Sessions</h2>
 
 <div class="table-responsive">
@@ -34,7 +39,6 @@
         </tbody>
     </table>
 
-    <h2>Total Sessions: @Model.TotalSession</h2>
 </div>
 
 <div id="calendar_basic" style="width: 1000px; height: 350px;"></div>
@@ -60,7 +64,7 @@
            var chart = new google.visualization.Calendar(document.getElementById('calendar_basic'));
 
            var options = {
-             title: "Excel Attendance",
+               title: "Excel Attendance (@Model.TotalSession)",
              calendar: {
                  cellSize: 10
              },

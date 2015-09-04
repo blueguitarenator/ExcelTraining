@@ -16,6 +16,7 @@ namespace Excel.Web.DataContexts
         virtual public DbSet<Location> Locations { get; set; }
         virtual public DbSet<Schedule> Schedules { get; set; }
         virtual public DbSet<SessionAthlete> SessionAthletes { get; set; }
+        virtual public DbSet<Motd> Motd { get; set; }
 
 
         public IdentityDb()
