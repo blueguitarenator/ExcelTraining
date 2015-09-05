@@ -36,5 +36,7 @@ namespace Excel.Web.DataContexts
         {
             return new IdentityDb();
         }
+
+        public System.Data.Entity.DbSet<Excel.Entities.HearAboutUs> HearAboutUs { get; set; }
     }
 }

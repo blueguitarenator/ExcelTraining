@@ -1,6 +1,7 @@
 ﻿using Excel.Entities;
 using Excel.Web.DataContexts;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -61,6 +62,8 @@ namespace Excel.Web.Models
         Motd FindMotd(int id);
         void UpdateMotd(Motd motd);
         void RemoveMotd(Motd motd);
+
+        IEnumerable<HearAboutUs> GetHearAboutUs();
 
         IdentityDb GetIdentityDb();
         int SaveChanges();

@@ -61,7 +61,8 @@ namespace Excel.Web.Controllers
                 return HttpNotFound();
             }
             ViewBag.Locations = new SelectList(athleteRepository.GetLocations(), "Id", "Name", athlete.SelectedLocationId);
-
+            var heardId = athlete.HearAboutUs != null ? athlete.HearAboutUsId : 0;
+            ViewBag.HearAboutUs = new SelectList(athleteRepository.GetHearAboutUs(), "Id", "Name", heardId);
             return View(athlete);
         }
 
@@ -70,7 +71,7 @@ namespace Excel.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,Address,City,State,Zip,AthleteType,UserType,LocationId,SelectedLocationId,SelectedDate")] Athlete athlete)
+        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,Address,City,State,Zip,AthleteType,UserType,LocationId,HearAboutUsId,SelectedLocationId,SelectedDate")] Athlete athlete)
         {
             if (ModelState.IsValid)
             {

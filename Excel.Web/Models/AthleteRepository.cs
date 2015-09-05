@@ -301,6 +301,11 @@ namespace Excel.Web.Models
             db.SaveChanges();
         }
 
+        public IEnumerable<HearAboutUs> GetHearAboutUs()
+        {
+            return db.HearAboutUs;
+        }
+
         public IdentityDb GetIdentityDb()
         {
             return db;

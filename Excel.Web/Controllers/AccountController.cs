@@ -174,19 +174,7 @@ namespace Excel.Web.Controllers
         private void GetLocationSelectList()
         {
             ViewBag.Locations = new SelectList(athleteRepository.GetLocations(), "Id", "Name");
-
-            //var content = from p in db.Locations
-
-            //              orderby p.Name
-            //              select new { p.Id, p.Name };
-
-            //var x = content.ToList().Select(c => new SelectListItem
-            //{
-            //    Text = c.Name,
-            //    Value = c.Id.ToString(),
-
-            //}).ToList();
-            //ViewBag.Locations = x;
+            ViewBag.HearAboutUs = new SelectList(athleteRepository.GetHearAboutUs(), "Id", "Name");
 
         }
 
@@ -211,7 +199,8 @@ namespace Excel.Web.Controllers
                     UserType = model.UserType,
                     LocationId = model.LocationId,
                     SelectedLocationId = model.LocationId,
-                    SelectedDate = DateTime.Now.Date
+                    SelectedDate = DateTime.Now.Date,
+                    HearAboutUsId = model.HearAboutUsId
                 };
                 
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Athlete = athlete };
