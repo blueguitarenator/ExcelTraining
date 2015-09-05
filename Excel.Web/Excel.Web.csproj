@@ -196,6 +196,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MotdController.cs" />
     <Compile Include="Controllers\QuickController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />
     <Compile Include="Controllers\SessionController.cs" />
@@ -210,6 +211,10 @@
     <Compile Include="Migrations\201508231418579_Initial.Designer.cs">
       <DependentUpon>201508231418579_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201509051434387_Motd.cs" />
+    <Compile Include="Migrations\201509051434387_Motd.Designer.cs">
+      <DependentUpon>201509051434387_Motd.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountingViewModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -219,6 +224,7 @@
     <Compile Include="Models\IAthleteRepository.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\MotdViewModel.cs" />
     <Compile Include="Models\QuickHelper.cs" />
     <Compile Include="Models\QuickScheduleViewModel.cs" />
     <Compile Include="Models\ScheduleViewModel.cs" />
@@ -408,6 +414,11 @@
     <Content Include="Views\Trainer\Index.cshtml" />
     <Content Include="Views\Schedule\Index.cshtml" />
     <Content Include="Views\Accounting\Index.cshtml" />
+    <Content Include="Views\Motd\Index.cshtml" />
+    <Content Include="Views\Motd\Create.cshtml" />
+    <Content Include="Views\Motd\Delete.cshtml" />
+    <Content Include="Views\Motd\Details.cshtml" />
+    <Content Include="Views\Motd\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -428,6 +439,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201508231418579_Initial.resx">
       <DependentUpon>201508231418579_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509051434387_Motd.resx">
+      <DependentUpon>201509051434387_Motd.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

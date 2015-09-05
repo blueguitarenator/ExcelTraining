@@ -264,6 +264,43 @@ namespace Excel.Web.Models
             DoSaveChanges();
         }
 
+        // MOTD
+        public void CreateMotd(Motd msg)
+        {
+            db.Motd.Add(msg);
+            db.SaveChanges();
+        }
+
+        public Motd GetMotd()
+        {
+            var saveNow = DateTime.Now;
+            return db.Motd.FirstOrDefault(m => DbFunctions.TruncateTime(m.DisplayDate) == saveNow.Date);
+        }
+
+        public List<Motd> GetFutureMotd()
+        {
+            var saveNow = DateTime.Now;
+            return db.Motd.Where(m => DbFunctions.TruncateTime(m.DisplayDate) >= saveNow.Date).ToList();
+        }
+
+        public Motd FindMotd(int id)
+        {
+            return db.Motd.Find(id);
+        }
+
+        public void UpdateMotd(Motd motd)
+        {
+            db.Entry(motd).State = EntityState.Modified;
+
+            db.SaveChanges();
+        }
+
+        public void RemoveMotd(Motd motd)
+        {
+            db.Motd.Remove(motd);
+            db.SaveChanges();
+        }
+
         public IdentityDb GetIdentityDb()
         {
             return db;
