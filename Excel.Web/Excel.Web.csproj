@@ -222,6 +222,10 @@
     <Compile Include="Migrations\201509052120300_HearAbout.Designer.cs">
       <DependentUpon>201509052120300_HearAbout.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201509052146486_AthleteHearAbout.cs" />
+    <Compile Include="Migrations\201509052146486_AthleteHearAbout.Designer.cs">
+      <DependentUpon>201509052146486_AthleteHearAbout.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountingViewModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -457,6 +461,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201509052120300_HearAbout.resx">
       <DependentUpon>201509052120300_HearAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509052146486_AthleteHearAbout.resx">
+      <DependentUpon>201509052146486_AthleteHearAbout.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

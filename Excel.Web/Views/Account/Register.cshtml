@@ -66,27 +66,35 @@
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.AthleteType, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(m => m.AthleteType, new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EnumDropDownListFor(m => m.AthleteType, htmlAttributes: new { @class = "form-control" })
+            @Html.EnumDropDownListFor(m => m.AthleteType, new { @class = "form-control" })
             @Html.ValidationMessageFor(m => m.AthleteType, "", new { @class = "text-danger" })
         </div>
     </div>
     
     <div class="form-group">
-        @Html.LabelFor(m => m.UserType, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(m => m.UserType, new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EnumDropDownListFor(m => m.UserType, htmlAttributes: new { @class = "form-control" })
+            @Html.EnumDropDownListFor(m => m.UserType, new { @class = "form-control" })
             @Html.ValidationMessageFor(m => m.UserType, "", new { @class = "text-danger" })
         </div>
     </div>
 
 
     <div class="form-group">
-        @Html.LabelFor(model => model.LocationId, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.LocationId, new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DropDownListFor(model => model.LocationId, ViewBag.Locations as IEnumerable<SelectListItem>)
             @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.HearAboutUsId, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.HearAboutUsId, ViewBag.HearAboutUs as IEnumerable<SelectListItem>)
+            @Html.ValidationMessageFor(model => model.HearAboutUsId, "", new { @class = "text-danger" })
         </div>
     </div>
 

@@ -117,6 +117,10 @@ namespace Excel.Web.Models
         [Display(Name = "Location")]
         public int LocationId { get; set; }
 
+        [Required]
+        [Display(Name = "HearAboutUs")]
+        public int HearAboutUsId { get; set; }
+
     }
 
     public class ResetPasswordViewModel
