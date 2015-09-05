@@ -265,30 +265,40 @@ namespace Excel.Web.Models
         }
 
         // MOTD
-        public void SetMotd(Motd msg)
+        public void CreateMotd(Motd msg)
         {
-            var motd = db.Motd.First();
-            motd.Message = msg.Message;
-            motd.ExpireDateTime = msg.ExpireDateTime;
+            db.Motd.Add(msg);
             db.SaveChanges();
         }
 
         public Motd GetMotd()
         {
-            var motd = db.Motd.FirstOrDefault();
-            if (motd != null)
-            {
-                var expire = motd.ExpireDateTime;
-                var saveNow = DateTime.Now;
-                if (saveNow > expire)
-                {
-                    motd.Message = "";
-                    db.SaveChanges();
-                    return null;
-                }
-                return motd;
-            }
-            return null;
+            var saveNow = DateTime.Now;
+            return db.Motd.FirstOrDefault(m => DbFunctions.TruncateTime(m.DisplayDate) == saveNow.Date);
+        }
+
+        public List<Motd> GetFutureMotd()
+        {
+            var saveNow = DateTime.Now;
+            return db.Motd.Where(m => DbFunctions.TruncateTime(m.DisplayDate) >= saveNow.Date).ToList();
+        }
+
+        public Motd FindMotd(int id)
+        {
+            return db.Motd.Find(id);
+        }
+
+        public void UpdateMotd(Motd motd)
+        {
+            db.Entry(motd).State = EntityState.Modified;
+
+            db.SaveChanges();
+        }
+
+        public void RemoveMotd(Motd motd)
+        {
+            db.Motd.Remove(motd);
+            db.SaveChanges();
         }
 
         public IdentityDb GetIdentityDb()

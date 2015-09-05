@@ -12,8 +12,9 @@ namespace Excel.Web.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        ExpireDateTime = c.DateTime(nullable: false),
-                        Message = c.String(),
+                        DisplayDate = c.DateTime(nullable: false),
+                        Message = c.String(nullable: false),
+                        DaysToLive = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
             

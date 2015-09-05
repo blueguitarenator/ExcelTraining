@@ -12,11 +12,14 @@ namespace Excel.Entities
         public int Id { get; set; }
 
         [Required]
-        [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:mm-dd-yyyy}")]
-        [Display(Name = "Expire Date")]
-        public DateTime ExpireDateTime { get; set; }
+        [Display(Name = "Display Date")]
+        public DateTime DisplayDate { get; set; }
 
+        [Required]
+        [DataType(DataType.MultilineText)]
         public string Message { get; set; }
+
+        [Display(Name = "Days To Live")]
+        public int DaysToLive { get; set; }
     }
 }

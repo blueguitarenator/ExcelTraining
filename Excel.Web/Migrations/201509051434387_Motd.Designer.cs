@@ -13,7 +13,7 @@ namespace Excel.Web.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201509040012066_Motd"; }
+            get { return "201509051434387_Motd"; }
         }
         
         string IMigrationMetadata.Source
