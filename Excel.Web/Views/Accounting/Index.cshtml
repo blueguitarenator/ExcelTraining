@@ -7,15 +7,17 @@
 
 @foreach (var item in Model.PersonalTrainingSessionsWithAthletes)
 {
-    <h4>Hour @item.Hour - @item.Date</h4>
-
-    <ul>
-        @foreach (var foo in item.Athletes)
+    <h4>@item.Date</h4>
+    foreach (var bar in item.DaySessionList)
+    {
+        <h5>Hour @bar.Hour</h5>
+        
+        <ul>
+        @foreach (var foo in bar.Athletes)
         {
             <li>@foo.FirstName @foo.LastName</li>
         }
-
-    </ul>
-    <br/>
+        </ul>
+     }
 }
 

@@ -61,4 +61,3 @@ namespace Excel.Entities
 
 // add-migration -ConfigurationTypeName Excel.Web.DataContexts.IdentityMigrations.Configuration "AddAthleteToIdentity"
 
-// Deploy richjohnson905 TZ#ZI23?kMgXgE

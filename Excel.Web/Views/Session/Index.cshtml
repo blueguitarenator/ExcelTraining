@@ -5,30 +5,27 @@
 }
 
 <h2>Sessions</h2>
-<div class="row">
-    <div class="col-md-4">
-        <button type="button" onclick="Previous()">Previous</button>
-        <input type="text" id="jdatepicker" value=@Model.SessionDateTime>
-        <button type="button" onclick="Next()">Next</button>
-        <p>@Model.SessionDateTime.ToLongDateString()</p>
-    </div>
-
-    <div class="col-md-4">
-        @Html.LabelFor(m => m.LocationSelectList, "Location", new { @class = "control-label ddlLabel sr-only" })
-    </div>
-    <div>
-        @Html.DropDownList("loc", Model.LocationSelectList,
-        new { @onchange = "CallChangeLocation(this.value)", @class = "form-control floatLable" })
-    </div>
-
-
-    <div class="col-md-4">
-        @Html.LabelFor(m => m.AthleteType, htmlAttributes: new { @class = "control-label ddlLabel sr-only" })
-    </div>
-    <div class="col-md-10">
-        @Html.EnumDropDownListFor(model => model.AthleteType, htmlAttributes: new { @onchange = "CallChangeAthleteType(this.value)", @class = "form-control" })
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            <h4>@Model.SessionDateTime.ToLongDateString()</h4>
+            <button type="button" onclick="Previous()">Previous</button>
+            <input type="text" id="jdatepicker" value=@Model.SessionDateTime>
+            <button type="button" onclick="Next()">Next</button>
+        </div>
+        <div class="col-sm-4">
+            <h4>Location:</h4>
+            @Html.LabelFor(m => m.LocationSelectList, "Location", new {@class = "control-label ddlLabel sr-only"})
+            @Html.DropDownList("loc", Model.LocationSelectList, new {@onchange = "CallChangeLocation(this.value)", @class = "form-control floatLable"})
+        </div>
+        <div class="col-sm-4">
+            <h4>Athlete Type:</h4>
+            @Html.LabelFor(m => m.AthleteType, new {@class = "control-label ddlLabel sr-only"})
+            @Html.EnumDropDownListFor(model => model.AthleteType, new {@onchange = "CallChangeAthleteType(this.value)", @class = "form-control"})
+        </div>
     </div>
 </div>
+
 </br>
 
 <!-- If Personal Training -->

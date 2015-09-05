@@ -13,8 +13,25 @@
     
     <div class="form-horizontal">
         <h4>Message of the Day</h4>
-        <p>Creating a message of the day over-writes current and upcoming messages.</p>
-        <p>Days to Live is how many days message will display including today.</p>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4">
+                    <h3>Creating</h3>
+                    <p>Creating a message of the day over-writes current and upcoming messages.</p>
+                    <p>The message will only display on the top of users' Dashboard view.</p>
+                </div>
+                <div class="col-sm-4">
+                    <h3>Days To Live</h3>
+                    <p>Days to Live is how many days the message will display including today.</p>
+                    <p>Example, if today is Monday and you set Days To Live 5, Message will display today thru Friday at midnight.</p>
+                </div>
+                <div class="col-sm-4">
+                    <h3>Usage</h3>
+                    <p>Use sparringly.</p>
+                    <p>Individual messages can be edited on list page.</p>
+                </div>
+            </div>
+        </div>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
