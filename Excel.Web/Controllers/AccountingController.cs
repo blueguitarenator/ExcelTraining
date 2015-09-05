@@ -38,7 +38,8 @@ namespace Excel.Web.Controllers
 
         private List<DaySession> GetAllSessions(List<Session> sessions)
         {
-            SortedDictionary<DateTime, List<Session>> sessionDictionary = new SortedDictionary<DateTime, List<Session>>();
+            SortedDictionary<DateTime, List<Session>> sessionDictionary = 
+                new SortedDictionary<DateTime, List<Session>>(Comparer<DateTime>.Create((x, y) => y.CompareTo(x)));
             foreach (var session in sessions)
             {
                 if (session.SessionAthletes.Count > 0)
