@@ -11,6 +11,11 @@ using Excel.Web.DataContexts;
 
 namespace Excel.Web.Controllers
 {
+    public class SourceNumbers
+    {
+        public string Source { get; set; }
+        public int Value { get; set; }
+    }
     public class HearAboutUsController : Controller
     {
         private IdentityDb db = new IdentityDb();
@@ -18,7 +23,20 @@ namespace Excel.Web.Controllers
         // GET: HearAboutUs
         public ActionResult Index()
         {
+            ViewBag.Numbers = GetSourceNumbers();
             return View(db.HearAboutUs.ToList());
+        }
+
+        List<SourceNumbers> GetSourceNumbers()
+        {
+            List<SourceNumbers> Numbers = new List<SourceNumbers>();
+            var hearAboutUs = db.HearAboutUs.ToList();
+            foreach (var h in hearAboutUs)
+            {
+                int x = db.Athletes.Count(a => a.HearAboutUs.Name == h.Name);
+                Numbers.Add(new SourceNumbers {Source = h.Name, Value = x});
+            }
+            return Numbers;
         }
 
         // GET: HearAboutUs/Details/5

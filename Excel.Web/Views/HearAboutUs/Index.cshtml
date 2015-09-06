@@ -17,17 +17,44 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new {id = item.Id}) |
+                @Html.ActionLink("Details", "Details", new {id = item.Id})
+            </td>
+        </tr>
+    }
 
 </table>
+
+<div id="donutchart" style="width: 900px; height: 500px;"></div>
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+          var dataTable = new google.visualization.DataTable();
+          dataTable.addColumn('string', 'Source');
+          dataTable.addColumn('number', 'Value');
+          @foreach (var item in ViewBag.Numbers)
+          {
+              <text>
+              dataTable.addRow(['@item.Source', @item.Value]);
+              </text>
+          }
+
+        var options = {
+          title: 'Heard About Us ',
+          pieHole: 0.4,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+        chart.draw(dataTable, options);
+      }
+</script>
