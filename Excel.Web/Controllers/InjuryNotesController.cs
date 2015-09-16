@@ -16,13 +16,15 @@ namespace Excel.Web.Controllers
         private IdentityDb db = new IdentityDb();
 
         // GET: InjuryNotes
-        public ActionResult Index(int? athleteId)
+        public ActionResult Index()
         {
-            if (athleteId.HasValue)
-            {
-                return View(db.InjuryNotes.Where(i => i.Athlete.Id == athleteId).ToList());
-            }
-            return View(db.InjuryNotes.ToList());
+            //if (athleteId.HasValue)
+            //{
+            //    return View(db.InjuryNotes.Where(i => i.Athlete.Id == athleteId).ToList());
+            //}
+           return View(db.InjuryNotes.ToList());
+
+            //return View();
         }
 
         // GET: InjuryNotes/Details/5
@@ -41,7 +43,7 @@ namespace Excel.Web.Controllers
         }
 
         // GET: InjuryNotes/Create
-        public ActionResult Create()
+        public ActionResult Create(int? athleteId)
         {
             return View();
         }
@@ -55,6 +57,7 @@ namespace Excel.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                
                 db.InjuryNotes.Add(injuryNote);
                 db.SaveChanges();
                 return RedirectToAction("Index");

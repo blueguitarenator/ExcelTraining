@@ -1,0 +1,49 @@
+﻿@using System.Web.UI.WebControls
+@model IEnumerable<Excel.Entities.InjuryNote>
+
+@{
+    ViewBag.Title = "Injury";
+}
+
+<h2>Injury</h2>
+
+<p>
+    @Html.ActionLink("Create New", "InjuryCreate")
+</p>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.NoteDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Athlete.FullName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Message)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NoteDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Athlete.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Message)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "InjuryEdit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "InjuryDetails", new {id = item.Id}) |
+                @Html.ActionLink("Back To Athlete", "Details", new {id = item.Athlete.Id})
+            </td>
+        </tr>
+    }
+
+</table>

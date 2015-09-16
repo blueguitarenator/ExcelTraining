@@ -59,6 +59,18 @@ namespace Excel.Web.Models
             db.SaveChanges();
         }
 
+        public void AddNoteToAthlete(InjuryNote injuryNote)
+        {
+            var athlete = db.Athletes.First(a => a.Id == injuryNote.Athlete.Id);
+            athlete.InjuryNotes.Add(injuryNote);
+            db.SaveChanges();
+        }
+
+        public InjuryNote GetInjuryNote(int id)
+        {
+            return db.InjuryNotes.First(i => i.Id == id);
+        }
+
         public void DeleteAthlete(int id)
         {
             var athleteToDelete = GetAthleteById(id);
@@ -96,9 +108,16 @@ namespace Excel.Web.Models
             return null;
         }
 
+        public IEnumerable<InjuryNote> GetAthleteNotes(int athleteId)
+        {
+            return db.InjuryNotes.Where(i => i.Athlete.Id == athleteId);
+        }
+
         public IEnumerable<Athlete> GetAllAthletes()
         {
-            return db.Athletes.Where(a => a.UserType == UserTypes.Athlete).OrderBy(a => a.LastName);
+            var athletes = db.Athletes.Where(a => a.UserType == UserTypes.Athlete).OrderBy(a => a.LastName);
+            //var sql = athletes.ToString();
+            return athletes;
         }
 
         public IEnumerable<Athlete> GetAllTrainers()

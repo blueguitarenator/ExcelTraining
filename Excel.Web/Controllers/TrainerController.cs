@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace Excel.Web.Controllers
 {
+    [System.Web.Mvc.Authorize(Roles = "admin")]
     public class TrainerController : Controller
     {
         private IAthleteRepository athleteRepository;

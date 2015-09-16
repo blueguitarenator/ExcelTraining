@@ -162,37 +162,37 @@ namespace Excel.Web.Controllers
 
         //
         // GET: /Manage/VerifyPhoneNumber
-        public async Task<ActionResult> VerifyPhoneNumber(string phoneNumber)
-        {
-            var code = await UserManager.GenerateChangePhoneNumberTokenAsync(User.Identity.GetUserId(), phoneNumber);
-            // Send an SMS through the SMS provider to verify the phone number
-            return phoneNumber == null ? View("Error") : View(new VerifyPhoneNumberViewModel { PhoneNumber = phoneNumber });
-        }
+        //public async Task<ActionResult> VerifyPhoneNumber(string phoneNumber)
+        //{
+        //    var code = await UserManager.GenerateChangePhoneNumberTokenAsync(User.Identity.GetUserId(), phoneNumber);
+        //    // Send an SMS through the SMS provider to verify the phone number
+        //    return phoneNumber == null ? View("Error") : View(new VerifyPhoneNumberViewModel { PhoneNumber = phoneNumber });
+        //}
 
         //
         // POST: /Manage/VerifyPhoneNumber
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> VerifyPhoneNumber(VerifyPhoneNumberViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            var result = await UserManager.ChangePhoneNumberAsync(User.Identity.GetUserId(), model.PhoneNumber, model.Code);
-            if (result.Succeeded)
-            {
-                var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-                if (user != null)
-                {
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                }
-                return RedirectToAction("Index", new { Message = ManageMessageId.AddPhoneSuccess });
-            }
-            // If we got this far, something failed, redisplay form
-            ModelState.AddModelError("", "Failed to verify phone");
-            return View(model);
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> VerifyPhoneNumber(VerifyPhoneNumberViewModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(model);
+        //    }
+        //    var result = await UserManager.ChangePhoneNumberAsync(User.Identity.GetUserId(), model.PhoneNumber, model.Code);
+        //    if (result.Succeeded)
+        //    {
+        //        var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+        //        if (user != null)
+        //        {
+        //            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+        //        }
+        //        return RedirectToAction("Index", new { Message = ManageMessageId.AddPhoneSuccess });
+        //    }
+        //    // If we got this far, something failed, redisplay form
+        //    ModelState.AddModelError("", "Failed to verify phone");
+        //    return View(model);
+        //}
 
         //
         // GET: /Manage/RemovePhoneNumber

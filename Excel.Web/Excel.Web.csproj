@@ -65,6 +65,10 @@
       <HintPath>..\packages\Glimpse.Mvc5.1.5.3\lib\net45\Glimpse.Mvc5.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="RouteDebugger, Version=2.1.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\routedebugger.2.1.4.0\lib\net40\RouteDebugger.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -239,6 +243,7 @@
     <Compile Include="Models\DashboardModel.cs" />
     <Compile Include="Models\IAthleteRepository.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\InjuryViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MotdViewModel.cs" />
     <Compile Include="Models\QuickHelper.cs" />
@@ -400,16 +405,10 @@
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\SendCode.cshtml" />
     <Content Include="Views\Account\VerifyCode.cshtml" />
-    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
-    <Content Include="Views\Manage\ChangePassword.cshtml" />
-    <Content Include="Views\Manage\Index.cshtml" />
-    <Content Include="Views\Manage\ManageLogins.cshtml" />
-    <Content Include="Views\Manage\SetPassword.cshtml" />
-    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AthleteTypes.cshtml" />
-    <Content Include="Views\Athlete\Create.cshtml" />
+    <Content Include="Views\Athlete\InjuryCreate.cshtml" />
     <Content Include="Views\Athlete\Delete.cshtml" />
     <Content Include="Views\Athlete\Details.cshtml" />
     <Content Include="Views\Athlete\Edit.cshtml" />
@@ -445,6 +444,14 @@
     <Content Include="Views\InjuryNotes\Details.cshtml" />
     <Content Include="Views\InjuryNotes\Edit.cshtml" />
     <Content Include="Views\InjuryNotes\Index.cshtml" />
+    <Content Include="Views\Athlete\InjuryIndex.cshtml" />
+    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
+    <Content Include="Views\Manage\ChangePassword.cshtml" />
+    <Content Include="Views\Manage\Index.cshtml" />
+    <Content Include="Views\Manage\SetPassword.cshtml" />
+    <Content Include="Views\Manage\ManageLogins.cshtml" />
+    <Content Include="Views\Athlete\InjuryDetails.cshtml" />
+    <Content Include="Views\Athlete\InjuryEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

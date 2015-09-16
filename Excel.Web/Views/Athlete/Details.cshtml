@@ -5,10 +5,11 @@
 }
 
 <h2>Details</h2>
+@Html.HiddenFor(model => model.Id)
 
 <div>
     <h4>Athlete</h4>
-    <hr />
+    <hr/>
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.FirstName)
@@ -88,7 +89,11 @@
         </dd>
     </dl>
 </div>
+
+
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Injury", "InjuryIndex", new { athleteId = Model.Id, controller = "Athlete",  }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+

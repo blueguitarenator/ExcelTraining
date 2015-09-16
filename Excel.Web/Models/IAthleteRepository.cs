@@ -18,6 +18,7 @@ namespace Excel.Web.Models
         void GiveAdmin(Athlete athlete);
         void RemoveAdmin(Athlete athlete);
         void ConfirmAthlete(int sessionId, int athleteId);
+        void AddNoteToAthlete(InjuryNote injuryNote);
 
         //Athlete - readers
         Athlete GetAthleteById(int id);
@@ -26,8 +27,9 @@ namespace Excel.Web.Models
         IEnumerable<Athlete> GetAllAthletes();
         IEnumerable<Athlete> GetAllTrainers();
         bool IsAthleteConfirmed(int sessionId, int athleteId);
+        IEnumerable<InjuryNote> GetAthleteNotes(int athleteId);
 
-        //Session - readers
+            //Session - readers
         IEnumerable<Session> GetFutureSessions(int athleteId);
         IEnumerable<Session> GetPastSessions(int athleteId);
         Session GetSessionById(int id);
@@ -64,6 +66,10 @@ namespace Excel.Web.Models
         void RemoveMotd(Motd motd);
 
         IEnumerable<HearAboutUs> GetHearAboutUs();
+
+        // InjuryNotes
+        InjuryNote GetInjuryNote(int value);
+
 
         IdentityDb GetIdentityDb();
         int SaveChanges();
