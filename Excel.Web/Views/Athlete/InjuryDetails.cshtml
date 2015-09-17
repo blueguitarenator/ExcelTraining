@@ -1,0 +1,39 @@
+﻿@model Excel.Entities.InjuryNote
+
+@{
+    ViewBag.Title = "InjuryDetails";
+}
+
+<h2>InjuryDetails</h2>
+
+<div>
+    <h4>Injury Note For - @Model.Athlete.FullName</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.NoteDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NoteDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Message)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Message)
+        </dd>
+
+    </dl>
+</div>
+
+
+<p>
+    @Html.ActionLink("Edit", "InjuryEdit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "InjuryIndex", new { athleteId = Model.Athlete.Id })
+</p>
+
+
+

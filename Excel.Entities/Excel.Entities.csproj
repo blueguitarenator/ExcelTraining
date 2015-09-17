@@ -43,6 +43,7 @@
     <Compile Include="Athlete.cs" />
     <Compile Include="AthleteTypes.cs" />
     <Compile Include="HearAboutUs.cs" />
+    <Compile Include="InjuryNote.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="Motd.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

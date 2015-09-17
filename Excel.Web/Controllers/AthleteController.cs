@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
 using Excel.Entities;
 using Excel.Web.DataContexts;
@@ -14,14 +15,17 @@ using Microsoft.AspNet.Identity;
 
 namespace Excel.Web.Controllers
 {
-    [Authorize(Roles = "admin")]
+    [System.Web.Mvc.Authorize(Roles = "admin")]
     public class AthleteController : Controller
     {
         private IAthleteRepository athleteRepository;
 
+        public Func<string> GetUserId; //For testing
+
         public AthleteController()
         {
             athleteRepository = new AthleteRepository();
+            GetUserId = () => User.Identity.GetUserId();
         }
 
         // GET: Athletes
@@ -29,7 +33,55 @@ namespace Excel.Web.Controllers
         {
             AthleteViewModel model = new AthleteViewModel();
             model.Athletes = athleteRepository.GetAllAthletes().ToList();
+            
             return View(model);
+        }
+
+        // GET: Injury Notes
+        public ActionResult InjuryIndex(int? athleteId)
+        {
+            if (athleteId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            TempData["AthleteInjuredId"] = athleteId;
+            return View(athleteRepository.GetAthleteNotes(athleteId.Value).ToList());
+        }
+
+        // GET: Athletes/Create
+        public ActionResult InjuryCreate()
+        {
+            
+            return View();
+        }
+
+
+        // POST: Athletes/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [System.Web.Mvc.HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult InjuryCreate([Bind(Include = "Id, Message")] InjuryNote injuryNote)
+        {
+            if (injuryNote.Message.Length > 0 && TempData["AthleteInjuredId"] != null)
+            {
+                injuryNote.Athlete = athleteRepository.GetAthleteById((int)TempData["AthleteInjuredId"]);
+                injuryNote.NoteDate = DateTime.Now.Date;
+                athleteRepository.AddNoteToAthlete(injuryNote);
+                return RedirectToAction("InjuryIndex", new {athleteId = injuryNote.Athlete.Id});
+            }
+
+            return View(injuryNote);
+        }
+
+        public ActionResult InjuryDetails(int? id)
+        {
+            if (!id.HasValue)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            InjuryNote note = athleteRepository.GetInjuryNote(id.Value);
+            return View(note);
         }
 
         // GET: Athletes/Details/5
@@ -44,8 +96,41 @@ namespace Excel.Web.Controllers
             {
                 return HttpNotFound();
             }
-
+            ViewBag.Notes = athleteRepository.GetAthleteNotes(id.Value).ToList();
             return View(athlete);
+        }
+
+        // GET: Athletes/InjuryEdit/5
+        public ActionResult InjuryEdit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            InjuryNote note = athleteRepository.GetInjuryNote(id.Value);
+            if (note == null)
+            {
+                return HttpNotFound();
+            }
+            return View(note);
+        }
+
+        // POST: Athletes/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [System.Web.Mvc.HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult InjuryEdit([Bind(Include = "Id,Message")] InjuryNote injuryNote)
+        {
+            if (injuryNote.Message.Length > 0 && TempData["AthleteInjuredId"] != null)
+            {
+                injuryNote.Athlete = athleteRepository.GetAthleteById((int)TempData["AthleteInjuredId"]);
+                injuryNote.NoteDate = DateTime.Now.Date;
+                athleteRepository.UpdateNoteForAthlete(injuryNote);
+                return RedirectToAction("InjuryIndex", new {athleteId = injuryNote.Athlete.Id});
+            }
+
+            return View(injuryNote);
         }
 
         // GET: Athletes/Edit/5
@@ -69,7 +154,7 @@ namespace Excel.Web.Controllers
         // POST: Athletes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,Address,City,State,Zip,AthleteType,UserType,LocationId,HearAboutUsId,SelectedLocationId,SelectedDate")] Athlete athlete)
         {
@@ -104,7 +189,7 @@ namespace Excel.Web.Controllers
         }
 
         // POST: Athletes/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [System.Web.Mvc.HttpPost, System.Web.Mvc.ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {

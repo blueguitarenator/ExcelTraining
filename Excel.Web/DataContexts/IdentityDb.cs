@@ -38,5 +38,7 @@ namespace Excel.Web.DataContexts
         }
 
         public System.Data.Entity.DbSet<Excel.Entities.HearAboutUs> HearAboutUs { get; set; }
+
+        public System.Data.Entity.DbSet<Excel.Entities.InjuryNote> InjuryNotes { get; set; }
     }
 }

@@ -47,8 +47,11 @@ namespace Excel.Entities
         [Display(Name = "How you heard")]
         public virtual HearAboutUs HearAboutUs { get; set; }
 
+        public virtual ICollection<InjuryNote> InjuryNotes { get; set; }
+
         public DateTime SelectedDate { get; set; }
         
+        [Display(Name = "Name")]
         public string FullName
         {
             get {  return FirstName + " " +  LastName ;}
