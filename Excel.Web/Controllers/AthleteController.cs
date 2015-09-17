@@ -29,11 +29,34 @@ namespace Excel.Web.Controllers
         }
 
         // GET: Athletes
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string searchString)
         {
             AthleteViewModel model = new AthleteViewModel();
-            model.Athletes = athleteRepository.GetAllAthletes().ToList();
-            
+            var allAthletes = athleteRepository.GetAllAthletes().ToList();
+            ViewBag.NameSortParm = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.TotalSortParm = sortOrder == "Total" ? "total_desc" : "Total";
+            var athletes = from a in allAthletes
+                           select a;
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                athletes = athletes.Where(s => s.LastName.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    athletes = athletes.OrderByDescending(s => s.LastName);
+                    break;
+                case "Total":
+                    athletes = athletes.OrderBy(s => s.SessionAthletes.Count);
+                    break;
+                case "total_desc":
+                    athletes = athletes.OrderByDescending(s => s.SessionAthletes.Count);
+                    break;
+                default:
+                    athletes = athletes.OrderBy(s => s.LastName);
+                    break;
+            }
+            model.Athletes = athletes.ToList();
             return View(model);
         }
 
