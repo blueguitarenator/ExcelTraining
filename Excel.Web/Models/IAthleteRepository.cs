@@ -19,6 +19,7 @@ namespace Excel.Web.Models
         void RemoveAdmin(Athlete athlete);
         void ConfirmAthlete(int sessionId, int athleteId);
         void AddNoteToAthlete(InjuryNote injuryNote);
+        void UpdateNoteForAthlete(InjuryNote injuryNote);
 
         //Athlete - readers
         Athlete GetAthleteById(int id);

@@ -126,8 +126,8 @@ namespace Excel.Web.Controllers
             {
                 injuryNote.Athlete = athleteRepository.GetAthleteById((int)TempData["AthleteInjuredId"]);
                 injuryNote.NoteDate = DateTime.Now.Date;
-                athleteRepository.AddNoteToAthlete(injuryNote);
-                return RedirectToAction("InjuryIndex");
+                athleteRepository.UpdateNoteForAthlete(injuryNote);
+                return RedirectToAction("InjuryIndex", new {athleteId = injuryNote.Athlete.Id});
             }
 
             return View(injuryNote);

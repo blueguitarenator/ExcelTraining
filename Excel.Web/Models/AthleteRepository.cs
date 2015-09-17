@@ -8,6 +8,7 @@ using Microsoft.AspNet.Identity;
 using System.Web.Mvc;
 using System.Security.Principal;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Excel.Web.Models
@@ -65,6 +66,13 @@ namespace Excel.Web.Models
             athlete.InjuryNotes.Add(injuryNote);
             db.SaveChanges();
         }
+
+        public void UpdateNoteForAthlete(InjuryNote injuryNote)
+        {
+            db.InjuryNotes.AddOrUpdate(injuryNote);
+            db.SaveChanges();
+        }
+
 
         public InjuryNote GetInjuryNote(int id)
         {

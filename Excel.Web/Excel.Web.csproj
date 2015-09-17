@@ -439,11 +439,6 @@
     <Content Include="Views\HearAboutUs\Details.cshtml" />
     <Content Include="Views\HearAboutUs\Edit.cshtml" />
     <Content Include="Views\HearAboutUs\Index.cshtml" />
-    <Content Include="Views\InjuryNotes\Create.cshtml" />
-    <Content Include="Views\InjuryNotes\Delete.cshtml" />
-    <Content Include="Views\InjuryNotes\Details.cshtml" />
-    <Content Include="Views\InjuryNotes\Edit.cshtml" />
-    <Content Include="Views\InjuryNotes\Index.cshtml" />
     <Content Include="Views\Athlete\InjuryIndex.cshtml" />
     <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
     <Content Include="Views\Manage\ChangePassword.cshtml" />
