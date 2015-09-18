@@ -68,13 +68,16 @@ namespace Excel.Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             TempData["AthleteInjuredId"] = athleteId;
+            TempData.Keep();
+            ViewBag.AthleteFullName = athleteRepository.GetAthleteById(athleteId.Value).FullName;
             return View(athleteRepository.GetAthleteNotes(athleteId.Value).ToList());
         }
 
         // GET: Athletes/Create
         public ActionResult InjuryCreate()
         {
-            
+            ViewBag.AthleteFullName = athleteRepository.GetAthleteById((int)TempData["AthleteInjuredId"]).FullName;
+            TempData.Keep();
             return View();
         }
 

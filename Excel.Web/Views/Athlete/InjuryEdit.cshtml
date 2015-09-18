@@ -4,14 +4,14 @@
     ViewBag.Title = "InjuryNote";
 }
 
-<h2>Edit</h2>
+<h2>Edit Injury/Notes</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>Injury Note for - @Model.Athlete.FullName</h4>
+        <h4>@Model.Athlete.FullName</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)

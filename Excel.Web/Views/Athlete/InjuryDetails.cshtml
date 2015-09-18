@@ -4,10 +4,10 @@
     ViewBag.Title = "InjuryDetails";
 }
 
-<h2>InjuryDetails</h2>
+<h2>Injury/Notes</h2>
 
 <div>
-    <h4>Injury Note For - @Model.Athlete.FullName</h4>
+    <h4>@Model.Athlete.FullName</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -15,7 +15,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.NoteDate)
+            @Html.Raw(Model.NoteDate.ToString("yyyy-MM-dd"))
         </dd>
 
         <dt>

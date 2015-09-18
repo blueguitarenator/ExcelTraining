@@ -243,7 +243,6 @@
     <Compile Include="Models\DashboardModel.cs" />
     <Compile Include="Models\IAthleteRepository.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\InjuryViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MotdViewModel.cs" />
     <Compile Include="Models\QuickHelper.cs" />
@@ -447,6 +446,7 @@
     <Content Include="Views\Manage\ManageLogins.cshtml" />
     <Content Include="Views\Athlete\InjuryDetails.cshtml" />
     <Content Include="Views\Athlete\InjuryEdit.cshtml" />
+    <Content Include="Views\InjuryNotes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

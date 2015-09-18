@@ -5,25 +5,21 @@
     ViewBag.Title = "Injury";
 }
 
-<h2>Injury/Notes - For @ViewBag.AthleteFullName</h2>
-
-<p>
-    @Html.ActionLink("Create New", "InjuryCreate")
-</p>
+<h2>Injury/Notes - All</h2>
 
 
 <table class="table">
     <tr>
-        <th>
+        <th style="width: 100px;">
             @Html.DisplayNameFor(model => model.NoteDate)
         </th>
-        <th>
+        <th style="width: 200px;">
             @Html.DisplayNameFor(model => model.Athlete.FullName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Message)
         </th>
-        <th></th>
+        <th style="width: 100px;"></th>
     </tr>
 
     @foreach (var item in Model)
@@ -39,9 +35,8 @@
                 @Html.DisplayFor(modelItem => item.Message)
             </td>
             <td>
-                @Html.ActionLink("Edit", "InjuryEdit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "InjuryDetails", new {id = item.Id}) |
-                @Html.ActionLink("Back To Athlete", "Details", new {id = item.Athlete.Id})
+                
+                @Html.ActionLink("To Athlete", "Details", new {controller = "Athlete", id = item.Athlete.Id})
             </td>
         </tr>
     }
