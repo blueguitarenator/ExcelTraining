@@ -22,9 +22,8 @@ namespace Excel.Web.Tests.Controllers
             var athlete = new Athlete() { 
                 Id = 1, 
                 FirstName = "Rich", 
-                LastName = "Johnson", 
-                SelectedDate = saveNow, 
-                SelectedLocationId = 1 
+                LastName = "Johnson",
+                EnrollmentDate = saveNow
             };
             var athletes = new List<Athlete>(){athlete};
             var sessions = CreateSessions(saveNow, athletes);
@@ -51,7 +50,7 @@ namespace Excel.Web.Tests.Controllers
             var model = result.ViewData.Model as SessionModel;
             Assert.IsInstanceOfType(result.ViewData.Model, typeof(SessionModel));
             Assert.AreEqual(saveNow, model.SessionDateTime);
-            Assert.AreEqual(1, model.SelectedLocationId);
+            //Assert.AreEqual(1, model.SelectedLocationId);
             Assert.AreEqual(2, model.LocationSelectList.Count());
             //Assert.AreEqual(16, model.SixAmPersonalTraining.Count());
             //Assert.AreEqual("Rich", model.SixAmPersonalTraining[0].FirstName);

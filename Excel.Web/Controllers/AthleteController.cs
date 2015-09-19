@@ -35,6 +35,7 @@ namespace Excel.Web.Controllers
             var allAthletes = athleteRepository.GetAllAthletes().ToList();
             ViewBag.NameSortParm = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.TotalSortParm = sortOrder == "Total" ? "total_desc" : "Total";
+            ViewBag.EnrollSortParm = sortOrder == "Enroll" ? "enroll_desc" : "Enroll";
             var athletes = from a in allAthletes
                            select a;
             if (!string.IsNullOrEmpty(searchString))
@@ -51,6 +52,12 @@ namespace Excel.Web.Controllers
                     break;
                 case "total_desc":
                     athletes = athletes.OrderByDescending(s => s.SessionAthletes.Count);
+                    break;
+                case "Enroll":
+                    athletes = athletes.OrderBy(s => s.EnrollmentDate);
+                    break;
+                case "enroll_desc":
+                    athletes = athletes.OrderByDescending(s => s.EnrollmentDate);
                     break;
                 default:
                     athletes = athletes.OrderBy(s => s.LastName);
@@ -171,7 +178,7 @@ namespace Excel.Web.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.Locations = new SelectList(athleteRepository.GetLocations(), "Id", "Name", athlete.SelectedLocationId);
+            ViewBag.Locations = new SelectList(athleteRepository.GetLocations(), "Id", "Name", athlete.LocationId);
             var heardId = athlete.HearAboutUs != null ? athlete.HearAboutUsId : 0;
             ViewBag.HearAboutUs = new SelectList(athleteRepository.GetHearAboutUs(), "Id", "Name", heardId);
             return View(athlete);
@@ -182,7 +189,7 @@ namespace Excel.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [System.Web.Mvc.HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,Address,City,State,Zip,AthleteType,UserType,LocationId,HearAboutUsId,SelectedLocationId,SelectedDate")] Athlete athlete)
+        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,Address,City,State,Zip,AthleteType,UserType,LocationId,HearAboutUsId,SelectedDate")] Athlete athlete)
         {
             if (ModelState.IsValid)
             {

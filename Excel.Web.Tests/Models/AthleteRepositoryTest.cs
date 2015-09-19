@@ -102,13 +102,13 @@ namespace Excel.Web.Tests.Models
             DateTime aug19 = new DateTime(2015, 08, 19);
             var athletes = new List<Athlete> 
             { 
-                new Athlete { Id = 1, FirstName = "Kenny", LastName = "Ball", Address = "444 Primrose", City = "Dardenne", State = "MO", Zip = "63368", UserType = UserTypes.Trainer, Location = dardenne, SelectedDate = aug18 }, 
-                new Athlete { Id = 2, FirstName = "Rich", LastName = "Schwepker", Address = "444 Primrose", City = "Dardenne", State = "MO", Zip = "63368", UserType = UserTypes.Trainer, Location = dardenne, SelectedDate = aug18 }, 
-                new Athlete { Id = 3, FirstName = "Erin", LastName = "Sitz", Address = "444 Primrose", City = "Dardenne", State = "MO", Zip = "63368", UserType = UserTypes.Trainer, Location = dardenne, SelectedDate = aug18 }, 
-                new Athlete { Id = 111, FirstName = "Paul", LastName = "McCartney", Address = "444 Primrose", City = "Dardenne", State = "MO", Zip = "63368", UserType = UserTypes.Athlete, Location = dardenne, SelectedDate = aug18 }, 
-                new Athlete { Id = 222, FirstName = "John", LastName = "Lennon", Address = "444 Primrose", City = "Dardenne", State = "MO", Zip = "63368", UserType = UserTypes.Athlete, Location = dardenne, SelectedDate = aug18 }, 
-                new Athlete { Id = 333, FirstName = "George", LastName = "Harrison", Address = "444 Primrose", City = "Dardenne", State = "MO", Zip = "63368", UserType = UserTypes.Athlete, Location = dardenne, SelectedDate = aug18 }, 
-                new Athlete { Id = 444, FirstName = "Ringo", LastName = "Starr", Address = "444 Primrose", City = "Dardenne", State = "MO", Zip = "63368", UserType = UserTypes.Athlete, Location = dardenne, SelectedDate = aug18 }, 
+                new Athlete { Id = 1, FirstName = "Kenny", LastName = "Ball", Address = "444 Primrose", City = "Dardenne", State = "MO", Zip = "63368", UserType = UserTypes.Trainer, Location = dardenne, EnrollmentDate = aug18 }, 
+                new Athlete { Id = 2, FirstName = "Rich", LastName = "Schwepker", Address = "444 Primrose", City = "Dardenne", State = "MO", Zip = "63368", UserType = UserTypes.Trainer, Location = dardenne, EnrollmentDate = aug18 }, 
+                new Athlete { Id = 3, FirstName = "Erin", LastName = "Sitz", Address = "444 Primrose", City = "Dardenne", State = "MO", Zip = "63368", UserType = UserTypes.Trainer, Location = dardenne, EnrollmentDate = aug18 }, 
+                new Athlete { Id = 111, FirstName = "Paul", LastName = "McCartney", Address = "444 Primrose", City = "Dardenne", State = "MO", Zip = "63368", UserType = UserTypes.Athlete, Location = dardenne, EnrollmentDate = aug18 }, 
+                new Athlete { Id = 222, FirstName = "John", LastName = "Lennon", Address = "444 Primrose", City = "Dardenne", State = "MO", Zip = "63368", UserType = UserTypes.Athlete, Location = dardenne, EnrollmentDate = aug18 }, 
+                new Athlete { Id = 333, FirstName = "George", LastName = "Harrison", Address = "444 Primrose", City = "Dardenne", State = "MO", Zip = "63368", UserType = UserTypes.Athlete, Location = dardenne, EnrollmentDate = aug18 }, 
+                new Athlete { Id = 444, FirstName = "Ringo", LastName = "Starr", Address = "444 Primrose", City = "Dardenne", State = "MO", Zip = "63368", UserType = UserTypes.Athlete, Location = dardenne, EnrollmentDate = aug18 }, 
             }.AsQueryable();
             paul = athletes.ElementAt(3);
             john = athletes.ElementAt(4);

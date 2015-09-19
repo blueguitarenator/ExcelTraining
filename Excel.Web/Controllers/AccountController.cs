@@ -112,12 +112,9 @@ namespace Excel.Web.Controllers
 
         private void UpdateUserDefaults()
         {
-            string userId = GetUserId();
-            var athlete = athleteRepository.GetAthleteByUserId(userId);
-            athlete.SelectedLocationId = athlete.LocationId;
-            athlete.SelectedDate = DateTime.Now.Date;
-            athleteRepository.SaveChanges();
+            
         }
+       
 
         //
         // GET: /Account/VerifyCode
@@ -198,8 +195,8 @@ namespace Excel.Web.Controllers
                     AthleteType = model.AthleteType, 
                     UserType = model.UserType,
                     LocationId = model.LocationId,
-                    SelectedLocationId = model.LocationId,
-                    SelectedDate = DateTime.Now.Date,
+//                    SelectedLocationId = model.LocationId,
+                    EnrollmentDate = DateTime.Now.Date,
                     HearAboutUsId = model.HearAboutUsId
                 };
                 

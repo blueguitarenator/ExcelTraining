@@ -41,7 +41,7 @@ namespace Excel.Entities
 
         public virtual int LocationId { get; set; }
         public virtual Location Location { get; set; }
-        public int SelectedLocationId { get; set; }
+        //public int SelectedLocationId { get; set; }
 
         public virtual int? HearAboutUsId { get; set; }
         [Display(Name = "How you heard")]
@@ -49,7 +49,7 @@ namespace Excel.Entities
 
         public virtual ICollection<InjuryNote> InjuryNotes { get; set; }
 
-        public DateTime SelectedDate { get; set; }
+        public DateTime EnrollmentDate { get; set; }
         
         [Display(Name = "Name")]
         public string FullName
