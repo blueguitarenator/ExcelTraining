@@ -92,7 +92,7 @@ namespace Excel.Web.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToAction("DoWork", new { returnUrlPath = returnUrl });
+                    return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -102,17 +102,6 @@ namespace Excel.Web.Controllers
                     ModelState.AddModelError("", "Invalid login attempt.");
                     return View(model);
             }
-        }
-
-        public async Task<ActionResult> DoWork(string returnUrl)
-        {
-            await Task.Run(() => UpdateUserDefaults());
-            return RedirectToLocal(returnUrl);
-        }
-
-        private void UpdateUserDefaults()
-        {
-            
         }
        
 

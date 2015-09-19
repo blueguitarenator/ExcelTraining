@@ -41,7 +41,6 @@ namespace Excel.Entities
 
         public virtual int LocationId { get; set; }
         public virtual Location Location { get; set; }
-        //public int SelectedLocationId { get; set; }
 
         public virtual int? HearAboutUsId { get; set; }
         [Display(Name = "How you heard")]
