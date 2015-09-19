@@ -29,6 +29,9 @@
             @Html.ActionLink("Total Sessions", "Index", new {sortOrder = ViewBag.TotalSortParm})
         </th>
         <th>
+            @Html.ActionLink("Enrollment Date", "Index", new { sortOrder = ViewBag.EnrollSortParm })
+        </th>
+        <th>
             @Html.DisplayName("Location")
         </th>
 
@@ -48,6 +51,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.SessionAthletes.Count)
+        </td>
+        <td>
+            @Html.Raw(item.EnrollmentDate.ToString("yyyy-MM-dd"))
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Location.Name)

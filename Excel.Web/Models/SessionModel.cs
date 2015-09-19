@@ -15,7 +15,6 @@ namespace Excel.Web.Models
         public DateTime SessionDateTime { get; set; }
 
         public SelectList LocationSelectList { get; set; }
-        public int SelectedLocationId { get; set; }
         public AthleteTypes AthleteType{ get; set; }
 
         private SessionsWithAthletes allAthletes;

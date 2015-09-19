@@ -38,8 +38,16 @@ namespace Excel.Web.Controllers
             SessionModel sessionModel = new SessionModel();
 
             var athlete = GetThisAthlete();
-            sessionModel.SessionDateTime = athlete.SelectedDate;
-            sessionModel.SelectedLocationId = athlete.SelectedLocationId;
+            if (Session["SelectedDate"] == null)
+            {
+                Session["SelectedDate"] = DateTime.Now.Date;
+            }
+            sessionModel.SessionDateTime = (DateTime)Session["SelectedDate"];
+
+            if (Session["SelectedLocationId"] == null)
+            {
+                Session["SelectedLocationId"] = athlete.LocationId;
+            }
 
             SetAthleteType(sessionModel);
 
@@ -51,7 +59,7 @@ namespace Excel.Web.Controllers
 
         private void SetAthleteType(SessionModel sessionModel)
         {
-            if (TempData["AthleteType"] != null && TempData["AthleteType"].Equals((int) AthleteTypes.SportsTraining))
+            if (Session["AthleteType"] != null && Session["AthleteType"].Equals((int) AthleteTypes.SportsTraining))
             {
                 sessionModel.AthleteType = AthleteTypes.SportsTraining;
             }
@@ -64,46 +72,39 @@ namespace Excel.Web.Controllers
 
         private void LoadLocationSelectList(SessionModel sessionModel)
         {
-            sessionModel.LocationSelectList = new SelectList(athleteRepository.GetLocations(), "Id", "Name", sessionModel.SelectedLocationId);
+            sessionModel.LocationSelectList = new SelectList(athleteRepository.GetLocations(), "Id", "Name", Session["SelectedLocationId"]);
         }
 
         public ActionResult ChangeDate(DateTime dt)
         {
-            var athlete = GetThisAthlete();
-            athlete.SelectedDate = dt;
+            Session["SelectedDate"] = dt;
             athleteRepository.SaveChanges();
             return RedirectToAction("Index");
         }
 
         public ActionResult Next()
         {
-            var athlete = GetThisAthlete();
-            athlete.SelectedDate = athlete.SelectedDate.AddDays(1);
-
-            athleteRepository.SaveChanges();
+            DateTime datetime = (DateTime)Session["SelectedDate"];
+            Session["SelectedDate"] = datetime.AddDays(1);
             return RedirectToAction("Index");
         }
 
         public ActionResult Previous()
         {
-            var athlete = GetThisAthlete();
-            athlete.SelectedDate = athlete.SelectedDate.AddDays(-1);
-
-            athleteRepository.SaveChanges();
+            DateTime datetime = (DateTime)Session["SelectedDate"];
+            Session["SelectedDate"] = datetime.AddDays(-1);
             return RedirectToAction("Index");
         }
 
         public ActionResult ChangeLocation(int locId)
         {
-            var athlete = GetThisAthlete();
-            athlete.SelectedLocationId = locId;
-            athleteRepository.SaveChanges();
+            Session["SelectedLocationId"] = locId;
             return RedirectToAction("Index");
         }
 
         public ActionResult ChangeAthleteType(int athleteTypeId)
         {
-            TempData["AthleteType"] = athleteTypeId;
+            Session["AthleteType"] = athleteTypeId;
             return RedirectToAction("Index");
         }
 
@@ -146,7 +147,7 @@ namespace Excel.Web.Controllers
             {
                 athleteData.Athletes.Add("open");
             }
-            GetSessionListNames(athleteData, hour, model.SessionDateTime, model.SelectedLocationId, model.AthleteType);
+            GetSessionListNames(athleteData, hour, model.SessionDateTime, (int)Session["SelectedLocationId"], model.AthleteType);
             return athleteData;
         }
 
@@ -154,27 +155,24 @@ namespace Excel.Web.Controllers
         {
             Session session = GetOrCreateSession(hour, dt, locationId, athleteType);
 
-            //if (session.Athletes != null)
-            //{
-                if (athleteType == AthleteTypes.PersonalTraining)
+            if (athleteType == AthleteTypes.PersonalTraining)
+            {
+                IEnumerable<Athlete> personal = athleteRepository.GetPersonalTrainingAthletes(session.Id, locationId);
+                var enumerable = personal as IList<Athlete> ?? personal.ToList();
+                for (int i = 0; i < enumerable.Count(); i++)
                 {
-                    IEnumerable<Athlete> personal = athleteRepository.GetPersonalTrainingAthletes(session.Id, locationId);
-                    var enumerable = personal as IList<Athlete> ?? personal.ToList();
-                    for (int i = 0; i < enumerable.Count(); i++)
-                    {
-                        athleteData.Athletes[i] = enumerable.ElementAt(i).FirstName + " " + enumerable.ElementAt(i).LastName;
-                    }
+                    athleteData.Athletes[i] = enumerable.ElementAt(i).FirstName + " " + enumerable.ElementAt(i).LastName;
                 }
-                else
+            }
+            else
+            {
+                IEnumerable<Athlete> sports = athleteRepository.GetSportsTrainingAthletes(session.Id, locationId);
+                var enumerable = sports as IList<Athlete> ?? sports.ToList();
+                for (int i = 0; i < enumerable.Count(); i++)
                 {
-                    IEnumerable<Athlete> sports = athleteRepository.GetSportsTrainingAthletes(session.Id, locationId);
-                    var enumerable = sports as IList<Athlete> ?? sports.ToList();
-                    for (int i = 0; i < enumerable.Count(); i++)
-                    {
-                        athleteData.Athletes[i] = enumerable.ElementAt(i).FirstName + " " + enumerable.ElementAt(i).LastName;
-                    }
+                    athleteData.Athletes[i] = enumerable.ElementAt(i).FirstName + " " + enumerable.ElementAt(i).LastName;
                 }
-            //}
+            }
         }
 
         private Session GetOrCreateSession(int hour, DateTime dt, int locationId, AthleteTypes athleteType)
@@ -189,10 +187,10 @@ namespace Excel.Web.Controllers
         }
 
         // GET: Sessions/Add/5
-        public PartialViewResult _OneSession(DateTime dt, int hour, int selectedLocationId)
+        public PartialViewResult _OneSession(DateTime dt, int hour)
         {
             Athlete athlete = GetThisAthlete();
-            Session session = athleteRepository.GetSession(hour, dt, selectedLocationId, athlete.AthleteType);
+            Session session = athleteRepository.GetSession(hour, dt, (int)Session["SelectedLocationId"], athlete.AthleteType);
             athleteRepository.AddAthleteToSession(session.Id, athlete.Id);
 
             AthleteData athleteData = new AthleteData
@@ -206,7 +204,7 @@ namespace Excel.Web.Controllers
             {
                 athleteData.Athletes.Add("open");
             }
-            GetSessionListNames(athleteData, hour, dt, selectedLocationId, athlete.AthleteType);
+            GetSessionListNames(athleteData, hour, dt, (int)Session["SelectedLocationId"], athlete.AthleteType);
 
             return PartialView(athleteData);
         }

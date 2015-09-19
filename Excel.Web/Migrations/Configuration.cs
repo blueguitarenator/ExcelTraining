@@ -32,7 +32,7 @@ namespace Excel.Web.Migrations
                 var roleManager = new RoleManager<IdentityRole>(roleStore);
                 var store = new UserStore<ApplicationUser>(context);
                 var manager = new UserManager<ApplicationUser>(store);
-                var rich = new Athlete { FirstName = "Rich", LastName = "Schwepker", Address = "123 Main Street", City = "OFallon", State = "MO", Zip = "63366", AthleteType = AthleteTypes.PersonalTraining, UserType = UserTypes.Trainer, Location = dardenne, SelectedDate = DateTime.Now.Date };
+                var rich = new Athlete { FirstName = "Rich", LastName = "Schwepker", Address = "123 Main Street", City = "OFallon", State = "MO", Zip = "63366", AthleteType = AthleteTypes.PersonalTraining, UserType = UserTypes.Trainer, Location = dardenne, EnrollmentDate = DateTime.Now.Date };
                 var user = new ApplicationUser { Email = "rich@msn.com", UserName = "rich@msn.com", Athlete = rich };
 
                 manager.Create(user, "123434");
@@ -47,24 +47,24 @@ namespace Excel.Web.Migrations
         private void moreSeed(UserManager<ApplicationUser> manager, IdentityDb context, Location midrivers, Location dardenne)
         {
             DateTime saveNow = DateTime.Now.Date;
-            Athlete kenny = new Athlete { FirstName = "Kenny", LastName = "Ball", Address = "444 Primrose", City = "Dardenne", State = "MO", Zip = "63368", UserType = UserTypes.Trainer, Location = dardenne, SelectedDate = saveNow };
+            Athlete kenny = new Athlete { FirstName = "Kenny", LastName = "Ball", Address = "444 Primrose", City = "Dardenne", State = "MO", Zip = "63368", UserType = UserTypes.Trainer, Location = dardenne, EnrollmentDate = saveNow };
             ApplicationUser k = new ApplicationUser { Email = "kenny@msn.com", UserName = "kenny@msn.com", Athlete = kenny };
             manager.Create(k, "123434");
             manager.AddToRole(k.Id, "admin");
 
-            Athlete george = new Athlete { FirstName = "George", LastName = "Harrison", Address = "123 Main", City = "Cottleville", State = "MO", Zip = "63367", AthleteType = AthleteTypes.PersonalTraining, UserType = UserTypes.Athlete, Location = dardenne, SelectedDate = saveNow };
+            Athlete george = new Athlete { FirstName = "George", LastName = "Harrison", Address = "123 Main", City = "Cottleville", State = "MO", Zip = "63367", AthleteType = AthleteTypes.PersonalTraining, UserType = UserTypes.Athlete, Location = dardenne, EnrollmentDate = saveNow };
             ApplicationUser g = new ApplicationUser { Email = "george@msn.com", UserName = "george@msn.com", Athlete = george };
             manager.Create(g, "123434");
 
-            Athlete john = new Athlete { FirstName = "John", LastName = "Lennon", Address = "123 Main", City = "Cottleville", State = "MO", Zip = "63367", AthleteType = AthleteTypes.PersonalTraining, UserType = UserTypes.Athlete, Location = midrivers, SelectedDate = saveNow };
+            Athlete john = new Athlete { FirstName = "John", LastName = "Lennon", Address = "123 Main", City = "Cottleville", State = "MO", Zip = "63367", AthleteType = AthleteTypes.PersonalTraining, UserType = UserTypes.Athlete, Location = midrivers, EnrollmentDate = saveNow };
             ApplicationUser j = new ApplicationUser { Email = "john@msn.com", UserName = "john@msn.com", Athlete = john };
             manager.Create(j, "123434");
 
-            Athlete paul = new Athlete { FirstName = "Paul", LastName = "McCartney", Address = "123 Main", City = "Cottleville", State = "MO", Zip = "63367", AthleteType = AthleteTypes.PersonalTraining, UserType = UserTypes.Athlete, Location = dardenne, SelectedDate = saveNow };
+            Athlete paul = new Athlete { FirstName = "Paul", LastName = "McCartney", Address = "123 Main", City = "Cottleville", State = "MO", Zip = "63367", AthleteType = AthleteTypes.PersonalTraining, UserType = UserTypes.Athlete, Location = dardenne, EnrollmentDate = saveNow };
             ApplicationUser p = new ApplicationUser { Email = "paul@msn.com", UserName = "paul@msn.com", Athlete = paul };
             manager.Create(p, "123434");
 
-            Athlete ringo = new Athlete { FirstName = "Ringo", LastName = "Starr", Address = "123 Main", City = "Cottleville", State = "MO", Zip = "63367", AthleteType = AthleteTypes.PersonalTraining, UserType = UserTypes.Athlete, Location = dardenne, SelectedDate = saveNow };
+            Athlete ringo = new Athlete { FirstName = "Ringo", LastName = "Starr", Address = "123 Main", City = "Cottleville", State = "MO", Zip = "63367", AthleteType = AthleteTypes.PersonalTraining, UserType = UserTypes.Athlete, Location = dardenne, EnrollmentDate = saveNow };
             ApplicationUser r = new ApplicationUser { Email = "ringo@msn.com", UserName = "ringo@msn.com", Athlete = ringo };
             manager.Create(r, "123434");
 

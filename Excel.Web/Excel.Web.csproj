@@ -235,6 +235,14 @@
     <Compile Include="Migrations\201509071530147_InjuryNote.Designer.cs">
       <DependentUpon>201509071530147_InjuryNote.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201509191221109_EnrollmentDate.cs" />
+    <Compile Include="Migrations\201509191221109_EnrollmentDate.Designer.cs">
+      <DependentUpon>201509191221109_EnrollmentDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509191406148_RemoveSelectedLocation.cs" />
+    <Compile Include="Migrations\201509191406148_RemoveSelectedLocation.Designer.cs">
+      <DependentUpon>201509191406148_RemoveSelectedLocation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountingViewModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -479,6 +487,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201509071530147_InjuryNote.resx">
       <DependentUpon>201509071530147_InjuryNote.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509191221109_EnrollmentDate.resx">
+      <DependentUpon>201509191221109_EnrollmentDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509191406148_RemoveSelectedLocation.resx">
+      <DependentUpon>201509191406148_RemoveSelectedLocation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
