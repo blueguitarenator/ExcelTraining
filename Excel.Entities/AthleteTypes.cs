@@ -19,7 +19,8 @@ namespace Excel.Entities
     public enum UserTypes
     {
         Trainer,
-        Athlete
+        Athlete,
+        Trial
     }
 
 }

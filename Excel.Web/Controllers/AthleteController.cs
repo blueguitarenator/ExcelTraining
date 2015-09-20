@@ -29,9 +29,15 @@ namespace Excel.Web.Controllers
         }
 
         // GET: Athletes
-        public ActionResult Index(string sortOrder, string searchString)
+        public ActionResult Index(string sortOrder, string searchString, string trials)
         {
             AthleteViewModel model = new AthleteViewModel();
+            if (!string.IsNullOrEmpty(trials))
+            {
+                model.Athletes = athleteRepository.GetAllTrials().ToList();
+                return View(model);
+            }
+
             var allAthletes = athleteRepository.GetAllAthletes().ToList();
             ViewBag.NameSortParm = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.TotalSortParm = sortOrder == "Total" ? "total_desc" : "Total";
@@ -65,6 +71,11 @@ namespace Excel.Web.Controllers
             }
             model.Athletes = athletes.ToList();
             return View(model);
+        }
+
+        public ActionResult Trials()
+        {
+            return RedirectToAction("Index", new {trials = "yes"});
         }
 
         // GET: Injury Notes

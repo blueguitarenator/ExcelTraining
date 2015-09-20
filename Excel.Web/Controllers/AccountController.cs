@@ -148,12 +148,31 @@ namespace Excel.Web.Controllers
             }
         }
 
-        //
         // GET: /Account/Register
-        [Authorize(Roles="admin")]
+        [Authorize(Roles = "admin")]
         public ActionResult Register()
         {
             GetLocationSelectList();
+            return View();
+        }
+
+        // GET: /Account/Trial
+        [AllowAnonymous]
+        public ActionResult Trial(bool isSports)
+        {
+           
+            Session["IsSportsTrial"] = isSports;
+            GetLocationSelectList();
+            if (isSports)
+            {
+                ViewBag.AgeBlurb = "(You must be at least 9 years of age to take advantage of our Sports Fitness) ";
+                ViewBag.Schedule = new SelectList(athleteRepository.GetDardenneSchedule(AthleteTypes.SportsTraining), "Id", "HourDisplay");
+            }
+            else
+            {
+                ViewBag.AgeBlurb = "(You must be at least 18 years of age to take advantage of our Personal Training) ";
+                ViewBag.Schedule = new SelectList(athleteRepository.GetDardenneSchedule(AthleteTypes.PersonalTraining), "Id", "HourDisplay");
+            }
             return View();
         }
 
@@ -161,7 +180,7 @@ namespace Excel.Web.Controllers
         {
             ViewBag.Locations = new SelectList(athleteRepository.GetLocations(), "Id", "Name");
             ViewBag.HearAboutUs = new SelectList(athleteRepository.GetHearAboutUs(), "Id", "Name");
-
+            ViewBag.CellPhoneCarriers = new SelectList(athleteRepository.GetCellPhoneCarriers(), "Id", "Name");
         }
 
         //
@@ -173,24 +192,24 @@ namespace Excel.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var athlete = new Athlete 
-                { 
-                    FirstName = model.FirstName, 
-                    LastName = model.LastName, 
-                    Address = model.Address, 
-                    City = model.City, 
-                    State = model.State, 
-                    Zip = model.Zip, 
-                    AthleteType = model.AthleteType, 
+                var athlete = new Athlete
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Address = model.Address,
+                    City = model.City,
+                    State = model.State,
+                    Zip = model.Zip,
+                    AthleteType = model.AthleteType,
                     UserType = model.UserType,
                     LocationId = model.LocationId,
-//                    SelectedLocationId = model.LocationId,
+                    //                    SelectedLocationId = model.LocationId,
                     EnrollmentDate = DateTime.Now.Date,
                     HearAboutUsId = model.HearAboutUsId
                 };
-                
+
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Athlete = athlete };
-                
+
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -201,11 +220,72 @@ namespace Excel.Web.Controllers
                     return RedirectToAction("Index", "Athlete");
                 }
                 AddErrors(result);
-                
+
             }
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        // POST: /Account/Trial
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Trial(TrialAthleteViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                DateTime birthDate = model.BirthDate;
+                var athlete = new Athlete
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Address = "TRIAL",
+                    City = "TRIAL",
+                    State = "TRIAL",
+                    Zip = "TRIAL",
+                    AthleteType = ((bool)Session["IsSportsTrial"]) ? AthleteTypes.SportsTraining : AthleteTypes.PersonalTraining,
+                    UserType = UserTypes.Trial,
+                    LocationId = model.LocationId,
+                    EnrollmentDate = DateTime.Now.Date,
+                    HearAboutUsId = model.HearAboutUsId,
+                    BirthDate = birthDate
+                };
+                athleteRepository.CreateNewAthlete(athlete);
+
+                var session = GetTrialSession(model);
+                athleteRepository.AddAthleteToSession(session.Id, athlete.Id);
+            }
+
+            return RedirectToAction("Index", "Athlete");
+        }
+
+        private Session GetTrialSession(TrialAthleteViewModel model)
+        {
+            var schedule = athleteRepository.GetScheduleById(model.ScheduleId);
+            Session session = null;
+            if ((bool) Session["IsSportsTrial"])
+            {
+                session = GetOrCreateSession(schedule.Hour, model.SessionDateTime, model.LocationId,
+                    AthleteTypes.SportsTraining);
+            }
+            else
+            {
+                session = GetOrCreateSession(schedule.Hour, model.SessionDateTime, model.LocationId,
+                    AthleteTypes.PersonalTraining);
+            }
+            return session;
+        }
+
+        private Session GetOrCreateSession(int hour, DateTime dt, int locationId, AthleteTypes athleteType)
+        {
+            Session session = athleteRepository.GetSession(hour, dt.Date, locationId, athleteType);
+            if (session == null)
+            {
+                athleteRepository.Write_CreateSessions(dt, locationId);
+                session = athleteRepository.GetSession(hour, dt, locationId, athleteType);
+            }
+            return session;
         }
 
         //

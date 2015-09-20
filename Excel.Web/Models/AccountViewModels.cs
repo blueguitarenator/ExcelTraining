@@ -1,4 +1,5 @@
-﻿using Excel.Entities;
+﻿using System;
+using Excel.Entities;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -122,6 +123,51 @@ namespace Excel.Web.Models
         public int HearAboutUsId { get; set; }
 
     }
+
+    public class TrialAthleteViewModel
+    {
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Required]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
+        [Required]
+        [Display(Name = "Birth Date")]
+        public DateTime BirthDate { get; set; }
+
+        [Required]
+        [Display(Name = "Cell Phone")]
+        public String CellPhone { get; set; }
+
+        [Required]
+        [Display(Name = "Cell Phone Carrier")]
+        public int CellPhoneCarrierId { get; set; }
+
+        [Required]
+        [Display(Name = "Location")]
+        public int LocationId { get; set; }
+
+        [Required]
+        [Display(Name = "HearAboutUs")]
+        public int HearAboutUsId { get; set; }
+
+        public IEnumerable<Schedule> Schedules { get; set; }
+
+        [Required]
+        public int ScheduleId { get; set; }
+
+        [Required]
+        public DateTime SessionDateTime { get; set; }
+    }
+
 
     public class ResetPasswordViewModel
     {
