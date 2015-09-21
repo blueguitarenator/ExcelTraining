@@ -466,6 +466,7 @@
     <Content Include="Views\CellPhoneCarrier\Details.cshtml" />
     <Content Include="Views\CellPhoneCarrier\Edit.cshtml" />
     <Content Include="Views\CellPhoneCarrier\Index.cshtml" />
+    <Content Include="Views\Athlete\RegisterTrial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

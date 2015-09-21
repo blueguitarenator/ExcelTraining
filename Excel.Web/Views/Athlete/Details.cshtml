@@ -1,4 +1,5 @@
-﻿@model Excel.Entities.Athlete
+﻿@using Excel.Entities
+@model Excel.Entities.Athlete
 
 @{
     ViewBag.Title = "Details";
@@ -6,6 +7,11 @@
 
 <h2>Details</h2>
 @Html.HiddenFor(model => model.Id)
+
+@if (Model.UserType == UserTypes.Trial)
+{
+    @Html.ActionLink("Register", "RegisterTrial", new {athleteId = Model.Id});
+}
 
 <div>
     <h4>Athlete</h4>

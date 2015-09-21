@@ -203,7 +203,6 @@ namespace Excel.Web.Controllers
                     AthleteType = model.AthleteType,
                     UserType = model.UserType,
                     LocationId = model.LocationId,
-                    //                    SelectedLocationId = model.LocationId,
                     EnrollmentDate = DateTime.Now.Date,
                     HearAboutUsId = model.HearAboutUsId
                 };

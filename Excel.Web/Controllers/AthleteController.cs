@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -12,12 +13,16 @@ using Excel.Web.DataContexts;
 using Excel.Web.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace Excel.Web.Controllers
 {
     [System.Web.Mvc.Authorize(Roles = "admin")]
     public class AthleteController : Controller
     {
+        private ApplicationUserManager _userManager;
+
         private IAthleteRepository athleteRepository;
 
         public Func<string> GetUserId; //For testing
@@ -239,7 +244,94 @@ namespace Excel.Web.Controllers
         {
             //var userId = User.Identity.GetUserId();
             athleteRepository.DeleteAthlete(id);
+
             return RedirectToAction("Index");
+        }
+
+        public ActionResult RegisterTrial(int? athleteId)
+        {
+            if (!athleteId.HasValue)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var trialAthlete = athleteRepository.GetAthleteById(athleteId.Value);
+            TempData["TrialId"] = athleteId;
+            RegisterAthleteViewModel model = new RegisterAthleteViewModel();
+            model.FirstName = trialAthlete.FirstName;
+            model.LastName = trialAthlete.LastName;
+            
+            GetLocationSelectList(trialAthlete);
+            return View(model);
+        }
+
+        private void GetLocationSelectList(Athlete trialAthlete)
+        {
+            ViewBag.Locations = new SelectList(athleteRepository.GetLocations(), "Id", "Name", trialAthlete.LocationId);
+            ViewBag.HearAboutUs = new SelectList(athleteRepository.GetHearAboutUs(), "Id", "Name", trialAthlete.HearAboutUsId);
+            ViewBag.CellPhoneCarriers = new SelectList(athleteRepository.GetCellPhoneCarriers(), "Id", "Name", trialAthlete.CellPhoneCarrierId);
+        }
+
+        // POST: Athletes/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [System.Web.Mvc.HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RegisterTrial(RegisterAthleteViewModel model)
+        {
+            var toDelete = (int)TempData["TrialId"];
+             var athleteToDelete = athleteRepository.GetAthleteById(toDelete);
+            if (ModelState.IsValid)
+            {
+                var athlete = new Athlete
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Address = model.Address,
+                    City = model.City,
+                    State = model.State,
+                    Zip = model.Zip,
+                    AthleteType = model.AthleteType,
+                    UserType = model.UserType,
+                    LocationId = model.LocationId,
+                    EnrollmentDate = DateTime.Now.Date,
+                    HearAboutUsId = model.HearAboutUsId,
+                    BirthDate = athleteToDelete.BirthDate
+                };
+
+                athleteRepository.SaveChanges();
+                var user = new ApplicationUser {UserName = model.Email, Email = model.Email, Athlete = athlete};
+
+                var result = await UserManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    athleteRepository.DeleteAthlete(toDelete);
+                    return RedirectToAction("Index", "Athlete");
+                }
+                AddErrors(result);
+            }
+            GetLocationSelectList(athleteToDelete);
+            TempData["TrialId"] = toDelete;
+            return View(model);
+        }
+
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error);
+            }
+        }
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
         }
 
         protected override void Dispose(bool disposing)

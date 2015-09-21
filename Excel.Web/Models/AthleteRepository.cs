@@ -89,8 +89,11 @@ namespace Excel.Web.Models
             var usr = from u in db.Users
                       where u.Athlete.Id == id
                       select u;
-            manager.RemoveFromRole(usr.First().Id, "admin");
-            manager.Delete(usr.FirstOrDefault());
+            if (usr.FirstOrDefault() != null)
+            {
+                manager.RemoveFromRole(usr.First().Id, "admin");
+                manager.Delete(usr.FirstOrDefault());
+            }
             db.Athletes.Remove(athleteToDelete);
             db.SaveChanges();
         }
