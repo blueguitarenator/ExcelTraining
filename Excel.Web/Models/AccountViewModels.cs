@@ -91,6 +91,10 @@ namespace Excel.Web.Models
         public string LastName { get; set; }
 
         [Required]
+        [Display(Name = "Birth Date")]
+        public DateTime BirthDate { get; set; }
+
+        [Required]
         [Display(Name = "Address")]
         public string Address { get; set; }
 

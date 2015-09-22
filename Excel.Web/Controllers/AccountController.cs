@@ -196,6 +196,7 @@ namespace Excel.Web.Controllers
                 {
                     FirstName = model.FirstName,
                     LastName = model.LastName,
+                    BirthDate = model.BirthDate,
                     Address = model.Address,
                     City = model.City,
                     State = model.State,

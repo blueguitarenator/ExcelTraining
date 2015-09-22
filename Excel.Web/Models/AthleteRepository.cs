@@ -283,7 +283,7 @@ namespace Excel.Web.Models
         // Schedules
         public IEnumerable<Schedule> GetDardenneSchedule(AthleteTypes athleteType)
         {
-            return db.Schedules.Where(s => s.Location.Name.Contains("Dardenne") && s.AthleteType == athleteType);
+            return db.Schedules.Where(s => s.Location.Name.Contains("Dardenne") && s.AthleteType == athleteType && s.IsAvailable);
         }
 
         public Schedule GetScheduleById(int scheduleId)
