@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 
 namespace Excel.Entities
 {
-
-
     public class Athlete
     {
         public int Id { get; set; }
@@ -32,6 +30,8 @@ namespace Excel.Entities
         [Required]
         [StringLength(255)]
         public string Zip { get; set; }
+        [StringLength(12)]
+        public string CellNumber { get; set; }
         [Required]
         public AthleteTypes AthleteType { get; set; }
         [Required]
@@ -46,10 +46,18 @@ namespace Excel.Entities
         [Display(Name = "How you heard")]
         public virtual HearAboutUs HearAboutUs { get; set; }
 
+        public virtual int? CellPhoneCarrierId { get; set; }
+        [Display(Name = "Cell Phone Carrier")]
+        public virtual CellPhoneCarrier CellPhoneCarrier { get; set; }
+
         public virtual ICollection<InjuryNote> InjuryNotes { get; set; }
 
         public DateTime EnrollmentDate { get; set; }
-        
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:mm-dd-yyyy}")]
+        [Display(Name = "Birth Date")]
+        public DateTime BirthDate { get; set; }
+
         [Display(Name = "Name")]
         public string FullName
         {

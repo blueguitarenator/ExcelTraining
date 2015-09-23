@@ -89,8 +89,11 @@ namespace Excel.Web.Models
             var usr = from u in db.Users
                       where u.Athlete.Id == id
                       select u;
-            manager.RemoveFromRole(usr.First().Id, "admin");
-            manager.Delete(usr.FirstOrDefault());
+            if (usr.FirstOrDefault() != null)
+            {
+                manager.RemoveFromRole(usr.First().Id, "admin");
+                manager.Delete(usr.FirstOrDefault());
+            }
             db.Athletes.Remove(athleteToDelete);
             db.SaveChanges();
         }
@@ -123,9 +126,12 @@ namespace Excel.Web.Models
 
         public IEnumerable<Athlete> GetAllAthletes()
         {
-            var athletes = db.Athletes.Where(a => a.UserType == UserTypes.Athlete).OrderBy(a => a.LastName);
-            //var sql = athletes.ToString();
-            return athletes;
+            return db.Athletes.Where(a => a.UserType == UserTypes.Athlete).OrderBy(a => a.LastName);
+        }
+
+        public IEnumerable<Athlete> GetAllTrials()
+        {
+            return db.Athletes.Where(a => a.UserType == UserTypes.Trial).OrderBy(a => a.LastName);
         }
 
         public IEnumerable<Athlete> GetAllTrainers()
@@ -277,7 +283,12 @@ namespace Excel.Web.Models
         // Schedules
         public IEnumerable<Schedule> GetDardenneSchedule(AthleteTypes athleteType)
         {
-            return db.Schedules.Where(s => s.Location.Name.Contains("Dardenne") && s.AthleteType == athleteType);
+            return db.Schedules.Where(s => s.Location.Name.Contains("Dardenne") && s.AthleteType == athleteType && s.IsAvailable);
+        }
+
+        public Schedule GetScheduleById(int scheduleId)
+        {
+            return db.Schedules.First(s => s.Id == scheduleId);
         }
 
         public void SetScheduleStatus(int scheduleId, bool status)
@@ -331,6 +342,11 @@ namespace Excel.Web.Models
         public IEnumerable<HearAboutUs> GetHearAboutUs()
         {
             return db.HearAboutUs;
+        }
+
+        public IEnumerable<CellPhoneCarrier> GetCellPhoneCarriers()
+        {
+            return db.CellPhoneCarriers;
         }
 
         public IdentityDb GetIdentityDb()

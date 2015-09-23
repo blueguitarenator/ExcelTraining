@@ -17,6 +17,9 @@ namespace Excel.Web.DataContexts
         virtual public DbSet<Schedule> Schedules { get; set; }
         virtual public DbSet<SessionAthlete> SessionAthletes { get; set; }
         virtual public DbSet<Motd> Motd { get; set; }
+        virtual public DbSet<HearAboutUs> HearAboutUs { get; set; }
+        virtual public DbSet<InjuryNote> InjuryNotes { get; set; }
+        virtual public DbSet<CellPhoneCarrier> CellPhoneCarriers { get; set; }
 
 
         public IdentityDb()
@@ -37,8 +40,5 @@ namespace Excel.Web.DataContexts
             return new IdentityDb();
         }
 
-        public System.Data.Entity.DbSet<Excel.Entities.HearAboutUs> HearAboutUs { get; set; }
-
-        public System.Data.Entity.DbSet<Excel.Entities.InjuryNote> InjuryNotes { get; set; }
     }
 }

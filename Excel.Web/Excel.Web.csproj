@@ -198,6 +198,7 @@
     <Compile Include="Controllers\AccountingController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AthleteController.cs" />
+    <Compile Include="Controllers\CellPhoneCarrierController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\HearAboutUsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -242,6 +243,10 @@
     <Compile Include="Migrations\201509191406148_RemoveSelectedLocation.cs" />
     <Compile Include="Migrations\201509191406148_RemoveSelectedLocation.Designer.cs">
       <DependentUpon>201509191406148_RemoveSelectedLocation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509191832420_Trial.cs" />
+    <Compile Include="Migrations\201509191832420_Trial.Designer.cs">
+      <DependentUpon>201509191832420_Trial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountingViewModel.cs" />
@@ -455,6 +460,13 @@
     <Content Include="Views\Athlete\InjuryDetails.cshtml" />
     <Content Include="Views\Athlete\InjuryEdit.cshtml" />
     <Content Include="Views\InjuryNotes\Index.cshtml" />
+    <Content Include="Views\Account\Trial.cshtml" />
+    <Content Include="Views\CellPhoneCarrier\Create.cshtml" />
+    <Content Include="Views\CellPhoneCarrier\Delete.cshtml" />
+    <Content Include="Views\CellPhoneCarrier\Details.cshtml" />
+    <Content Include="Views\CellPhoneCarrier\Edit.cshtml" />
+    <Content Include="Views\CellPhoneCarrier\Index.cshtml" />
+    <Content Include="Views\Athlete\RegisterTrial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -493,6 +505,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201509191406148_RemoveSelectedLocation.resx">
       <DependentUpon>201509191406148_RemoveSelectedLocation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509191832420_Trial.resx">
+      <DependentUpon>201509191832420_Trial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Athlete.cs" />
     <Compile Include="AthleteTypes.cs" />
+    <Compile Include="CellPhoneCarrier.cs" />
     <Compile Include="HearAboutUs.cs" />
     <Compile Include="InjuryNote.cs" />
     <Compile Include="Location.cs" />

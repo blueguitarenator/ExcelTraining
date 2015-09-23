@@ -29,6 +29,7 @@ namespace Excel.Web.Models
         IEnumerable<Athlete> GetAllTrainers();
         bool IsAthleteConfirmed(int sessionId, int athleteId);
         IEnumerable<InjuryNote> GetAthleteNotes(int athleteId);
+        IEnumerable<Athlete> GetAllTrials();
 
             //Session - readers
         IEnumerable<Session> GetFutureSessions(int athleteId);
@@ -53,7 +54,8 @@ namespace Excel.Web.Models
 
         // Schedules - reader
         IEnumerable<Schedule> GetDardenneSchedule(AthleteTypes athleteType);
-        
+        Schedule GetScheduleById(int scheduleId);
+
 
         // Schedules - writers
         void SetScheduleStatus(int scheduleId, bool status);
@@ -67,6 +69,8 @@ namespace Excel.Web.Models
         void RemoveMotd(Motd motd);
 
         IEnumerable<HearAboutUs> GetHearAboutUs();
+        IEnumerable<CellPhoneCarrier> GetCellPhoneCarriers();
+
 
         // InjuryNotes
         InjuryNote GetInjuryNote(int value);
